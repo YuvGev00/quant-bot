@@ -127,10 +127,33 @@ def fit_jump(X, K, lam, n_init=5, max_iter=30, seed=0):
 
 
 def assign_online(X, mu, lam):
-    """Assign labels for X given fixed centroids (still DP so the jump penalty applies OOS)."""
+    """Assign labels for X given fixed centroids (still DP so the jump penalty applies OOS).
+    NOTE: this is the WHOLE-WINDOW assignment — the DP backtrack lets day t's label be influenced
+    by later days. Fine for VALIDATION (selecting lambda), but for the LIVE/test path use
+    assign_causal() so a day's label never peeks at the future."""
     Xv = X.values
     D = ((Xv[:, None, :] - mu[None, :, :]) ** 2).sum(axis=2)
     return _assign_path(D, lam)
+
+
+def assign_causal(X, mu, lam, warmup=None):
+    """TRULY CAUSAL assignment: label at time t uses ONLY data up to t. For each t we run the DP on
+    the prefix [0..t] and take the LAST state of that prefix's optimal path — exactly what you could
+    know in real time. No future leakage. (O(n^2) but n=one test year, so cheap.)
+    `warmup`: optionally prepend this (already-known) history so early test days have context."""
+    Xv = X.values
+    if warmup is not None and len(warmup):
+        base = warmup.values
+        full = np.vstack([base, Xv]); off = len(base)
+    else:
+        full = Xv; off = 0
+    D_full = ((full[:, None, :] - mu[None, :, :]) ** 2).sum(axis=2)
+    labels = np.empty(len(Xv), dtype=int)
+    for i in range(len(Xv)):
+        t = off + i
+        path = _assign_path(D_full[: t + 1], lam)   # optimal path over the prefix ending at t
+        labels[i] = path[-1]                          # the label you'd assign *today*
+    return labels
 
 
 def rank_states_by_vol(mu, feat_cols):
@@ -140,6 +163,23 @@ def rank_states_by_vol(mu, feat_cols):
 
 
 # ---------- strategy evaluation ----------
+def hysteresis(in_mkt, k_out=2, k_in=2):
+    """Sticky gate: only go to cash after k_out consecutive risk-off days, only re-enter after
+    k_in consecutive calm days. Cuts whipsaw round-trips (each of which is a taxable event).
+    in_mkt: 0/1 Series (1=in market). Returns a debounced 0/1 Series."""
+    v = in_mkt.fillna(1.0).values
+    out = np.empty(len(v)); state = 1.0; run_off = run_on = 0
+    for i, x in enumerate(v):
+        if x < 0.5:
+            run_off += 1; run_on = 0
+            if state == 1.0 and run_off >= k_out: state = 0.0
+        else:
+            run_on += 1; run_off = 0
+            if state == 0.0 and run_on >= k_in: state = 1.0
+        out[i] = state
+    return pd.Series(out, index=in_mkt.index)
+
+
 def gate_returns(in_mkt, asset_ret, rf_daily):
     """Long asset when in_mkt else earn T-bill. Net of cost on switches. in_mkt is a 0/1 Series."""
     pos = in_mkt.astype(float)
@@ -214,7 +254,10 @@ def walk_forward(close, fx=None):
         mean, std = trva.mean(), trva.std().replace(0, 1.0)
         mu, _, _ = fit_jump((trva - mean) / std, K_STATES, best_lam)
         order = rank_states_by_vol(mu, X_all.columns); riskoff = order[-1]
-        s_te = assign_online((te - mean) / std, mu, best_lam)
+        # CAUSAL test assignment: each test day labeled using only data up to that day (no future
+        # leak from the DP backtrack). Warm up with the last 60 train+valid days for context.
+        warm = ((trva - mean) / std).tail(60)
+        s_te = assign_causal((te - mean) / std, mu, best_lam, warmup=warm)
         regime.loc[te.index] = (s_te == riskoff).astype(float)   # 1 = risk-off (high vol)
         chosen_lams[test_y] = best_lam
 

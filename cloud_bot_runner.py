@@ -21,6 +21,7 @@ import numpy as np, pandas as pd
 from jump_model import load_close, walk_forward, LAG
 from early_scanner import panels, score_leader, ETF_UNIVERSE
 from fundamentals import fetch_fundamentals, health_score, fundamental_verdict
+from bot_utils import ping_healthcheck, data_quality, worth_rotating
 
 TOP_N = 5
 LEVERAGED = {"SOXL", "TECL", "TQQQ", "QLD", "SSO", "UPRO", "SPXL", "FAS", "TNA", "UDOW", "ROM"}
@@ -42,9 +43,15 @@ def detector():
 
 def weekly():
     print("=== WEEKLY DEEP CYCLE ===")
+    px, _ = panels(ETF_UNIVERSE)
+    ok, msg = data_quality(px)                 # FAIL LOUD before any decision
+    print(f"DATA CHECK: {msg}")
+    if not ok:
+        print(">>> Cloud agent: data degraded -> email 'DATA DEGRADED, decisions suppressed', do NOT recommend trades.")
+        ping_healthcheck("weekly", fail=True)
+        return
     risk_off, asof = detector()
     print(f"STORM-DETECTOR ({asof}): {'RISK-OFF' if risk_off else 'CALM'}")
-    px, _ = panels(ETF_UNIVERSE)
     sc = score_leader(px).iloc[-1].dropna()
     top10 = sc.sort_values(ascending=False).head(10)
     print("\nTOP 10 by momentum (scanned %d ETFs):" % len(sc))
@@ -58,10 +65,16 @@ def weekly():
         print(f"  {s:5s}  momentum {picks[s]:.2f}  fundamentals {fv}")
     cur = load_holdings()
     print("\nCURRENT HOLDINGS (from holdings.json):", cur or "(none on file)")
+    # tax-aware rotation check: is rotating into the new picks worth the IL tax + cost drag?
+    tgt = {s: 1.0/len(picks) for s in picks.index}
+    do_it, drag, why = worth_rotating(cur, tgt, expected_gross_gain=0.03)  # cloud agent refines gain est
+    print(f"\nTAX-AWARE ROTATION CHECK: {why}")
     print("\nNEWS_TO_READ:", ",".join(picks.index))
     print("\n>>> Cloud agent: now (1) read live news/blogs on NEWS_TO_READ, (2) optionally read live")
     print(">>> IBKR positions, (3) decide BUY/SELL/HOLD per pick + per holding (leverage<=20%,")
-    print(">>> single<=35%, news-VETO drops a name), (4) email the user the final order sheet.")
+    print(">>> single<=35%, news-VETO drops a name, and DON'T churn if the tax-aware check says HOLD),")
+    print(">>> (4) email the user the final order sheet.")
+    ping_healthcheck("weekly")          # dead-man's-switch: success ping is the FINAL line
 
 
 def hourly():
@@ -83,6 +96,7 @@ def hourly():
         print("\n>>> Cloud agent: notify the user (push + email) with these alerts.")
     else:
         print("ALL QUIET — no action needed. (Cloud agent: stay silent / no notification.)")
+    ping_healthcheck("hourly")          # dead-man's-switch: pings even on a quiet run = "alive & healthy"
 
 
 if __name__ == "__main__":

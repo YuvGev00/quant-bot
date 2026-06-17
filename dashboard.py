@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""dashboard.py — regenerate a self-contained dashboard.html each run. No server, no external CSS/JS:
+open it locally or attach to the weekly email. Shows: regime state, top-10 momentum, holdings vs
+target, and an SVG equity-curve sparkline of the (honest, causal-gated) backtest.
+
+Run:  python3 dashboard.py   (writes dashboard.html)
+"""
+from __future__ import annotations
+import json, os, html
+import numpy as np, pandas as pd
+
+from jump_model import load_close, walk_forward, gate_returns, hysteresis, after_tax, stats, LAG
+from early_scanner import panels, score_leader, ETF_UNIVERSE
+from bot_utils import data_quality
+
+LEVERAGED = {"SOXL", "TECL", "TQQQ", "QLD", "SSO", "UPRO", "SPXL", "FAS", "TNA", "UDOW", "ROM"}
+
+
+def sparkline(series, w=620, h=120, color="#1565c0"):
+    v = series.dropna().values
+    if len(v) < 2: return ""
+    lo, hi = v.min(), v.max(); rng = (hi - lo) or 1
+    pts = " ".join(f"{w*i/(len(v)-1):.1f},{h-(h-8)*(x-lo)/rng-4:.1f}" for i, x in enumerate(v))
+    return (f'<svg viewBox="0 0 {w} {h}" width="100%" height="{h}" preserveAspectRatio="none">'
+            f'<polyline fill="none" stroke="{color}" stroke-width="2" points="{pts}"/></svg>')
+
+
+def main():
+    px, _ = panels(ETF_UNIVERSE)
+    ok, dmsg = data_quality(px)
+
+    spy = load_close("SPY"); ro, ret, rf, lams = walk_forward(spy, None)
+    risk_off = ro.iloc[-1] > 0.5; asof = ro.index[-1].date()
+    in_mkt = hysteresis((1 - ro).shift(LAG).fillna(1.0), 3, 3)
+    g = gate_returns(in_mkt, ret.loc[in_mkt.index], rf.loc[in_mkt.index])
+    eq = (1 + after_tax(g, 0.25)).cumprod()
+    eq_bh = (1 + after_tax(ret.loc[g.index], 0.25)).cumprod()
+    s = stats(after_tax(g, 0.25)); sbh = stats(after_tax(ret.loc[g.index], 0.25))
+
+    sc = score_leader(px).iloc[-1].dropna()
+    top10 = sc.sort_values(ascending=False).head(10)
+    picks = set(sc[sc > 0].nlargest(5).index)
+    cur = {}
+    if os.path.exists("holdings.json"):
+        try: cur = json.load(open("holdings.json")).get("positions", {})
+        except Exception: pass
+
+    badge = ('<span style="background:#e53935">🛟 RISK-OFF — defensive</span>' if risk_off
+             else '<span style="background:#2e7d32">📈 CALM — invested</span>')
+    rows = ""
+    for i, (sym, val) in enumerate(top10.items(), 1):
+        tag = " ⭐" if sym in picks else ""
+        lev = ' <span class="lev">3×LEV</span>' if sym in LEVERAGED else ""
+        held = " 📍held" if sym in cur else ""
+        rows += f"<tr><td>{i}</td><td><b>{sym}</b>{lev}{tag}{held}</td><td>{val:.2f}</td></tr>"
+    hrows = "".join(f"<tr><td>{html.escape(k)}</td><td>{v*100:.0f}%</td></tr>" for k, v in cur.items()) or "<tr><td colspan=2>(none on file)</td></tr>"
+
+    doc = f"""<!doctype html><meta charset=utf-8><title>Quant Bot Dashboard</title>
+<style>
+body{{font:15px/1.5 -apple-system,system-ui,sans-serif;max-width:760px;margin:24px auto;padding:0 16px;color:#1a1a1a;background:#fafafa}}
+h1{{font-size:22px;margin:0 0 4px}} .sub{{color:#777;font-size:13px;margin-bottom:18px}}
+.card{{background:#fff;border:1px solid #e3e3e3;border-radius:10px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}}
+.badge span{{color:#fff;padding:6px 12px;border-radius:6px;font-weight:600;font-size:15px}}
+table{{width:100%;border-collapse:collapse;font-size:14px}} td,th{{padding:5px 8px;text-align:left;border-bottom:1px solid #eee}}
+.lev{{background:#fff3e0;color:#e65100;font-size:11px;padding:1px 5px;border-radius:4px}}
+.k{{display:inline-block;min-width:120px;color:#777}} .big{{font-size:19px;font-weight:700}}
+.warn{{background:#fff3e0;border-color:#ffb74d}}
+</style>
+<h1>🤖 Quant Bot Dashboard</h1>
+<div class=sub>as of {asof} · storm-detector + momentum + news/fundamentals · after Israeli tax @25%</div>
+
+{'<div class="card warn"><b>⚠ '+html.escape(dmsg)+'</b> — decisions would be suppressed this run.</div>' if not ok else ''}
+
+<div class="card badge">Market regime: {badge}</div>
+
+<div class="card">
+  <div class=big>Storm-detector backtest (honest, causal, hysteresis 3/3)</div>
+  <div><span class=k>Gated</span> CAGR {s['CAGR%']:.1f}% · Sharpe {s['Sharpe']:.2f} · maxDD {s['maxDD%']:.0f}%</div>
+  <div><span class=k>Buy & hold SPY</span> CAGR {sbh['CAGR%']:.1f}% · Sharpe {sbh['Sharpe']:.2f} · maxDD {sbh['maxDD%']:.0f}%</div>
+  {sparkline(eq)}
+  <div class=sub>blue = storm-detector equity ($1 → ${eq.iloc[-1]:.2f}); the gate trades smoothness for crash protection.</div>
+</div>
+
+<div class="card">
+  <div class=big>Top 10 by momentum &nbsp;<span class=sub>⭐ = picked · 📍 = you hold</span></div>
+  <table><tr><th>#</th><th>ETF</th><th>score</th></tr>{rows}</table>
+</div>
+
+<div class="card">
+  <div class=big>Your current holdings</div>
+  <table><tr><th>ticker</th><th>weight</th></tr>{hrows}</table>
+  <div class=sub>edit holdings.json to keep this accurate. The weekly email gives the buy/sell orders.</div>
+</div>
+
+<div class=sub>Generated by dashboard.py · decisions only, you place trades manually via Interactive Israel.</div>
+"""
+    open("dashboard.html", "w").write(doc)
+    print(f"wrote dashboard.html  (regime={'RISK-OFF' if risk_off else 'CALM'}, "
+          f"gated Sharpe {s['Sharpe']:.2f}, top pick {top10.index[0]})")
+
+
+if __name__ == "__main__":
+    main()
