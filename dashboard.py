@@ -36,8 +36,26 @@ def sparkline(series, w=680, h=120, color="#4ade80"):
             f'</linearGradient></defs></svg>')
 
 
+def vmap_g(v):
+    return {"CONFIRM": "v-good", "NEUTRAL": "v-mid", "CAUTION": "v-warn", "VETO": "v-bad", "UNREAD": "v-mid"}.get(v, "v-mid")
+
+
+def reversal_candidates(px, vol, top=8):
+    """Volume-confirmed reversal: biggest 10d losers weighted up by heavy volume (the validated edge)."""
+    pxf, volf = px.ffill(), vol.ffill()
+    drop = -(pxf / pxf.shift(10) - 1)
+    relvol = (volf / volf.rolling(63).mean()).clip(0.5, 4.0)
+    score = (drop * relvol).iloc[-1].replace([np.inf, -np.inf], np.nan).dropna()
+    score = score.drop(labels=[s for s in score.index if s in LEVERAGED], errors="ignore")
+    out = []
+    for sym, sc in score[score > 0].nlargest(top).items():
+        d10 = (pxf[sym].iloc[-1] / pxf[sym].iloc[-11] - 1) * 100
+        out.append((sym, d10, float(sc)))
+    return out
+
+
 def main():
-    px, _ = panels(ETF_UNIVERSE)
+    px, vol = panels(ETF_UNIVERSE)
     ok, dmsg = data_quality(px)
 
     spy = load_close("SPY"); ro, ret, rf, lams = walk_forward(spy, None)
@@ -120,6 +138,18 @@ def main():
         lev = '<span class="chip lev">3×</span>' if sym in LEVERAGED else ""
         held = '<span class="chip held">held</span>' if sym in cur else ""
         top_rows += f'<tr class="{cls}"><td class=rk>{i}</td><td class=t>{sym}{lev}{held}</td><td class=num>{val:.2f}</td><td class=bar><span style="width:{min(val/top10.iloc[0]*100,100):.0f}%"></span></td></tr>'
+
+    # reversal agent panel (the validated edge — buy heavy-volume losers)
+    rev = reversal_candidates(px, vol)
+    rev_news = {}
+    if os.path.exists("news_verdicts_reversal.json"):
+        try: rev_news = {k.upper(): v.upper() for k, v in json.load(open("news_verdicts_reversal.json")).items() if not k.startswith("_")}
+        except Exception: pass
+    rev_rows = ""
+    for sym, d10, scv in rev:
+        nv = rev_news.get(sym, "UNREAD")
+        rev_rows += (f'<tr><td class=t>{sym}</td><td class=num style="color:var(--red)">{d10:+.1f}%</td>'
+                     f'<td class=num>{scv:.2f}</td><td><span class="v {vmap_g(nv)}">{nv}</span></td></tr>')
 
     order_html = ""
     if not orders:
@@ -212,11 +242,18 @@ td.bar{{width:30%}} td.bar span{{display:block;height:6px;background:linear-grad
 {pick_rows}
 </table></div>
 
-<div class="tag">Top 10 momentum · scanned {len(sc)} ETFs</div>
+<div class="tag">🔥 Momentum agent · what's hot ({len(sc)} ETFs, no leverage)</div>
 <div class="panel"><table>
 <tr><th>#</th><th>etf</th><th class=num>score</th><th>strength</th></tr>
 {top_rows}
 </table></div>
+
+<div class="tag">📉 Reversal agent · validated bounce edge (heavy-volume losers)</div>
+<div class="panel"><table>
+<tr><th>etf</th><th class=num>10d drop</th><th class=num>capit.</th><th>news (knife?)</th></tr>
+{rev_rows}
+</table></div>
+<div class="cashline" style="text-align:left">two independent strategies — momentum (rising) vs reversal (bounce). Reversal is the statistically-proven one (p&lt;0.01); momentum is a what's-moving radar.</div>
 
 <div class="tag">Storm-detector track record · honest (causal, hysteresis)</div>
 <div class="stats">
