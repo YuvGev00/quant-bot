@@ -1,209 +1,183 @@
 #!/usr/bin/env python3
-"""dashboard.py — self-contained terminal-styled dashboard.html, regenerated each run.
-No server / no external fonts (works offline + emails). Honest about the two agents:
-REVERSAL = the validated edge (p<0.01); MOMENTUM = a "what's moving" radar (not a proven edge).
-Reads holdings.json (empty = 100% cash). Run: python3 dashboard.py
+"""dashboard.py — FUTURISTIC finance HUD. Self-contained dashboard.html (no server/CDN, emails fine).
+Expanded universe (188 names, diversity-capped), real news verdicts, honest causal numbers.
+Run: python3 dashboard.py
 """
 from __future__ import annotations
 import json, os, html
 import numpy as np, pandas as pd
 
 from jump_model import load_close, walk_forward, gate_returns, hysteresis, after_tax, stats, LAG
-from early_scanner import panels, score_leader, ETF_UNIVERSE
+from early_scanner import panels, score_leader
 from fundamentals import fetch_fundamentals, health_score, fundamental_verdict
 from bot_utils import data_quality
+from universe import all_symbols, diversify, SECTOR, LEVERAGED
 
-LEVERAGED = {"SOXL","TECL","TQQQ","QLD","SSO","UPRO","SPXL","FAS","TNA","UDOW","ROM"}
-MAX_SINGLE = 0.35; TOP_N = 5
-
-
-def vcls(v): return {"CONFIRM":"v-good","NEUTRAL":"v-mid","CAUTION":"v-warn","VETO":"v-bad","UNREAD":"v-mid"}.get(v,"v-mid")
+TOP_N = 5; MAX_PER_SECTOR = 2
 
 
-def sparkline(series, w=700, h=110, color="#5eead4"):
+def sparkline(series, w=720, h=130, color="#00e5ff"):
     v = series.dropna().values
     if len(v) < 2: return ""
     lo, hi = v.min(), v.max(); rng = (hi-lo) or 1
-    pts = [(w*i/(len(v)-1), h-(h-16)*(x-lo)/rng-8) for i,x in enumerate(v)]
+    pts = [(w*i/(len(v)-1), h-(h-18)*(x-lo)/rng-9) for i,x in enumerate(v)]
     line = " ".join(f"{x:.1f},{y:.1f}" for x,y in pts)
-    return (f'<svg viewBox="0 0 {w} {h}" width="100%" height="{h}" preserveAspectRatio="none" style="display:block;margin-top:10px">'
-            f'<polygon points="0,{h} {line} {w},{h}" fill="url(#g)" opacity=".15"/>'
-            f'<polyline fill="none" stroke="{color}" stroke-width="2.5" points="{line}"/>'
-            f'<defs><linearGradient id=g x1=0 x2=0 y1=0 y2=1><stop offset=0 stop-color="{color}"/>'
+    return (f'<svg viewBox="0 0 {w} {h}" width="100%" height="{h}" preserveAspectRatio="none" class=spark>'
+            f'<polygon points="0,{h} {line} {w},{h}" fill="url(#gg)"/>'
+            f'<polyline class=pline fill=none stroke="{color}" stroke-width=2 points="{line}"/>'
+            f'<defs><linearGradient id=gg x1=0 x2=0 y1=0 y2=1><stop offset=0 stop-color="{color}" stop-opacity=.35/>'
             f'<stop offset=1 stop-color="{color}" stop-opacity=0/></linearGradient></defs></svg>')
 
 
-def reversal_candidates(px, vol, top=8):
+def revscore(px, vol):
     pxf, volf = px.ffill(), vol.ffill()
-    drop = -(pxf/pxf.shift(10)-1)
-    relvol = (volf/volf.rolling(63).mean()).clip(0.5,4.0)
-    score = (drop*relvol).iloc[-1].replace([np.inf,-np.inf],np.nan).dropna()
-    score = score.drop(labels=[s for s in score.index if s in LEVERAGED], errors="ignore")
-    return [(s, (pxf[s].iloc[-1]/pxf[s].iloc[-11]-1)*100, float(v)) for s,v in score[score>0].nlargest(top).items()]
+    drop = -(pxf/pxf.shift(10)-1); relvol = (volf/volf.rolling(63).mean()).clip(.5,4.0)
+    return (drop*relvol).iloc[-1].replace([np.inf,-np.inf],np.nan).dropna(), pxf
 
 
 def main():
-    px, vol = panels(ETF_UNIVERSE)
+    syms = all_symbols(include_stocks=True)
+    px, vol = panels(syms)
     ok, dmsg = data_quality(px)
     spy = load_close("SPY"); ro, ret, rf, _ = walk_forward(spy, None)
     risk_off = bool(ro.iloc[-1] > 0.5); asof = ro.index[-1].date()
-    in_mkt = hysteresis((1-ro).shift(LAG).fillna(1.0), 3, 3)
+    in_mkt = hysteresis((1-ro).shift(LAG).fillna(1.0),3,3)
     g = gate_returns(in_mkt, ret.loc[in_mkt.index], rf.loc[in_mkt.index])
-    eq = (1 + after_tax(g, 0.25)).cumprod()
-    s = stats(after_tax(g, 0.25)); sbh = stats(after_tax(ret.loc[g.index], 0.25))
+    eq = (1+after_tax(g,0.25)).cumprod(); st = stats(after_tax(g,0.25)); sbh = stats(after_tax(ret.loc[g.index],0.25))
 
-    # momentum radar (no leverage)
-    msc = score_leader(px.ffill()).iloc[-1].dropna()
-    msc = msc.drop(labels=[x for x in msc.index if x in LEVERAGED], errors="ignore")
-    mom_top = msc.sort_values(ascending=False).head(8)
-
-    # reversal — the validated edge
-    rev = reversal_candidates(px, vol)
+    rsc, pxf = revscore(px, vol)
+    ranked = rsc[rsc>0].sort_values(ascending=False)
+    rev_pick = diversify(list(ranked.index), TOP_N, MAX_PER_SECTOR)
+    rev_top = ranked.head(10)
     rev_news = {}
     if os.path.exists("news_verdicts_reversal.json"):
         try: rev_news = {k.upper():v.upper() for k,v in json.load(open("news_verdicts_reversal.json")).items() if not k.startswith("_")}
         except Exception: pass
 
-    # holdings
+    msc = score_leader(px.ffill()).iloc[-1].dropna()
+    mom_top = msc.sort_values(ascending=False).head(8)
+
     cur = {}
     if os.path.exists("holdings.json"):
-        try: cur = json.load(open("holdings.json")).get("positions", {})
+        try: cur = json.load(open("holdings.json")).get("positions",{})
         except Exception: pass
-    flat = (len(cur) == 0)
+    flat = (len(cur)==0)
 
-    # ---- HTML ----
-    regime_txt = "RISK-OFF" if risk_off else "CALM"; regime_cls = "risk" if risk_off else "calm"
-    regime_msg = "Storm regime — stay in cash. Do not buy." if risk_off else "Clear regime — edges are live."
+    vtxt = {"CONFIRM":"BOUNCE","CAUTION":"WATCH","VETO":"KNIFE","UNREAD":"—"}
+    buys = [s for s in rev_pick if rev_news.get(s,"UNREAD")!="VETO"]
 
-    # reversal rows (editorial style)
-    rev_rows = ""; buys = []
-    vlabel = {"CONFIRM":"buy the bounce","CAUTION":"watch","VETO":"falling knife — skip","UNREAD":"unread"}
-    for sym, d10, scv in rev:
-        nv = rev_news.get(sym, "UNREAD")
-        if nv not in ("VETO",): buys.append((sym, nv))
-        rev_rows += (f'<tr><td class=tk>{sym}</td><td class=n>{d10:+.1f}%</td>'
-                     f'<td class=vd vd-{nv.lower()}>{vlabel.get(nv,nv.lower())}</td></tr>')
-    mom_rows = ""
-    for i,(sym,v) in enumerate(mom_top.items(),1):
-        held = ' · held' if sym in cur else ''
-        mom_rows += f'<tr><td class=ix>{i:02d}</td><td class=tk>{sym}{held}</td><td class=n>{v:.2f}</td></tr>'
+    rev_rows=""
+    for s in rev_top.index:
+        d10=(pxf[s].iloc[-1]/pxf[s].iloc[-11]-1)*100; nv=rev_news.get(s,"UNREAD"); sec=SECTOR.get(s,"other")
+        pk=" data-pick=1" if s in rev_pick else ""
+        rev_rows+=(f'<tr{pk}><td class=tk>{s}</td><td class=sec>{sec}</td><td class=neg>{d10:+.1f}%</td>'
+                   f'<td><span class="vd v-{nv.lower()}">{vtxt.get(nv,nv)}</span></td></tr>')
+    mom_rows=""
+    for i,(s,v) in enumerate(mom_top.items(),1):
+        sec=SECTOR.get(s,"other")
+        mom_rows+=(f'<tr><td class=ix>{i:02d}</td><td class=tk>{s}</td><td class=sec>{sec}</td>'
+                   f'<td class=barcell><span class=bar style="width:{min(v/mom_top.iloc[0]*100,100):.0f}%"></span></td></tr>')
 
-
-    # ACTION (editorial)
+    regime_txt="RISK-OFF" if risk_off else "CALM"; rc="risk" if risk_off else "calm"
     if risk_off:
-        action = '<div class="act act-cash"><div class=ah>Move to cash</div><div class=ap>The storm-detector is risk-off. Sit out — do not buy.</div></div>'
+        act='<div class=act><div class=acth>◢ DEFENSIVE PROTOCOL</div><div class=actb>Storm regime engaged — capital to cash. No entries.</div></div>'
+    elif flat and buys:
+        n=len(buys)
+        li="".join(f'<div class=buyrow><span class=bsym>{b}</span><span class=balloc>{int(100/n)}%</span><span class=bsec>{SECTOR.get(b,"")}</span></div>' for b in buys)
+        act=f'<div class=act><div class=acth>◢ ACQUIRE // reversal edge</div>{li}<div class=actb>Portfolio empty → fresh entries. Remainder to cash. Execution: manual.</div></div>'
     elif flat:
-        if buys:
-            n = len(buys) or 1
-            items = "".join(f'<li><b>{b[0]}</b> &mdash; {int(100/n)}% <span class=ag>{b[1].lower()}</span></li>' for b in buys)
-            action = (f'<div class=act><div class=ah>Open these positions</div>'
-                      f'<ol class=buys>{items}</ol>'
-                      f'<div class=ap>You hold cash today, so these are fresh entries from the reversal edge. '
-                      f'Keep any remainder in cash. You place the orders.</div></div>')
-        else:
-            action = '<div class=act><div class=ah>Stay in cash</div><div class=ap>No bounce candidate is news-confirmed this week.</div></div>'
+        act='<div class=act><div class=acth>◢ HOLD CASH</div><div class=actb>No news-confirmed bounce candidate this cycle.</div></div>'
     else:
-        action = '<div class=act><div class=ah>See weekly email</div><div class=ap>You have positions on file — the emailed sheet has the hold/add/trim/sell calls.</div></div>'
+        act='<div class=act><div class=acth>◢ SEE WEEKLY UPLINK</div><div class=actb>Positions on file — manage per emailed sheet.</div></div>'
+    port=f"100% CASH" if flat else " · ".join(f"{k} {v*100:.0f}%" for k,v in cur.items())
 
-    port_line = "100% cash — no positions held." if flat else " · ".join(f"{k} {v*100:.0f}%" for k,v in cur.items())
-    big = f"{s['CAGR%']:.1f}"
-
-    doc = f"""<!doctype html><html lang=en><head><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><title>The Quant Ledger — {asof}</title>
+    doc=f"""<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><title>QUANTBOT :: {regime_txt}</title>
 <style>
-@import url('data:text/css;,');
-:root{{--ink:#1a1714;--paper:#f4efe6;--paper2:#ece5d8;--rule:#cfc6b4;--mut:#8a8170;--accent:#9c2b1b;--green:#3f6b४a;--gold:#a8852c}}
+@keyframes scan{{0%{{transform:translateY(-100%)}}100%{{transform:translateY(100vh)}}}}
+@keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.35}}}}
+@keyframes flow{{to{{stroke-dashoffset:-1000}}}}
+@keyframes glow{{0%,100%{{filter:drop-shadow(0 0 6px var(--cy))}}50%{{filter:drop-shadow(0 0 18px var(--cy))}}}}
+:root{{--bg:#04070f;--gl:rgba(12,22,40,.55);--ln:rgba(0,229,255,.18);--cy:#00e5ff;--mg:#ff2d92;--gr:#1dffb0;--am:#ffcf3a;--tx:#bfe9ff;--dim:#5a7390}}
 *{{box-sizing:border-box;margin:0}}
-body{{background:var(--paper);color:var(--ink);
-font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
-max-width:760px;margin:0 auto;padding:46px 30px 80px;line-height:1.6;
-background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(0,0,0,.012) 28px)}}
-.masthead{{text-align:center;border-bottom:3px double var(--ink);padding-bottom:14px;margin-bottom:6px}}
-.title{{font-size:42px;font-weight:700;letter-spacing:-1px;font-variant:small-caps;line-height:1}}
-.dek{{font-style:italic;color:var(--mut);font-size:14px;margin-top:8px;letter-spacing:.3px}}
-.byline{{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);
-border-bottom:1px solid var(--rule);padding:8px 0;margin-bottom:30px}}
-.lead{{font-size:15px}} .lead .drop{{float:left;font-size:62px;line-height:.78;padding:6px 10px 0 0;font-weight:700;color:var(--accent)}}
-.regime{{display:inline-block;font-variant:small-caps;font-weight:700;letter-spacing:1px;padding:1px 10px;border-radius:2px}}
-.regime.calm{{color:#2f5e3a;background:rgba(63,107,74,.12);border:1px solid rgba(63,107,74,.4)}}
-.regime.risk{{color:var(--accent);background:rgba(156,43,27,.1);border:1px solid rgba(156,43,27,.4)}}
-h2.sec{{font-variant:small-caps;font-size:14px;letter-spacing:3px;color:var(--mut);font-weight:700;
-border-bottom:1px solid var(--rule);padding-bottom:5px;margin:38px 0 16px}}
-.act{{background:var(--paper2);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:18px 22px;border-radius:2px}}
-.act-cash{{border-left-color:var(--accent)}}
-.ah{{font-size:21px;font-weight:700;margin-bottom:6px}}
-.ap{{font-size:13.5px;color:#4a443b;font-style:italic;margin-top:10px}}
-ol.buys{{margin:6px 0 0;padding-left:22px}} ol.buys li{{font-size:17px;padding:3px 0}}
-.ag{{font-style:italic;color:var(--mut);font-size:13px}}
-table{{width:100%;border-collapse:collapse;margin-top:2px}}
-th{{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);font-weight:700;
-border-bottom:1px solid var(--ink);padding:6px 6px}}
-td{{padding:9px 6px;border-bottom:1px solid var(--rule);font-size:15px}}
-td.tk{{font-weight:700;letter-spacing:.5px}} td.n{{text-align:right;font-variant-numeric:tabular-nums;color:#4a443b}}
-td.ix{{color:var(--mut);font-size:12px;width:34px}} td.vd{{font-style:italic;font-size:13px}}
-.vd-confirm{{color:#2f5e3a}} .vd-veto{{color:var(--accent)}} .vd-caution{{color:var(--gold)}} .vd-unread{{color:var(--mut)}}
-.cols{{display:grid;grid-template-columns:1fr 1fr;gap:30px}}
-.fig{{border:1px solid var(--rule);background:var(--paper2);padding:18px 20px;border-radius:2px;margin-top:4px}}
-.figrow{{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dotted var(--rule)}}
-.figrow:last-child{{border:none}} .figrow .k{{font-style:italic;color:var(--mut);font-size:13px}}
-.figrow .val{{font-size:21px;font-weight:700}} .figrow .vs{{font-size:11px;color:var(--mut);margin-left:8px}}
-.kicker{{font-style:italic;color:var(--mut);font-size:12.5px;margin-top:8px}}
-.warn{{background:rgba(168,133,44,.12);border:1px solid var(--gold);padding:12px 16px;font-style:italic;font-size:13px;margin-bottom:20px;border-radius:2px}}
-.foot{{border-top:3px double var(--ink);margin-top:46px;padding-top:14px;font-size:11px;color:var(--mut);font-style:italic;line-height:1.7;text-align:center}}
-@media(max-width:560px){{.cols{{grid-template-columns:1fr}} .title{{font-size:32px}}}}
+body{{background:var(--bg);color:var(--tx);font:13px/1.5 'SF Mono',ui-monospace,Menlo,monospace;max-width:860px;margin:0 auto;padding:30px 20px 80px;position:relative;overflow-x:hidden;
+background-image:linear-gradient(rgba(0,229,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.045) 1px,transparent 1px),radial-gradient(1000px 500px at 50% -10%,rgba(0,229,255,.1),transparent),radial-gradient(800px 400px at 100% 8%,rgba(255,45,146,.07),transparent);
+background-size:42px 42px,42px 42px,100% 100%,100% 100%}}
+body::before{{content:"";position:fixed;left:0;right:0;top:0;height:140px;background:linear-gradient(180deg,transparent,rgba(0,229,255,.05),transparent);animation:scan 8s linear infinite;pointer-events:none;z-index:99}}
+.hd{{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ln);padding-bottom:14px}}
+.lg{{font-size:16px;letter-spacing:6px;font-weight:700;color:#fff;text-shadow:0 0 14px var(--cy)}} .lg span{{color:var(--cy)}}
+.as{{font-size:10px;letter-spacing:2px;color:var(--dim)}}
+.glass{{background:var(--gl);border:1px solid var(--ln);border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 0 34px -14px var(--cy),inset 0 1px 0 rgba(255,255,255,.05)}}
+.sec-h{{font-size:10px;letter-spacing:4px;color:var(--cy);text-transform:uppercase;margin:30px 0 12px;display:flex;align-items:center;gap:10px;text-shadow:0 0 8px var(--cy)}}
+.sec-h::before{{content:"//"}} .sec-h::after{{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ln),transparent)}}
+.reg{{margin-top:22px;padding:26px 28px;position:relative;overflow:hidden}}
+.reg .ring{{position:absolute;right:-46px;top:-46px;width:170px;height:170px;border-radius:50%;border:2px solid var(--cy);opacity:.22;animation:glow 3s infinite}}
+.reg.risk .ring{{border-color:var(--mg)}}
+.rl{{font-size:9px;letter-spacing:4px;color:var(--dim)}}
+.rv{{font-size:48px;font-weight:700;letter-spacing:2px;line-height:1;margin-top:6px}}
+.calm .rv{{color:var(--gr);text-shadow:0 0 26px var(--gr)}} .risk .rv{{color:var(--mg);text-shadow:0 0 26px var(--mg)}}
+.dot{{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:15px;vertical-align:middle;animation:pulse 2s infinite}}
+.calm .dot{{background:var(--gr);box-shadow:0 0 16px var(--gr)}} .risk .dot{{background:var(--mg);box-shadow:0 0 16px var(--mg);animation:pulse 1s infinite}}
+.rm{{color:var(--dim);margin-top:10px;font-size:12px;letter-spacing:.5px}}
+.act{{padding:20px 24px}} .acth{{color:var(--cy);font-size:13px;letter-spacing:2px;margin-bottom:10px;text-shadow:0 0 10px var(--cy)}}
+.actb{{color:var(--dim);font-size:11.5px;margin-top:12px;letter-spacing:.4px}}
+.buyrow{{display:flex;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid rgba(0,229,255,.08)}} .buyrow:last-of-type{{border:none}}
+.bsym{{font-size:19px;font-weight:700;color:#fff;min-width:74px;letter-spacing:1px}} .balloc{{color:var(--gr);font-weight:700;text-shadow:0 0 10px var(--gr)}} .bsec{{color:var(--dim);font-size:11px;font-style:italic}}
+.port{{padding:15px 24px;display:flex;align-items:center;gap:18px}} .port .pl{{font-size:9px;letter-spacing:3px;color:var(--dim)}} .port .pv{{font-size:18px;color:var(--cy);font-weight:700;letter-spacing:1px;text-shadow:0 0 10px var(--cy)}}
+table{{width:100%;border-collapse:collapse}} .tbl{{padding:4px 6px}}
+th{{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;text-align:left;padding:10px 12px;border-bottom:1px solid var(--ln);font-weight:500}}
+td{{padding:10px 12px;border-bottom:1px solid rgba(0,229,255,.06);font-size:13px}}
+tr:last-child td{{border:none}} tr[data-pick] td{{background:linear-gradient(90deg,rgba(0,229,255,.1),transparent)}}
+td.tk{{font-weight:700;color:#fff;letter-spacing:1px}} td.sec{{color:var(--dim);font-size:11px;font-style:italic}}
+td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.ix{{color:var(--dim);width:30px}}
+.vd{{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px;border:1px solid}}
+.v-confirm{{color:var(--gr);border-color:var(--gr);box-shadow:0 0 12px -3px var(--gr)}}
+.v-veto{{color:var(--mg);border-color:var(--mg)}} .v-caution{{color:var(--am);border-color:var(--am)}} .v-unread{{color:var(--dim);border-color:var(--dim)}}
+.barcell{{width:42%}} .bar{{display:block;height:7px;border-radius:4px;background:linear-gradient(90deg,var(--mg),var(--cy));box-shadow:0 0 12px -2px var(--cy)}}
+.stats{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}
+.stat{{padding:18px 16px;text-align:center}} .stat .sl{{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}}
+.stat .sv{{font-size:30px;font-weight:700;margin-top:8px;font-variant-numeric:tabular-nums}} .stat .sc{{font-size:10px;color:var(--dim);margin-top:4px}}
+.spark .pline{{stroke-dasharray:1000;animation:flow 20s linear infinite;filter:drop-shadow(0 0 6px var(--cy))}}
+.note{{color:var(--dim);font-size:11px;margin-top:9px;letter-spacing:.3px;line-height:1.6}}
+.warn{{padding:14px 18px;margin-top:16px;border-color:var(--am);color:var(--am)}}
+.ft{{margin-top:42px;border-top:1px solid var(--ln);padding-top:16px;color:var(--dim);font-size:10px;letter-spacing:1px;line-height:1.8;text-align:center}}
 </style></head><body>
+<div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>{asof} :: AFTER IL-TAX :: {len(syms)} ASSETS SCANNED</div></div>
 
-<div class=masthead>
-  <div class=title>The Quant Ledger</div>
-  <div class=dek>A weekly accounting of regime, risk, and opportunity &mdash; decisions only, you place the trades</div>
-</div>
-<div class=byline><span>Vol. I</span><span>{asof}</span><span>After Israeli tax · No. {regime_txt.lower()}</span></div>
+{'<div class="glass warn">/!\\ '+html.escape(dmsg)+' — DECISIONS SUPPRESSED</div>' if not ok else ''}
 
-{'<div class=warn>&#9888; '+html.escape(dmsg)+' — recommendations withheld this issue.</div>' if not ok else ''}
-
-<p class=lead><span class=drop>{'S' if risk_off else 'T'}</span>
-he storm-detector reads <span class="regime {regime_cls}">{regime_txt}</span> as of {asof}.
-{'A storm regime is in force; the prudent position is cash and patience.' if risk_off else 'Conditions are clear, so the edges below are live.'}
-Your book today stands at <b>{port_line}</b> The reversal strategy &mdash; the one that withstood
-statistical scrutiny (permutation p&lt;0.01) &mdash; drives the recommendation; momentum is carried
-below merely as a survey of what is moving.</p>
-
-<h2 class=sec>The Recommendation</h2>
-{action}
-
-<h2 class=sec>Reversal &mdash; Bounce Candidates</h2>
-<table><tr><th>Security</th><th class=n>10-day move</th><th>Verdict</th></tr>{rev_rows}</table>
-<div class=kicker>Heavy-volume losers tend to rebound. A &ldquo;falling knife&rdquo; verdict means the decline is justified by news &mdash; left alone.</div>
-
-<div class=cols>
-<div>
-<h2 class=sec>Momentum &mdash; A Survey</h2>
-<table><tr><th>#</th><th>Security</th><th class=n>Score</th></tr>{mom_rows}</table>
-<div class=kicker>Not a proven edge; a reading of what is currently in favour.</div>
-</div>
-<div>
-<h2 class=sec>The Defence, Audited</h2>
-<div class=fig>
-<div class=figrow><span class=k>Return / year</span><span class=val style="color:var(--green)">{big}%<span class=vs>vs {sbh['CAGR%']:.1f}% hold</span></span></div>
-<div class=figrow><span class=k>Risk-adjusted</span><span class=val>{s['Sharpe']:.2f}<span class=vs>vs {sbh['Sharpe']:.2f}</span></span></div>
-<div class=figrow><span class=k>Worst drawdown</span><span class=val style="color:var(--accent)">{s['maxDD%']:.0f}%<span class=vs>vs {sbh['maxDD%']:.0f}%</span></span></div>
-</div>
-<div class=kicker>The storm-gate trades a little return for far smaller crashes. Honest, look-ahead-free figures.</div>
-</div>
+<div class="glass reg {rc}"><div class=ring></div>
+  <div class=rl>MARKET REGIME</div>
+  <div class=rv><span class=dot></span>{regime_txt}</div>
+  <div class=rm>{'Storm protocol engaged — defensive posture.' if risk_off else 'Systems nominal — edges online.'}</div>
 </div>
 
-{sparkline(eq)}
-<div class=kicker style="text-align:center">Growth of $1 under the gated strategy, after tax &mdash; now ${eq.iloc[-1]:.2f}.</div>
+<div class="glass port" style="margin-top:14px"><span class=pl>PORTFOLIO</span><span class=pv>{port}</span></div>
 
-<div class=foot>
-This ledger decides; it never trades. Orders are placed by hand via Interactive Israel.<br>
-Reversal is a statistically-validated edge; momentum is a radar, not a promise; leverage is excluded throughout.<br>
-Set in Georgia. Composed by python3 dashboard.py.
+<div class=sec-h>Directive</div>
+<div class="glass">{act}</div>
+
+<div class=sec-h>Reversal Array :: validated edge :: diversified &le;{MAX_PER_SECTOR}/sector</div>
+<div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th style=text-align:right>10D &Delta;</th><th>NEWS SCAN</th></tr>{rev_rows}</table></div>
+<div class=note>Oversold names that capitulated on heavy volume tend to rebound. <b>KNIFE</b> = decline justified by news → excluded. Glowing rows = selected.</div>
+
+<div class=sec-h>Momentum Radar :: unverified :: informational</div>
+<div class="glass tbl"><table><tr><th>#</th><th>ASSET</th><th>SECTOR</th><th>STRENGTH</th></tr>{mom_rows}</table></div>
+
+<div class=sec-h>Defense Telemetry :: honest backtest</div>
+<div class=stats>
+<div class="glass stat"><div class=sl>RETURN/YR</div><div class=sv style="color:var(--gr);text-shadow:0 0 16px var(--gr)">{st['CAGR%']:.1f}%</div><div class=sc>hold {sbh['CAGR%']:.1f}%</div></div>
+<div class="glass stat"><div class=sl>SHARPE</div><div class=sv style="color:var(--cy);text-shadow:0 0 16px var(--cy)">{st['Sharpe']:.2f}</div><div class=sc>hold {sbh['Sharpe']:.2f}</div></div>
+<div class="glass stat"><div class=sl>MAX DRAWDOWN</div><div class=sv style="color:var(--mg);text-shadow:0 0 16px var(--mg)">{st['maxDD%']:.0f}%</div><div class=sc>hold {sbh['maxDD%']:.0f}%</div></div>
 </div>
+<div class="glass" style="margin-top:14px;padding:14px 16px 8px">{sparkline(eq)}<div class=note style="text-align:center">CAPITAL TRAJECTORY :: $1 &rarr; ${eq.iloc[-1]:.2f} :: gated / after-tax</div></div>
+
+<div class=ft>QUANTBOT DECISION CORE :: NEVER AUTO-EXECUTES :: MANUAL FILL VIA INTERACTIVE ISRAEL<br>
+REVERSAL = STAT-VALIDATED (p&lt;0.01) :: MOMENTUM = RADAR ONLY :: LEVERAGE EXCLUDED :: BACKTEST &ne; PROMISE</div>
 </body></html>"""
     open("dashboard.html","w").write(doc)
-    print(f"wrote dashboard.html — {regime_txt}, portfolio={'CASH' if flat else 'mixed'}, "
-          f"{len(buys)} reversal buys, gated Sharpe {s['Sharpe']:.2f}")
+    print(f"wrote dashboard.html — {regime_txt}, {len(syms)} assets, portfolio={'CASH' if flat else 'mixed'}, "
+          f"reversal picks {rev_pick}, buys {buys}, Sharpe {st['Sharpe']:.2f}")
 
 
 if __name__ == "__main__":

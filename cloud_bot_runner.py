@@ -19,7 +19,8 @@ import sys, json, os
 import numpy as np, pandas as pd
 
 from jump_model import load_close, walk_forward, LAG
-from early_scanner import panels, score_leader, ETF_UNIVERSE
+from early_scanner import panels, score_leader
+from universe import all_symbols, diversify, SECTOR
 from fundamentals import fetch_fundamentals, health_score, fundamental_verdict
 from bot_utils import ping_healthcheck, data_quality, worth_rotating
 
@@ -43,7 +44,7 @@ def detector():
 
 def weekly():
     print("=== WEEKLY DEEP CYCLE ===")
-    px, _ = panels(ETF_UNIVERSE)
+    px, _ = panels(all_symbols(include_stocks=True))
     ok, msg = data_quality(px)                 # FAIL LOUD before any decision
     print(f"DATA CHECK: {msg}")
     if not ok:
@@ -58,7 +59,7 @@ def weekly():
     print("\nTOP 10 by momentum (scanned %d ETFs, leverage excluded):" % len(sc))
     for i, (s, v) in enumerate(top10.items(), 1):
         print(f"  {i:2d}. {s:5s} {v:6.2f}")
-    picks = sc[sc > 0].nlargest(TOP_N)
+    picks = pd.Series({x: sc[x] for x in diversify(list(sc[sc>0].sort_values(ascending=False).index), TOP_N, 2)})
     print("\nCANDIDATE PICKS (top %d):" % TOP_N)
     for s in picks.index:
         fv = fundamental_verdict(health_score(fetch_fundamentals(s))["score"])

@@ -19,11 +19,12 @@ import json, os, sys
 import numpy as np, pandas as pd
 
 from jump_model import load_close, walk_forward, hysteresis, LAG
-from early_scanner import panels, ETF_UNIVERSE
+from early_scanner import panels
 from fundamentals import fetch_fundamentals, health_score, fundamental_verdict
+from universe import all_symbols, diversify, SECTOR, LEVERAGED
 
 TOP_N = 5
-LEVERAGED = {"SOXL", "TECL", "TQQQ", "QLD", "SSO", "UPRO", "SPXL", "FAS", "TNA", "UDOW", "ROM"}
+MAX_PER_SECTOR = 2          # diversity cap: no more than 2 bounce candidates from one theme
 HOLDINGS_FILE = "holdings_reversal.json"          # separate book from the momentum agent
 NEWS_FILE = "news_verdicts_reversal.json"
 
@@ -48,7 +49,7 @@ def main():
     print("  REVERSAL AGENT  —  validated edge (buy heavy-volume losers)")
     print("=" * 64)
 
-    px, vol = panels(ETF_UNIVERSE)
+    px, vol = panels(all_symbols(include_stocks=True))   # 188 names: 100 stocks + 88 ETFs, no leverage
     spy = load_close("SPY"); ro, _, _, _ = walk_forward(spy, None)
     risk_off = bool(ro.iloc[-1] > 0.5); asof = ro.index[-1].date()
     print(f"\n[1] STORM-DETECTOR ({asof}): {'RISK-OFF — go to cash, no bounce-buying' if risk_off else 'CALM — bounce candidates live'}")
@@ -56,19 +57,20 @@ def main():
         print("\n  >>> ACTION: storm regime -> hold CASH. Falling markets aren't safe to bounce-buy.")
         return
 
-    # ffill so a ticker whose file ends a day early still gets scored on its latest available bar
+    # ffill so a name whose file ends a day early still gets scored on its latest available bar
     sc = reversal_score(px.ffill(), vol.ffill()).iloc[-1].replace([np.inf, -np.inf], np.nan).dropna()
-    sc = sc.drop(labels=[s for s in sc.index if s in LEVERAGED], errors="ignore")  # exclude leverage
-    top10 = sc.sort_values(ascending=False).head(10)
-    picks = sc[sc > 0].nlargest(TOP_N)
+    ranked = sc[sc > 0].sort_values(ascending=False)
+    # DIVERSITY CAP: top-10 shown, but picks capped at 2/sector so it can't be all-semis/all-oil
+    picks = pd.Series({s: sc[s] for s in diversify(list(ranked.index), TOP_N, MAX_PER_SECTOR)})
+    top10 = ranked.head(10)
 
     pxf = px.ffill()
-    print(f"\n[2] TOP 10 BOUNCE CANDIDATES (fell hardest on heavy volume; of {len(sc)} ETFs):")
+    print(f"\n[2] TOP 10 BOUNCE CANDIDATES (of {len(sc)} names; picks diversified ≤{MAX_PER_SECTOR}/sector):")
     for i, (s, v) in enumerate(top10.items(), 1):
         d10 = (pxf[s].iloc[-1] / pxf[s].iloc[-11] - 1) * 100
-        lev = " [3x LEV]" if s in LEVERAGED else ""
+        sec = SECTOR.get(s, "other")
         mark = " <- PICK" if s in picks.index else ""
-        print(f"     {i:2d}. {s:5s}  10d move {d10:+5.1f}%  capitulation-score {v:.2f}{lev}{mark}")
+        print(f"     {i:2d}. {s:5s} [{sec:12s}] 10d move {d10:+5.1f}%  score {v:.2f}{mark}")
 
     print(f"\n[3] FUNDAMENTALS (is the faller financially sound, or deteriorating?):")
     for s in picks.index:

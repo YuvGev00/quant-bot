@@ -21,7 +21,8 @@ import json, os, sys
 import numpy as np, pandas as pd
 
 from jump_model import load_close, walk_forward, LAG
-from early_scanner import panels, score_leader, ETF_UNIVERSE
+from early_scanner import panels, score_leader
+from universe import all_symbols, diversify, SECTOR
 from fundamentals import fetch_fundamentals, health_score, fundamental_verdict
 
 TOP_N = 5
@@ -93,10 +94,10 @@ def main():
     print(f"\n[1] STORM-DETECTOR ({asof}): {'🛟 RISK-OFF — defensive' if risk_off else '📈 CALM — invest'}")
 
     # 2. DISCOVER (momentum scan)
-    px, vol = panels(ETF_UNIVERSE)
+    px, vol = panels(all_symbols(include_stocks=True))
     sc = score_leader(px.ffill()).iloc[-1].dropna()
     sc = sc.drop(labels=[s for s in sc.index if s in LEVERAGED], errors="ignore")  # no leverage
-    picks = sc[sc > 0].nlargest(TOP_N)
+    picks = pd.Series({x: sc[x] for x in diversify(list(sc[sc>0].sort_values(ascending=False).index), TOP_N, 2)})
     # always show the full top 10 ranking so you see what else is close / next in line
     top10 = sc.sort_values(ascending=False).head(10)
     print(f"\n[2a] TOP 10 by momentum (of {len(sc)} ETFs scanned; top {TOP_N} get picked):")
