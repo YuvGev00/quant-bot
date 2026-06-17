@@ -52,12 +52,12 @@ def weekly():
         return
     risk_off, asof = detector()
     print(f"STORM-DETECTOR ({asof}): {'RISK-OFF' if risk_off else 'CALM'}")
-    sc = score_leader(px).iloc[-1].dropna()
+    sc = score_leader(px.ffill()).iloc[-1].dropna()
+    sc = sc.drop(labels=[s for s in sc.index if s in LEVERAGED], errors="ignore")  # no leverage
     top10 = sc.sort_values(ascending=False).head(10)
-    print("\nTOP 10 by momentum (scanned %d ETFs):" % len(sc))
+    print("\nTOP 10 by momentum (scanned %d ETFs, leverage excluded):" % len(sc))
     for i, (s, v) in enumerate(top10.items(), 1):
-        lev = " [3x LEV]" if s in LEVERAGED else ""
-        print(f"  {i:2d}. {s:5s} {v:6.2f}{lev}")
+        print(f"  {i:2d}. {s:5s} {v:6.2f}")
     picks = sc[sc > 0].nlargest(TOP_N)
     print("\nCANDIDATE PICKS (top %d):" % TOP_N)
     for s in picks.index:
@@ -77,10 +77,17 @@ def weekly():
     ping_healthcheck("weekly")          # dead-man's-switch: success ping is the FINAL line
 
 
+SPY_DAY_DROP = -0.025      # fast heads-up if SPY falls > 2.5% in a single day
+VIX_SPIKE = 30.0           # fast heads-up if VIX jumps above 30 (fear gauge)
+
+
 def hourly():
     print("=== HOURLY EMERGENCY WATCH ===")
     risk_off, asof = detector()
-    alerts = []
+    alerts = []          # ACTION alerts (the disciplined daily signal)
+    heads_up = []        # FAST info-only tripwires (NOT trade signals)
+
+    # --- the slow, disciplined ACTION signal ---
     if risk_off:
         alerts.append(f"STORM-DETECTOR flipped RISK-OFF ({asof}) -> consider moving to cash.")
     cur = load_holdings()
@@ -90,11 +97,28 @@ def hourly():
         drop5 = c.iloc[-1] / c.iloc[-6] - 1
         if drop5 <= ALERT_DROP:
             alerts.append(f"{sym} down {drop5*100:.1f}% over last 5 sessions -> review.")
+
+    # --- the FAST heads-up tripwires (info only; money still moves on the daily gate) ---
+    spy = load_close("SPY")
+    if spy is not None and len(spy) > 2:
+        day = spy.iloc[-1] / spy.iloc[-2] - 1
+        if day <= SPY_DAY_DROP:
+            heads_up.append(f"SPY down {day*100:.1f}% today — watch the close; the regime gate decides at EOD.")
+    vix = load_close("VIX")
+    if vix is not None and len(vix) and vix.iloc[-1] >= VIX_SPIKE:
+        heads_up.append(f"VIX at {vix.iloc[-1]:.0f} (fear elevated) — heads-up, not a sell signal yet.")
+
+    if heads_up:
+        print("HEADS-UP (info only, NOT a trade signal):")
+        for h in heads_up: print("  ~ " + h)
+
     if alerts:
         print("ALERT:")
         for a in alerts: print("  - " + a)
-        print("\n>>> Cloud agent: notify the user (push + email) with these alerts.")
-    else:
+        print("\n>>> Cloud agent: email the user — ACTION alerts (disciplined signal).")
+    if heads_up and not alerts:
+        print("\n>>> Cloud agent: email a brief HEADS-UP (clearly labeled 'info, not a trade signal').")
+    if not alerts and not heads_up:
         print("ALL QUIET — no action needed. (Cloud agent: stay silent / no notification.)")
     ping_healthcheck("hourly")          # dead-man's-switch: pings even on a quiet run = "alive & healthy"
 

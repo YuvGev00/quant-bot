@@ -94,7 +94,8 @@ def main():
 
     # 2. DISCOVER (momentum scan)
     px, vol = panels(ETF_UNIVERSE)
-    sc = score_leader(px).iloc[-1].dropna()
+    sc = score_leader(px.ffill()).iloc[-1].dropna()
+    sc = sc.drop(labels=[s for s in sc.index if s in LEVERAGED], errors="ignore")  # no leverage
     picks = sc[sc > 0].nlargest(TOP_N)
     # always show the full top 10 ranking so you see what else is close / next in line
     top10 = sc.sort_values(ascending=False).head(10)

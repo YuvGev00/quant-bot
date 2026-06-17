@@ -47,7 +47,8 @@ def main():
     eq = (1 + after_tax(g, 0.25)).cumprod()
     s = stats(after_tax(g, 0.25)); sbh = stats(after_tax(ret.loc[g.index], 0.25))
 
-    sc = score_leader(px).iloc[-1].dropna()
+    sc = score_leader(px.ffill()).iloc[-1].dropna()
+    sc = sc.drop(labels=[s for s in sc.index if s in LEVERAGED], errors="ignore")  # no leverage shown
     top10 = sc.sort_values(ascending=False).head(10)
     picks = sc[sc > 0].nlargest(TOP_N)
     cur = {}
