@@ -1,0 +1,10 @@
+{
+  "_comment": "Your CURRENT positions. Edit this to match what you actually hold. weight = fraction of your book (should sum to ~1.0 incl cash). The bot tells you hold/add/trim/sell each.",
+  "cash": 0.20,
+  "positions": {
+    "SOXL": 0.20,
+    "EWY":  0.20,
+    "USO":  0.20,
+    "TECL": 0.20
+  }
+}

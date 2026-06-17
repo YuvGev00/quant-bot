@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.DS_Store
+Archive.zip
+*_out*.txt
+sjm_validity*.txt
+core_out.txt
+core_sat_out*.txt
+momentum_out.txt
+early_scan_out.txt
+stock_world_out.txt
+maxlev_out.txt
+sjm_multi_progress.txt
+sjm_multi_cache.pkl
