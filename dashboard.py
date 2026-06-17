@@ -75,115 +75,135 @@ def main():
     regime_txt = "RISK-OFF" if risk_off else "CALM"; regime_cls = "risk" if risk_off else "calm"
     regime_msg = "Storm regime — stay in cash. Do not buy." if risk_off else "Clear regime — edges are live."
 
-    # reversal action (the proven edge drives the recommendation)
+    # reversal rows (editorial style)
     rev_rows = ""; buys = []
+    vlabel = {"CONFIRM":"buy the bounce","CAUTION":"watch","VETO":"falling knife — skip","UNREAD":"unread"}
     for sym, d10, scv in rev:
         nv = rev_news.get(sym, "UNREAD")
         if nv not in ("VETO",): buys.append((sym, nv))
-        rev_rows += (f'<tr><td class=t>{sym}</td><td class=num red>{d10:+.1f}%</td><td class=num>{scv:.2f}</td>'
-                     f'<td><span class="v {vcls(nv)}">{nv}</span></td></tr>')
+        rev_rows += (f'<tr><td class=tk>{sym}</td><td class=n>{d10:+.1f}%</td>'
+                     f'<td class=vd vd-{nv.lower()}>{vlabel.get(nv,nv.lower())}</td></tr>')
     mom_rows = ""
     for i,(sym,v) in enumerate(mom_top.items(),1):
-        held = '<span class=chip>held</span>' if sym in cur else ''
-        mom_rows += f'<tr><td class=rk>{i}</td><td class=t>{sym}{held}</td><td class=num>{v:.2f}</td><td class=bar><span style="width:{min(v/mom_top.iloc[0]*100,100):.0f}%"></span></td></tr>'
+        held = ' · held' if sym in cur else ''
+        mom_rows += f'<tr><td class=ix>{i:02d}</td><td class=tk>{sym}{held}</td><td class=n>{v:.2f}</td></tr>'
 
-    # ACTION block
+
+    # ACTION (editorial)
     if risk_off:
-        action = '<div class="ord sell"><span class=oact>MOVE TO CASH</span><span class=osym>storm regime</span></div>'
+        action = '<div class="act act-cash"><div class=ah>Move to cash</div><div class=ap>The storm-detector is risk-off. Sit out — do not buy.</div></div>'
     elif flat:
         if buys:
-            n = len([b for b in buys if b[1] != "VETO"]) or 1
-            action = "".join(f'<div class="ord buy"><span class=oact>BUY {100//n}%</span><span class=osym>{b[0]} · reversal {b[1].lower()}</span></div>' for b in buys)
-            action += f'<div class="cashline">portfolio is empty → these are fresh buys (reversal edge). Keep any remainder in cash.</div>'
+            n = len(buys) or 1
+            items = "".join(f'<li><b>{b[0]}</b> &mdash; {int(100/n)}% <span class=ag>{b[1].lower()}</span></li>' for b in buys)
+            action = (f'<div class=act><div class=ah>Open these positions</div>'
+                      f'<ol class=buys>{items}</ol>'
+                      f'<div class=ap>You hold cash today, so these are fresh entries from the reversal edge. '
+                      f'Keep any remainder in cash. You place the orders.</div></div>')
         else:
-            action = '<div class="ord muted">No confirmed bounce candidates — stay in cash.</div>'
+            action = '<div class=act><div class=ah>Stay in cash</div><div class=ap>No bounce candidate is news-confirmed this week.</div></div>'
     else:
-        action = '<div class="ord muted">(holdings on file — see weekly email for HOLD/ADD/TRIM/SELL)</div>'
+        action = '<div class=act><div class=ah>See weekly email</div><div class=ap>You have positions on file — the emailed sheet has the hold/add/trim/sell calls.</div></div>'
 
-    port_line = "100% CASH — you hold nothing right now." if flat else ", ".join(f"{k} {v*100:.0f}%" for k,v in cur.items())
+    port_line = "100% cash — no positions held." if flat else " · ".join(f"{k} {v*100:.0f}%" for k,v in cur.items())
+    big = f"{s['CAGR%']:.1f}"
 
-    doc = f"""<!doctype html><html lang=en><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><title>QUANTBOT · {regime_txt}</title>
+    doc = f"""<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1"><title>The Quant Ledger — {asof}</title>
 <style>
-:root{{--bg:#080b11;--p:#0f1620;--p2:#0b1119;--ln:#1c2735;--tx:#cdd9e5;--dim:#6a7889;
---grn:#34d399;--red:#fb7185;--amb:#fbbf24;--cy:#38bdf8;--mono:'SF Mono',ui-monospace,Menlo,monospace}}
+@import url('data:text/css;,');
+:root{{--ink:#1a1714;--paper:#f4efe6;--paper2:#ece5d8;--rule:#cfc6b4;--mut:#8a8170;--accent:#9c2b1b;--green:#3f6b४a;--gold:#a8852c}}
 *{{box-sizing:border-box;margin:0}}
-body{{background:var(--bg);color:var(--tx);font:13.5px/1.55 var(--mono);max-width:820px;margin:0 auto;padding:26px 18px 70px;
-background-image:radial-gradient(1200px 400px at 15% -5%,rgba(56,189,248,.07),transparent),radial-gradient(900px 360px at 95% 0,rgba(52,211,153,.05),transparent);-webkit-font-smoothing:antialiased}}
-.hd{{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ln);padding-bottom:13px}}
-.lg{{font-size:13px;letter-spacing:3px;color:var(--cy)}} .lg b{{color:#fff}} .as{{color:var(--dim);font-size:11.5px;letter-spacing:1px}}
-.flow{{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:10.5px;color:var(--dim)}}
-.flow span{{background:var(--p2);border:1px solid var(--ln);border-radius:14px;padding:3px 10px}} .flow b{{color:var(--cy)}}
-.tag{{color:var(--dim);font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;margin:24px 0 9px;display:flex;align-items:center;gap:9px}}
-.tag::after{{content:"";flex:1;height:1px;background:var(--ln)}}
-.rg{{margin-top:18px;border:1px solid var(--ln);border-radius:14px;padding:22px 24px;background:var(--p);position:relative;overflow:hidden}}
-.rg.calm{{border-color:rgba(52,211,153,.4);box-shadow:inset 0 0 60px -26px var(--grn)}}
-.rg.risk{{border-color:rgba(251,113,133,.45);box-shadow:inset 0 0 60px -22px var(--red)}}
-.rst{{font-size:38px;font-weight:700;letter-spacing:1px;line-height:1}} .calm .rst{{color:var(--grn)}} .risk .rst{{color:var(--red)}}
-.dot{{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:13px;vertical-align:middle}}
-.calm .dot{{background:var(--grn);box-shadow:0 0 14px var(--grn);animation:pl 2.4s infinite}}
-.risk .dot{{background:var(--red);box-shadow:0 0 14px var(--red);animation:pl 1.1s infinite}}
-@keyframes pl{{0%,100%{{opacity:1}}50%{{opacity:.3}}}} .rmsg{{color:var(--dim);margin-top:9px;font-size:12.5px}}
-.ord{{display:flex;align-items:center;gap:14px;background:var(--p);border:1px solid var(--ln);border-left-width:3px;border-radius:9px;padding:12px 16px;margin-bottom:7px}}
-.ord .oact{{font-weight:600;min-width:96px}} .ord .osym{{color:var(--dim);font-size:12px}}
-.ord.buy{{border-left-color:var(--grn)}} .ord.buy .oact{{color:var(--grn)}}
-.ord.sell{{border-left-color:var(--red)}} .ord.sell .oact{{color:var(--red)}}
-.ord.muted{{border-left-color:var(--ln);color:var(--dim);justify-content:center}}
-.cashline{{color:var(--dim);font-size:11.5px;margin-top:4px}}
-.pnl{{background:var(--p);border:1px solid var(--ln);border-radius:13px;padding:6px 4px}}
-table{{width:100%;border-collapse:collapse}}
-th{{color:var(--dim);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;text-align:left;padding:9px 13px;border-bottom:1px solid var(--ln)}}
-td{{padding:9px 13px;border-bottom:1px solid rgba(28,39,53,.5)}} tr:last-child td{{border-bottom:none}}
-td.t{{font-weight:600;color:#eaf2fb;letter-spacing:.4px}} td.num{{text-align:right;color:var(--dim);font-variant-numeric:tabular-nums}}
-td.num.red{{color:var(--red)}} td.rk{{color:var(--dim);width:26px}}
-td.bar{{width:32%}} td.bar span{{display:block;height:6px;background:linear-gradient(90deg,var(--cy),var(--grn));border-radius:3px}}
-.v{{font-size:10.5px;font-weight:600;letter-spacing:.4px;padding:2px 8px;border-radius:5px}}
-.v-good{{background:rgba(52,211,153,.15);color:var(--grn)}} .v-mid{{background:rgba(106,120,137,.18);color:var(--dim)}}
-.v-warn{{background:rgba(251,191,36,.15);color:var(--amb)}} .v-bad{{background:rgba(251,113,133,.16);color:var(--red)}}
-.chip{{font-size:9px;background:rgba(56,189,248,.13);color:var(--cy);padding:2px 6px;border-radius:4px;margin-left:7px}}
-.stats{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ln);border:1px solid var(--ln);border-radius:13px;overflow:hidden}}
-.stat{{background:var(--p);padding:17px 18px}} .stat .l{{color:var(--dim);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase}}
-.stat .v2{{font-size:25px;font-weight:700;margin-top:5px;font-variant-numeric:tabular-nums}} .stat .c{{color:var(--dim);font-size:10.5px;margin-top:3px}}
-.note{{color:var(--dim);font-size:11px;margin-top:7px;line-height:1.6}}
-.warn{{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);color:var(--amb);border-radius:10px;padding:13px 17px;margin-top:16px;font-size:12.5px}}
-.ft{{color:var(--dim);font-size:10.5px;margin-top:34px;border-top:1px solid var(--ln);padding-top:14px;line-height:1.7}}
-</style>
-<div class=hd><div class=lg>QUANT<b>BOT</b></div><div class=as>{asof} · after IL tax 25%</div></div>
-<div class=flow><span>1·<b>detect</b> regime</span><span>2·<b>scan</b> reversal+momentum</span><span>3·<b>read</b> news+fundamentals</span><span>4·<b>size</b> w/ guardrails</span><span>5·<b>you</b> trade</span></div>
+body{{background:var(--paper);color:var(--ink);
+font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+max-width:760px;margin:0 auto;padding:46px 30px 80px;line-height:1.6;
+background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(0,0,0,.012) 28px)}}
+.masthead{{text-align:center;border-bottom:3px double var(--ink);padding-bottom:14px;margin-bottom:6px}}
+.title{{font-size:42px;font-weight:700;letter-spacing:-1px;font-variant:small-caps;line-height:1}}
+.dek{{font-style:italic;color:var(--mut);font-size:14px;margin-top:8px;letter-spacing:.3px}}
+.byline{{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);
+border-bottom:1px solid var(--rule);padding:8px 0;margin-bottom:30px}}
+.lead{{font-size:15px}} .lead .drop{{float:left;font-size:62px;line-height:.78;padding:6px 10px 0 0;font-weight:700;color:var(--accent)}}
+.regime{{display:inline-block;font-variant:small-caps;font-weight:700;letter-spacing:1px;padding:1px 10px;border-radius:2px}}
+.regime.calm{{color:#2f5e3a;background:rgba(63,107,74,.12);border:1px solid rgba(63,107,74,.4)}}
+.regime.risk{{color:var(--accent);background:rgba(156,43,27,.1);border:1px solid rgba(156,43,27,.4)}}
+h2.sec{{font-variant:small-caps;font-size:14px;letter-spacing:3px;color:var(--mut);font-weight:700;
+border-bottom:1px solid var(--rule);padding-bottom:5px;margin:38px 0 16px}}
+.act{{background:var(--paper2);border:1px solid var(--rule);border-left:4px solid var(--accent);padding:18px 22px;border-radius:2px}}
+.act-cash{{border-left-color:var(--accent)}}
+.ah{{font-size:21px;font-weight:700;margin-bottom:6px}}
+.ap{{font-size:13.5px;color:#4a443b;font-style:italic;margin-top:10px}}
+ol.buys{{margin:6px 0 0;padding-left:22px}} ol.buys li{{font-size:17px;padding:3px 0}}
+.ag{{font-style:italic;color:var(--mut);font-size:13px}}
+table{{width:100%;border-collapse:collapse;margin-top:2px}}
+th{{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--mut);font-weight:700;
+border-bottom:1px solid var(--ink);padding:6px 6px}}
+td{{padding:9px 6px;border-bottom:1px solid var(--rule);font-size:15px}}
+td.tk{{font-weight:700;letter-spacing:.5px}} td.n{{text-align:right;font-variant-numeric:tabular-nums;color:#4a443b}}
+td.ix{{color:var(--mut);font-size:12px;width:34px}} td.vd{{font-style:italic;font-size:13px}}
+.vd-confirm{{color:#2f5e3a}} .vd-veto{{color:var(--accent)}} .vd-caution{{color:var(--gold)}} .vd-unread{{color:var(--mut)}}
+.cols{{display:grid;grid-template-columns:1fr 1fr;gap:30px}}
+.fig{{border:1px solid var(--rule);background:var(--paper2);padding:18px 20px;border-radius:2px;margin-top:4px}}
+.figrow{{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dotted var(--rule)}}
+.figrow:last-child{{border:none}} .figrow .k{{font-style:italic;color:var(--mut);font-size:13px}}
+.figrow .val{{font-size:21px;font-weight:700}} .figrow .vs{{font-size:11px;color:var(--mut);margin-left:8px}}
+.kicker{{font-style:italic;color:var(--mut);font-size:12.5px;margin-top:8px}}
+.warn{{background:rgba(168,133,44,.12);border:1px solid var(--gold);padding:12px 16px;font-style:italic;font-size:13px;margin-bottom:20px;border-radius:2px}}
+.foot{{border-top:3px double var(--ink);margin-top:46px;padding-top:14px;font-size:11px;color:var(--mut);font-style:italic;line-height:1.7;text-align:center}}
+@media(max-width:560px){{.cols{{grid-template-columns:1fr}} .title{{font-size:32px}}}}
+</style></head><body>
 
-{'<div class=warn>⚠ '+html.escape(dmsg)+' — decisions suppressed.</div>' if not ok else ''}
+<div class=masthead>
+  <div class=title>The Quant Ledger</div>
+  <div class=dek>A weekly accounting of regime, risk, and opportunity &mdash; decisions only, you place the trades</div>
+</div>
+<div class=byline><span>Vol. I</span><span>{asof}</span><span>After Israeli tax · No. {regime_txt.lower()}</span></div>
 
-<div class="rg {regime_cls}"><div class=rst><span class=dot></span>{regime_txt}</div><div class=rmsg>{regime_msg}</div></div>
+{'<div class=warn>&#9888; '+html.escape(dmsg)+' — recommendations withheld this issue.</div>' if not ok else ''}
 
-<div class=tag>▶ Your portfolio</div>
-<div class=ord muted style="justify-content:flex-start;color:var(--tx)"><span class=oact style="color:var(--cy)">{'CASH' if flat else 'MIXED'}</span><span class=osym>{port_line}</span></div>
+<p class=lead><span class=drop>{'S' if risk_off else 'T'}</span>
+he storm-detector reads <span class="regime {regime_cls}">{regime_txt}</span> as of {asof}.
+{'A storm regime is in force; the prudent position is cash and patience.' if risk_off else 'Conditions are clear, so the edges below are live.'}
+Your book today stands at <b>{port_line}</b> The reversal strategy &mdash; the one that withstood
+statistical scrutiny (permutation p&lt;0.01) &mdash; drives the recommendation; momentum is carried
+below merely as a survey of what is moving.</p>
 
-<div class=tag>▶ Suggested action — reversal edge (the validated one)</div>
+<h2 class=sec>The Recommendation</h2>
 {action}
 
-<div class=tag>📉 Reversal agent · bounce candidates (heavy-volume losers, no leverage)</div>
-<div class=pnl><table><tr><th>etf</th><th class=num>10d drop</th><th class=num>capit.</th><th>news · falling-knife?</th></tr>{rev_rows}</table></div>
-<div class=note>The proven edge: oversold names that fell on heavy volume tend to bounce. News VETO = a justified drop (don't catch the knife).</div>
+<h2 class=sec>Reversal &mdash; Bounce Candidates</h2>
+<table><tr><th>Security</th><th class=n>10-day move</th><th>Verdict</th></tr>{rev_rows}</table>
+<div class=kicker>Heavy-volume losers tend to rebound. A &ldquo;falling knife&rdquo; verdict means the decline is justified by news &mdash; left alone.</div>
 
-<div class=tag>🔥 Momentum radar · what's hot (not a proven edge — just info)</div>
-<div class=pnl><table><tr><th>#</th><th>etf</th><th class=num>score</th><th>strength</th></tr>{mom_rows}</table></div>
-
-<div class=tag>Storm-detector track record · honest (causal, hysteresis)</div>
-<div class=stats>
-<div class=stat><div class=l>Return / yr</div><div class=v2 style="color:var(--grn)">{s['CAGR%']:.1f}%</div><div class=c>buy&amp;hold {sbh['CAGR%']:.1f}%</div></div>
-<div class=stat><div class=l>Smoothness</div><div class=v2>{s['Sharpe']:.2f}</div><div class=c>buy&amp;hold {sbh['Sharpe']:.2f}</div></div>
-<div class=stat><div class=l>Worst crash</div><div class=v2 style="color:var(--amb)">{s['maxDD%']:.0f}%</div><div class=c>buy&amp;hold {sbh['maxDD%']:.0f}%</div></div>
+<div class=cols>
+<div>
+<h2 class=sec>Momentum &mdash; A Survey</h2>
+<table><tr><th>#</th><th>Security</th><th class=n>Score</th></tr>{mom_rows}</table>
+<div class=kicker>Not a proven edge; a reading of what is currently in favour.</div>
 </div>
-{sparkline(eq)}
-<div class=note>$1 → ${eq.iloc[-1]:.2f} (gated, after-tax). The gate trades return for crash protection — its job is defense.</div>
+<div>
+<h2 class=sec>The Defence, Audited</h2>
+<div class=fig>
+<div class=figrow><span class=k>Return / year</span><span class=val style="color:var(--green)">{big}%<span class=vs>vs {sbh['CAGR%']:.1f}% hold</span></span></div>
+<div class=figrow><span class=k>Risk-adjusted</span><span class=val>{s['Sharpe']:.2f}<span class=vs>vs {sbh['Sharpe']:.2f}</span></span></div>
+<div class=figrow><span class=k>Worst drawdown</span><span class=val style="color:var(--accent)">{s['maxDD%']:.0f}%<span class=vs>vs {sbh['maxDD%']:.0f}%</span></span></div>
+</div>
+<div class=kicker>The storm-gate trades a little return for far smaller crashes. Honest, look-ahead-free figures.</div>
+</div>
+</div>
 
-<div class=ft>Decision tool — never places trades; you trade manually via Interactive Israel.<br>
-Reversal = statistically-validated edge (permutation p&lt;0.01). Momentum = a what's-moving radar, NOT proven. Leverage excluded. Backtest estimates, not promises.<br>
-Refresh: <code>python3 dashboard.py</code></div>
-</html>"""
+{sparkline(eq)}
+<div class=kicker style="text-align:center">Growth of $1 under the gated strategy, after tax &mdash; now ${eq.iloc[-1]:.2f}.</div>
+
+<div class=foot>
+This ledger decides; it never trades. Orders are placed by hand via Interactive Israel.<br>
+Reversal is a statistically-validated edge; momentum is a radar, not a promise; leverage is excluded throughout.<br>
+Set in Georgia. Composed by python3 dashboard.py.
+</div>
+</body></html>"""
     open("dashboard.html","w").write(doc)
     print(f"wrote dashboard.html — {regime_txt}, portfolio={'CASH' if flat else 'mixed'}, "
-          f"{len([b for b in (rev_news or {}) if rev_news.get(b)!='VETO'])} reversal buys, gated Sharpe {s['Sharpe']:.2f}")
+          f"{len(buys)} reversal buys, gated Sharpe {s['Sharpe']:.2f}")
 
 
 if __name__ == "__main__":
