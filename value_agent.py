@@ -21,6 +21,7 @@ from fundamentals import fetch_fundamentals
 from universe import STOCK_SECTOR, SECTOR
 
 TOP = 12
+MAX_PRICE = 100.0          # affordability filter: only show stocks trading <= $100/share
 THESIS_FILE = "value_thesis.json"          # Stage-B web thesis verdicts (cloud agent fills this)
 
 
@@ -82,14 +83,17 @@ def main():
     print("  ⚠ NOT a backtested edge — discretionary research. Investigate before buying.")
     print("="*70)
 
-    rows = []
+    rows = []; over_price = 0
     for t in sorted(STOCK_SECTOR):
         vs = value_score(fetch_fundamentals(t))
         if vs.get("score") is None: continue
+        if vs.get("price") and vs["price"] > MAX_PRICE:    # affordability filter (<= $100/share)
+            over_price += 1; continue
         rows.append({"ticker": t, "sector": SECTOR.get(t,"?"), **vs})
     df = pd.DataFrame(rows).sort_values("score", ascending=False)
 
-    print(f"\n[A] DATA SCREEN — top {TOP} 'cheap + quality' of {len(df)} stocks on disk:")
+    print(f"\n[A] DATA SCREEN — cheap+quality AND <= ${MAX_PRICE:.0f}/share "
+          f"(filtered out {over_price} names priced over ${MAX_PRICE:.0f}); top {TOP} of {len(df)}:")
     show = df.head(TOP)[["ticker","sector","score","fwd_PE","margin%","ROE%","upside%","fv_gap%","thesis"]]
     print(show.to_string(index=False, max_colwidth=42))
 

@@ -188,7 +188,7 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th style=text-align:right>10D &Delta;</th><th>NEWS SCAN</th></tr>{rev_rows}</table></div>
 <div class=note>Oversold names that capitulated on heavy volume tend to rebound. <b>KNIFE</b> = decline justified by news → excluded. Glowing rows = selected.</div>
 
-<div class=sec-h>Value Lab :: cheap + quality :: SPECULATIVE ideas (not a backtested edge)</div>
+<div class=sec-h>Value Lab :: cheap + quality :: &le;$100/share :: SPECULATIVE ideas (not a backtested edge)</div>
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=4 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
 <div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
 

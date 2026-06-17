@@ -2,60 +2,60 @@
  "_asof": "2026-06-18",
  "ideas": [
   {
-   "ticker": "INTU",
-   "sector": "tech",
-   "score": 88,
-   "fv_gap%": 67.0,
-   "thesis": "very cheap (fwd P/E 10); cheap vs growth (PEG 0.73); high margins (22%); strong ROE (22%); growing (10%/yr); analysts see +83%"
-  },
-  {
-   "ticker": "ADBE",
-   "sector": "tech",
-   "score": 88,
-   "fv_gap%": 79.0,
-   "thesis": "very cheap (fwd P/E 7); cheap vs growth (PEG 0.57); high margins (29%); strong ROE (63%); growing (13%/yr); analysts see +47%"
-  },
-  {
-   "ticker": "NEM",
-   "sector": "materials",
-   "score": 78,
-   "fv_gap%": 48.0,
-   "thesis": "very cheap (fwd P/E 9); high margins (34%); strong ROE (26%); growing (46%/yr); analysts see +34%"
-  },
-  {
-   "ticker": "META",
+   "ticker": "NFLX",
    "sector": "comm",
-   "score": 70,
-   "fv_gap%": 21.0,
-   "thesis": "cheap vs growth (PEG 0.87); high margins (33%); strong ROE (33%); growing (33%/yr); analysts see +46%"
+   "score": 60,
+   "fv_gap%": 12.0,
+   "thesis": "high margins (29%); strong ROE (48%); growing (16%/yr); analysts see +48%"
   },
   {
-   "ticker": "AVGO",
-   "sector": "tech",
-   "score": 70,
-   "fv_gap%": 3.0,
-   "thesis": "cheap vs growth (PEG 0.68); high margins (39%); strong ROE (37%); growing (48%/yr); analysts see +33%"
+   "ticker": "CMCSA",
+   "sector": "comm",
+   "score": 58,
+   "fv_gap%": 96.0,
+   "thesis": "very cheap (fwd P/E 6); strong ROE (21%); analysts see +43%"
   },
   {
-   "ticker": "NVDA",
-   "sector": "tech",
-   "score": 70,
-   "fv_gap%": 20.0,
-   "thesis": "cheap vs growth (PEG 0.64); high margins (63%); strong ROE (114%); growing (85%/yr); analysts see +46%"
-  },
-  {
-   "ticker": "BKNG",
-   "sector": "discretionary",
-   "score": 66,
+   "ticker": "SCHW",
+   "sector": "financials",
+   "score": 56,
    "fv_gap%": 19.0,
-   "thesis": "cheap (fwd P/E 14); cheap vs growth (PEG 0.76); high margins (22%); growing (16%/yr); analysts see +31%"
+   "thesis": "cheap (fwd P/E 13); high margins (38%); growing (16%/yr); analysts see +23%"
   },
   {
-   "ticker": "CRM",
+   "ticker": "BMY",
+   "sector": "health",
+   "score": 54,
+   "fv_gap%": 41.0,
+   "thesis": "very cheap (fwd P/E 9); pays 4.5% dividend; strong ROE (39%)"
+  },
+  {
+   "ticker": "VZ",
+   "sector": "comm",
+   "score": 50,
+   "fv_gap%": 43.0,
+   "thesis": "very cheap (fwd P/E 9); cheap vs growth (PEG 0.88); pays 6.1% dividend"
+  },
+  {
+   "ticker": "GIS",
+   "sector": "staples",
+   "score": 46,
+   "fv_gap%": 26.0,
+   "thesis": "cheap (fwd P/E 11); pays 7.1% dividend; strong ROE (24%)"
+  },
+  {
+   "ticker": "NOW",
    "sector": "tech",
-   "score": 64,
-   "fv_gap%": 57.0,
-   "thesis": "very cheap (fwd P/E 10); cheap vs growth (PEG 0.77); growing (13%/yr); analysts see +64%"
+   "score": 46,
+   "fv_gap%": 14.0,
+   "thesis": "cheap vs growth (PEG 0.98); growing (22%/yr); analysts see +49%"
+  },
+  {
+   "ticker": "T",
+   "sector": "comm",
+   "score": 44,
+   "fv_gap%": 53.0,
+   "thesis": "very cheap (fwd P/E 9); analysts see +35%"
   }
  ]
 }
