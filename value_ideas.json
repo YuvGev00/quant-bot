@@ -1,0 +1,61 @@
+{
+ "_asof": "2026-06-18",
+ "ideas": [
+  {
+   "ticker": "INTU",
+   "sector": "tech",
+   "score": 88,
+   "fv_gap%": 67.0,
+   "thesis": "very cheap (fwd P/E 10); cheap vs growth (PEG 0.73); high margins (22%); strong ROE (22%); growing (10%/yr); analysts see +83%"
+  },
+  {
+   "ticker": "ADBE",
+   "sector": "tech",
+   "score": 88,
+   "fv_gap%": 79.0,
+   "thesis": "very cheap (fwd P/E 7); cheap vs growth (PEG 0.57); high margins (29%); strong ROE (63%); growing (13%/yr); analysts see +47%"
+  },
+  {
+   "ticker": "NEM",
+   "sector": "materials",
+   "score": 78,
+   "fv_gap%": 48.0,
+   "thesis": "very cheap (fwd P/E 9); high margins (34%); strong ROE (26%); growing (46%/yr); analysts see +34%"
+  },
+  {
+   "ticker": "META",
+   "sector": "comm",
+   "score": 70,
+   "fv_gap%": 21.0,
+   "thesis": "cheap vs growth (PEG 0.87); high margins (33%); strong ROE (33%); growing (33%/yr); analysts see +46%"
+  },
+  {
+   "ticker": "AVGO",
+   "sector": "tech",
+   "score": 70,
+   "fv_gap%": 3.0,
+   "thesis": "cheap vs growth (PEG 0.68); high margins (39%); strong ROE (37%); growing (48%/yr); analysts see +33%"
+  },
+  {
+   "ticker": "NVDA",
+   "sector": "tech",
+   "score": 70,
+   "fv_gap%": 20.0,
+   "thesis": "cheap vs growth (PEG 0.64); high margins (63%); strong ROE (114%); growing (85%/yr); analysts see +46%"
+  },
+  {
+   "ticker": "BKNG",
+   "sector": "discretionary",
+   "score": 66,
+   "fv_gap%": 19.0,
+   "thesis": "cheap (fwd P/E 14); cheap vs growth (PEG 0.76); high margins (22%); growing (16%/yr); analysts see +31%"
+  },
+  {
+   "ticker": "CRM",
+   "sector": "tech",
+   "score": 64,
+   "fv_gap%": 57.0,
+   "thesis": "very cheap (fwd P/E 10); cheap vs growth (PEG 0.77); growing (13%/yr); analysts see +64%"
+  }
+ ]
+}

@@ -49,13 +49,35 @@ def main():
     ranked = rsc[rsc>0].sort_values(ascending=False)
     rev_pick = diversify(list(ranked.index), TOP_N, MAX_PER_SECTOR)
     rev_top = ranked.head(10)
-    rev_news = {}
+    rev_news = {}; news_date = "—"
     if os.path.exists("news_verdicts_reversal.json"):
-        try: rev_news = {k.upper():v.upper() for k,v in json.load(open("news_verdicts_reversal.json")).items() if not k.startswith("_")}
+        try:
+            raw = json.load(open("news_verdicts_reversal.json"))
+            import re as _re
+            m = _re.search(r"(\d{4}-\d{2}-\d{2})", raw.get("_comment",""))
+            if m: news_date = m.group(1)
+            rev_news = {k.upper():v.upper() for k,v in raw.items() if not k.startswith("_")}
         except Exception: pass
 
     msc = score_leader(px.ffill()).iloc[-1].dropna()
     mom_top = msc.sort_values(ascending=False).head(8)
+
+    # value-agent ideas (cheap+quality), if the agent wrote a snapshot; else compute a light version
+    val_rows = ""
+    try:
+        from value_agent import value_score
+        from universe import STOCK_SECTOR
+        vcand = []
+        for t in list(STOCK_SECTOR)[:0]:  # skip heavy live fetch in dashboard; read snapshot instead
+            pass
+        if os.path.exists("value_ideas.json"):
+            vi = json.load(open("value_ideas.json"))
+            for r in vi.get("ideas", [])[:6]:
+                val_rows += (f'<tr><td class=tk>{r["ticker"]}</td><td class=sec>{r.get("sector","")}</td>'
+                             f'<td class=neg style="color:var(--gr)">{r.get("score","")}</td>'
+                             f'<td class=sec>{r.get("thesis","")[:46]}</td></tr>')
+    except Exception:
+        pass
 
     cur = {}
     if os.path.exists("holdings.json"):
@@ -110,6 +132,9 @@ body::before{{content:"";position:fixed;left:0;right:0;top:0;height:140px;backgr
 .glass{{background:var(--gl);border:1px solid var(--ln);border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 0 34px -14px var(--cy),inset 0 1px 0 rgba(255,255,255,.05)}}
 .sec-h{{font-size:10px;letter-spacing:4px;color:var(--cy);text-transform:uppercase;margin:30px 0 12px;display:flex;align-items:center;gap:10px;text-shadow:0 0 8px var(--cy)}}
 .sec-h::before{{content:"//"}} .sec-h::after{{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ln),transparent)}}
+.refresh{{color:var(--cy);border:1px solid var(--cy);border-radius:20px;padding:4px 12px;text-decoration:none;font-size:10px;letter-spacing:1px;transition:.2s;text-shadow:0 0 6px var(--cy)}}
+.refresh:hover{{background:var(--cy);color:#04070f;box-shadow:0 0 18px var(--cy)}}
+.newsstamp{{color:var(--dim);font-size:10.5px;letter-spacing:.5px;margin:-4px 0 10px}}
 .reg{{margin-top:22px;padding:26px 28px;position:relative;overflow:hidden}}
 .reg .ring{{position:absolute;right:-46px;top:-46px;width:170px;height:170px;border-radius:50%;border:2px solid var(--cy);opacity:.22;animation:glow 3s infinite}}
 .reg.risk .ring{{border-color:var(--mg)}}
@@ -157,9 +182,15 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 <div class=sec-h>Directive</div>
 <div class="glass">{act}</div>
 
-<div class=sec-h>Reversal Array :: validated edge :: diversified &le;{MAX_PER_SECTOR}/sector</div>
+<div class=sec-h>Reversal Array :: validated edge :: diversified &le;{MAX_PER_SECTOR}/sector
+  <a class=refresh href="https://claude.ai/code/routines" target=_blank title="Trigger the cloud agent to web-read fresh news (local can't browse)">⟳ REFRESH NEWS</a></div>
+<div class=newsstamp>news scan as of <b>{news_date}</b> · click ⟳ to run the cloud agent for a live re-read</div>
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th style=text-align:right>10D &Delta;</th><th>NEWS SCAN</th></tr>{rev_rows}</table></div>
 <div class=note>Oversold names that capitulated on heavy volume tend to rebound. <b>KNIFE</b> = decline justified by news → excluded. Glowing rows = selected.</div>
+
+<div class=sec-h>Value Lab :: cheap + quality :: SPECULATIVE ideas (not a backtested edge)</div>
+<div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=4 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
+<div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
 
 <div class=sec-h>Momentum Radar :: unverified :: informational</div>
 <div class="glass tbl"><table><tr><th>#</th><th>ASSET</th><th>SECTOR</th><th>STRENGTH</th></tr>{mom_rows}</table></div>
