@@ -4,58 +4,66 @@
   {
    "ticker": "NFLX",
    "sector": "comm",
-   "score": 60,
+   "score": 66,
+   "analyst": "buy",
    "fv_gap%": 12.0,
-   "thesis": "high margins (29%); strong ROE (48%); growing (16%/yr); analysts see +48%"
-  },
-  {
-   "ticker": "CMCSA",
-   "sector": "comm",
-   "score": 58,
-   "fv_gap%": 96.0,
-   "thesis": "very cheap (fwd P/E 6); strong ROE (21%); analysts see +43%"
+   "thesis": "high margins (29%); strong ROE (48%); growing (16%/yr); analysts see +48%; analysts: buy (44)"
   },
   {
    "ticker": "SCHW",
    "sector": "financials",
-   "score": 56,
+   "score": 62,
+   "analyst": "buy",
    "fv_gap%": 19.0,
-   "thesis": "cheap (fwd P/E 13); high margins (38%); growing (16%/yr); analysts see +23%"
+   "thesis": "cheap (fwd P/E 13); high margins (38%); growing (16%/yr); analysts see +23%; analysts: buy (19)"
+  },
+  {
+   "ticker": "CMCSA",
+   "sector": "comm",
+   "score": 56,
+   "analyst": "hold",
+   "fv_gap%": 96.0,
+   "thesis": "very cheap (fwd P/E 6); strong ROE (21%); analysts see +43%"
   },
   {
    "ticker": "BMY",
    "sector": "health",
    "score": 54,
+   "analyst": "no coverage",
    "fv_gap%": 41.0,
    "thesis": "very cheap (fwd P/E 9); pays 4.5% dividend; strong ROE (39%)"
   },
   {
    "ticker": "VZ",
    "sector": "comm",
-   "score": 50,
+   "score": 52,
+   "analyst": "buy",
    "fv_gap%": 43.0,
    "thesis": "very cheap (fwd P/E 9); cheap vs growth (PEG 0.88); pays 6.1% dividend"
   },
   {
-   "ticker": "GIS",
-   "sector": "staples",
-   "score": 46,
-   "fv_gap%": 26.0,
-   "thesis": "cheap (fwd P/E 11); pays 7.1% dividend; strong ROE (24%)"
-  },
-  {
    "ticker": "NOW",
    "sector": "tech",
-   "score": 46,
+   "score": 52,
+   "analyst": "strong buy",
    "fv_gap%": 14.0,
-   "thesis": "cheap vs growth (PEG 0.98); growing (22%/yr); analysts see +49%"
+   "thesis": "cheap vs growth (PEG 0.98); growing (22%/yr); analysts see +49%; analysts: strong buy (44)"
+  },
+  {
+   "ticker": "KO",
+   "sector": "staples",
+   "score": 50,
+   "analyst": "buy",
+   "fv_gap%": -14.0,
+   "thesis": "high margins (28%); strong ROE (43%); growing (12%/yr); analysts: buy (24)"
   },
   {
    "ticker": "T",
    "sector": "comm",
-   "score": 44,
+   "score": 50,
+   "analyst": "buy",
    "fv_gap%": 53.0,
-   "thesis": "very cheap (fwd P/E 9); analysts see +35%"
+   "thesis": "very cheap (fwd P/E 9); analysts see +35%; analysts: buy (23)"
   }
  ]
 }

@@ -31,6 +31,7 @@ def value_score(f: dict) -> dict:
     fpe = f.get("forwardPE"); pm = f.get("profitMargins"); roe = f.get("returnOnEquity")
     rg = f.get("revenueGrowth"); peg = f.get("pegRatio"); tgt = f.get("targetMeanPrice")
     px = f.get("currentPrice"); dy = f.get("dividendYield")
+    rkey = (f.get("recommendationKey") or "").lower(); rmean = f.get("recommendationMean"); nanal = f.get("numberOfAnalystOpinions")
     if px is None or (fpe is None and pm is None):
         return {"score": None}
     score, flags, thesis = 0, [], []
@@ -59,8 +60,21 @@ def value_score(f: dict) -> dict:
     # analyst upside (a sanity tilt, not the thesis)
     upside = (tgt/px - 1) if (tgt and px) else None
     if upside is not None:
-        if upside > 0.20: score += 10; thesis.append(f"analysts see +{upside*100:.0f}%")
-        elif upside < -0.05: score -= 10; flags.append(f"analyst target {upside*100:.0f}% below price")
+        if upside > 0.20: score += 8; thesis.append(f"analysts see +{upside*100:.0f}%")
+        elif upside < -0.05: score -= 8; flags.append(f"analyst target {upside*100:.0f}% below price")
+
+    # ANALYST CONSENSUS RATING (the buy/hold/sell you see on Google Finance). recommendationMean:
+    # 1=strong buy ... 5=sell. We factor it in (modestly — value stocks often get 'hold', that's normal)
+    # but a clear SELL/UNDERPERFORM consensus is a real warning and downgrades the score.
+    rating_label = None
+    if rmean is not None and nanal and nanal >= 3:
+        rating_label = rkey.replace("_", " ") or ("buy" if rmean < 2.5 else "hold" if rmean < 3.5 else "sell")
+        if rmean <= 2.0: score += 8; thesis.append(f"analysts: {rating_label} ({nanal})")
+        elif rmean <= 2.7: score += 2                       # mild buy-ish
+        elif rmean <= 3.3: flags.append(f"analysts only {rating_label} ({nanal}) — not a favorite")
+        else: score -= 16; flags.append(f"analysts say {rating_label.upper()} ({nanal}) — AVOID signal")
+    elif rmean is None or not nanal:
+        rating_label = "no coverage"
 
     # rough fair value: blend a normalized P/E (15x) reprice and the analyst target
     fv = None
@@ -72,6 +86,7 @@ def value_score(f: dict) -> dict:
             "margin%": (round(pm*100,1) if pm is not None else None),
             "ROE%": (round(roe*100,0) if roe is not None else None),
             "upside%": (round(upside*100,0) if upside is not None else None),
+            "analyst": (rating_label or "—"), "n_analysts": (int(nanal) if nanal else 0),
             "fair_value": (round(fv,2) if fv else None), "price": (round(px,2) if px else None),
             "fv_gap%": (round((fv/px-1)*100,0) if (fv and px) else None),
             "thesis": "; ".join(thesis) or "—", "flags": "; ".join(flags) or "—"}
@@ -94,12 +109,14 @@ def main():
 
     print(f"\n[A] DATA SCREEN — cheap+quality AND <= ${MAX_PRICE:.0f}/share "
           f"(filtered out {over_price} names priced over ${MAX_PRICE:.0f}); top {TOP} of {len(df)}:")
-    show = df.head(TOP)[["ticker","sector","score","fwd_PE","margin%","ROE%","upside%","fv_gap%","thesis"]]
-    print(show.to_string(index=False, max_colwidth=42))
+    show = df.head(TOP)[["ticker","sector","score","fwd_PE","margin%","analyst","upside%","fv_gap%","thesis"]]
+    print(show.to_string(index=False, max_colwidth=40))
+    print("\n  (analyst = real buy/hold/sell consensus — the Google-Finance rating. Value stocks often")
+    print("   show 'hold'; that's normal for the unloved-but-cheap. A 'sell' consensus is a real warning.)")
 
     # snapshot for the dashboard (so it doesn't re-fetch fundamentals on every render)
     ideas = [{"ticker": r["ticker"], "sector": r["sector"], "score": int(r["score"]),
-              "fv_gap%": r.get("fv_gap%"), "thesis": r["thesis"]} for _, r in df.head(8).iterrows()]
+              "analyst": r.get("analyst"), "fv_gap%": r.get("fv_gap%"), "thesis": r["thesis"]} for _, r in df.head(8).iterrows()]
     json.dump({"_asof": str(pd.Timestamp.today().date()), "ideas": ideas}, open("value_ideas.json","w"), indent=1)
 
     print("\n[A] VALUE TRAPS to AVOID (cheap but broken — low score):")

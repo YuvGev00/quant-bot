@@ -15,7 +15,8 @@ import sys
 import yfinance as yf
 
 FIELDS = ["forwardPE", "trailingPE", "pegRatio", "revenueGrowth", "profitMargins",
-          "returnOnEquity", "debtToEquity", "targetMeanPrice", "currentPrice", "dividendYield"]
+          "returnOnEquity", "debtToEquity", "targetMeanPrice", "currentPrice", "dividendYield",
+          "recommendationKey", "recommendationMean", "numberOfAnalystOpinions"]
 
 
 def fetch_fundamentals(ticker: str) -> dict:

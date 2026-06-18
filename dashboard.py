@@ -73,9 +73,11 @@ def main():
         if os.path.exists("value_ideas.json"):
             vi = json.load(open("value_ideas.json"))
             for r in vi.get("ideas", [])[:6]:
+                an = r.get("analyst","—"); acl = "v-good" if "buy" in an else ("v-bad" if "sell" in an else "v-caution" if an=="hold" else "v-mid")
                 val_rows += (f'<tr><td class=tk>{r["ticker"]}</td><td class=sec>{r.get("sector","")}</td>'
                              f'<td class=neg style="color:var(--gr)">{r.get("score","")}</td>'
-                             f'<td class=sec>{r.get("thesis","")[:46]}</td></tr>')
+                             f'<td><span class="vd {acl}">{an}</span></td>'
+                             f'<td class=sec>{r.get("thesis","")[:40]}</td></tr>')
     except Exception:
         pass
 
@@ -189,7 +191,7 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 <div class=note>Oversold names that capitulated on heavy volume tend to rebound. <b>KNIFE</b> = decline justified by news → excluded. Glowing rows = selected.</div>
 
 <div class=sec-h>Value Lab :: cheap + quality :: &le;$100/share :: SPECULATIVE ideas (not a backtested edge)</div>
-<div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=4 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
+<div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>ANALYSTS</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=5 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
 <div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
 
 <div class=sec-h>Momentum Radar :: unverified :: informational</div>
