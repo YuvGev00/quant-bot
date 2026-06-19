@@ -12,3 +12,4 @@ stock_world_out.txt
 maxlev_out.txt
 sjm_multi_progress.txt
 sjm_multi_cache.pkl
+dashboard_*.html
