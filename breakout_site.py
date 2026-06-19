@@ -278,7 +278,65 @@ def learned_table():
             f"near multi-year lows, volatile/contested, and being trashed in the news — bought at peak pessimism.</b></p>")
 
 
-def index_page(ideas, asof, source, disclaimer):
+TIER_COLOR = {"EMERGING": TEAL, "SPECULATIVE_EARLY": AMBER}
+FIT_COLOR = {"STRONG": GREEN, "MODERATE": AMBER, "WEAK": RED}
+
+
+def disc_tiles(discoveries):
+    tiles = ""
+    for x in discoveries:
+        tc = TIER_COLOR.get(x.get("tier"), GOLD); fc = FIT_COLOR.get(x.get("early_fit"), GOLD)
+        mc = x.get("market_cap_b"); na = x.get("n_analysts")
+        tiles += f"""<a class=tile href="disc_{esc(x['ticker'])}.html">
+          <div class=vrib style="background:{fc}">{esc(x.get('early_fit',''))}</div>
+          <div class=tk>{esc(x['ticker'])}</div>
+          <div class=se><span style="color:{tc}">{esc(x.get('tier','').replace('_',' '))}</span>
+            · {('$'+str(mc)+'B') if mc else '?'} · {na if na is not None else '?'} analysts</div>
+          <div class=up style="color:{tc}">early-fit score {x.get('early_score','?')}</div>
+          <div class=th>{esc((x.get('thesis','') or '')[:115])}…</div></a>"""
+    return tiles
+
+
+def disc_page(x, disclaimer):
+    t = x["ticker"]; tc = TIER_COLOR.get(x.get("tier"), GOLD); fc = FIT_COLOR.get(x.get("early_fit"), GOLD)
+    sigs = "".join(f'<span class="sc hit" style="display:inline-block;margin:3px">{esc(s)}</span>'
+                   for s in x.get("early_signals", []))
+    r = x.get("ratings", {}) or {}
+    ratings = f"{r.get('buy',0)} buy · {r.get('hold',0)} hold · {r.get('sell',0)} sell" if r else "thin coverage"
+    body = f"""
+    <div class=nav><a href="index.html">← All ideas</a></div>
+    <div class=phead>
+      <div><div class=pname>{esc(t)}</div><div class=pcompany>{esc(x.get('name',''))}</div></div>
+      <div class=ppx><div class=v>${x.get('price','—')}</div>
+        <div style="margin-top:8px">
+          <span class=badge style="border-color:{tc};color:{tc}">{esc(x.get('tier','').replace('_',' '))}</span>
+          <span class=badge style="border-color:{fc};color:{fc}">{esc(x.get('early_fit',''))} EARLY-FIT</span></div></div>
+    </div>
+    <div class=rule></div>
+    <div class=score>
+      <div class="sc hit"><div class=l>early-fit score</div><div class=v>{x.get('early_score','—')}/100</div></div>
+      <div class="sc {'hit' if (x.get('n_analysts') or 99)<=6 else 'miss'}"><div class=l>analyst coverage</div><div class=v>{x.get('n_analysts','—')} analysts</div></div>
+      <div class="sc {'hit' if x.get('cheap') else 'miss'}"><div class=l>valuation</div><div class=v>{esc(x.get('valuation','—'))}</div></div>
+      <div class="sc {'hit' if x.get('eps_rising') else 'miss'}"><div class=l>estimates</div><div class=v>{'rising ▲' if x.get('eps_rising') else 'flat/falling ▼'}</div></div>
+      <div class="sc {'hit' if (x.get('earnings_surprise_pct') or 0)>2 else 'miss'}"><div class=l>earnings surprise</div><div class=v>{x.get('earnings_surprise_pct','—')}%</div></div>
+      <div class=sc><div class=l>market cap</div><div class=v>${x.get('market_cap_b','—')}B</div></div>
+    </div>
+    <div class=sec-h>Why it's early</div>
+    <div class=prose>{sigs or '<span class=sub>signals pending</span>'}</div>
+    <div class=sec-h>Thesis</div>
+    <div class=prose><b>Thesis.</b> {esc(x.get('thesis',''))}</div>
+    <div class="prose risk" style="margin-top:10px"><b>Key risk.</b> {esc(x.get('key_risk',''))}</div>
+    <div class=meta><span><b>Analysts:</b> {ratings}</span><span><b>Rev growth:</b> {x.get('rev_growth_pct','—')}%</span>
+      <span><b>Margin:</b> {x.get('margin_pct','—')}%</span><span><b>Base position:</b> {x.get('base_pos_pct','—')}% of range</span></div>
+    <div class=sec-h>News evidence</div>
+    {news_list(x.get('news'))}
+    <div class=disc>{esc(disclaimer)}</div>
+    <div class=foot>BREAKOUT SCOUT · EARLY DISCOVERY · pre-hype small/mid-cap · forward research, not a backtested edge</div>
+    """
+    return page(f"{t} — Early Discovery", body)
+
+
+def index_page(ideas, asof, source, disclaimer, discoveries=None, disc_disc=""):
     order = {"CONFIRM": 0, "CAUTION": 1, "VETO": 2}
     ideas = sorted(ideas, key=lambda i: order.get(i.get("verdict"), 3))
     tiles = ""
@@ -290,25 +348,48 @@ def index_page(ideas, asof, source, disclaimer):
           <div class=se>{SEC_LABEL.get(i.get('sector',''),i.get('sector',''))} · {i.get('stage','')}</div>
           {('<div class=up>▲ +'+str(up)+'% upside</div>') if up else ''}
           <div class=th>{esc((i.get('thesis','') or '')[:115])}…</div></a>"""
+    disc_section = ""
+    if discoveries:
+        disc_section = f"""
+    <div class=sec-h>★ Early Discovery · pre-hype small &amp; mid-caps · found before the crowd</div>
+    <p class=sub>The other mode: under-covered, cheap, quietly-improving small/mid-caps caught <i>early</i> —
+      the “MU in early-2025 / NVDA-2023 / PLTR-at-$6” moment, before the hype. Tiered
+      <span style="color:{TEAL}">EMERGING</span> (mid-cap, steadier) vs
+      <span style="color:{AMBER}">SPECULATIVE EARLY</span> (micro/IPO, lottery-risk).</p>
+    <div class=disc style="border-color:{AMBER}">{esc(disc_disc)}</div>
+    <div class=grid>{disc_tiles(discoveries)}</div>"""
     body = f"""
     <div class=kicker>Quant Bot · Equity Research</div>
     <h1 class=mast>Breakout Scout</h1>
-    <div class=sub>High-potential beaten-down equities · generated {esc(asof)} · {len(ideas)} ideas · {esc(source)}</div>
+    <div class=sub>generated {esc(asof)} · {len(ideas)} large-cap ideas · {len(discoveries or [])} early discoveries</div>
     <div class=disc>{esc(disclaimer)}</div>
+    {disc_section}
+    <div class=sec-h>Large-cap mode · deeply-beaten fingerprint · ranked confirm → caution → veto</div>
+    <p class=sub>The first mode: famous large-caps that fell hard and resemble past winners at their bottoms.
+      Each opens a full dossier with a same-sector cohort comparison.</p>
     {learned_table()}
-    <div class=sec-h>Today's ideas · ranked confirm → caution → veto</div>
     <div class=grid>{tiles}</div>
-    <div class=foot>Each card opens a full dossier — thesis, charts, analysts, news, and a same-sector<br>
-      cohort comparison answering “why this one, not its peers?” · conviction research, not a backtested edge</div>
+    <div class=foot>Two modes — early small-cap discovery + large-cap beaten-down fingerprint.<br>
+      Conviction research, not a backtested edge. You decide.</div>
     """
     return page("Breakout Scout — research", body)
 
 
 def main():
-    if not os.path.exists(IDEAS):
-        print(f"no {IDEAS} — run breakout_scout.py + Stage B first."); return
-    d = json.load(open(IDEAS)); ideas = d.get("ideas", [])
+    have_ideas = os.path.exists(IDEAS)
+    have_disc = os.path.exists("breakout_discover.json")
+    if not have_ideas and not have_disc:
+        print(f"no {IDEAS} or breakout_discover.json — run breakout_scout.py + Stage B and/or the discovery sweep first."); return
+    d = json.load(open(IDEAS)) if have_ideas else {}
+    ideas = d.get("ideas", [])
     asof = d.get("_asof", ""); source = d.get("_source", ""); disc = d.get("_disclaimer", "")
+    # early-discovery mode (second mode)
+    discoveries, disc_disc = [], ""
+    if have_disc:
+        from breakout_discover import ranked_discoveries
+        discoveries, dd = ranked_discoveries()
+        disc_disc = (dd or {}).get("_disclaimer", "")
+        if not asof: asof = (dd or {}).get("_asof", "")
     cohorts = {}
     if os.path.exists(SHORT):
         cohorts = json.load(open(SHORT)).get("cohorts", {})
@@ -317,11 +398,16 @@ def main():
         if not i.get("sector"):
             i["sector"] = next((s for s, lst in cohorts.items() if any(c["ticker"] == i["ticker"] for c in lst)), "")
     os.makedirs(OUTDIR, exist_ok=True)
-    open(os.path.join(OUTDIR, "index.html"), "w").write(index_page(ideas, asof, source, disc))
+    open(os.path.join(OUTDIR, "index.html"), "w").write(
+        index_page(ideas, asof, source, disc, discoveries=discoveries, disc_disc=disc_disc))
     for i in ideas:
         open(os.path.join(OUTDIR, f"{i['ticker']}.html"), "w").write(stock_page(i, cohorts, disc))
+    for x in discoveries:
+        open(os.path.join(OUTDIR, f"disc_{x['ticker']}.html"), "w").write(disc_page(x, disc_disc))
     confirms = [i["ticker"] for i in ideas if i.get("verdict") == "CONFIRM"]
-    print(f"wrote {OUTDIR}/index.html + {len(ideas)} stock pages (CONFIRM: {', '.join(confirms) or 'none'})")
+    strong = [x["ticker"] for x in discoveries if x.get("early_fit") == "STRONG"]
+    print(f"wrote {OUTDIR}/index.html + {len(ideas)} large-cap pages (CONFIRM: {', '.join(confirms) or 'none'}) "
+          f"+ {len(discoveries)} discovery pages (STRONG: {', '.join(strong) or 'none'})")
 
 
 if __name__ == "__main__":

@@ -118,6 +118,31 @@ def breakout():
     ping_healthcheck("breakout")
 
 
+def discover():
+    """EARLY DISCOVERY (second mode): the cloud agent runs a live Bigdata sweep for pre-hype small/mid-caps.
+    This python core just prints the brief + the sweep queries; the agent does the live discovery + scoring."""
+    print("=== BREAKOUT SCOUT — EARLY DISCOVERY (weekly) ===")
+    print("SPECULATIVE forward conviction-research over a LIVE-DISCOVERED small/mid-cap universe.")
+    print("NOT a backtested edge. Small-caps carry liquidity / fraud / total-loss risk.\n")
+    try:
+        from breakout_discover import DISCOVERY_QUERIES
+    except Exception as e:
+        DISCOVERY_QUERIES = []; print(f"[could not import queries: {e}]")
+    print(">>> Cloud agent: run these Bigdata.com bigdata_search sweeps (smart mode) to FIND the universe:")
+    for q in DISCOVERY_QUERIES: print("   •", q)
+    print(">>> Then: extract real small/mid-cap TICKERS (drop mega-caps, ETFs, non-US, and anything already")
+    print(">>> up >150%/yr = NOT early). Per name pull bigdata_company_tearsheet -> market_cap (TIER), low")
+    print(">>> analyst coverage, rising estimates, cheap valuation, earnings surprise, 1-2 dated news. ANTI-HYPE:")
+    print(">>> drop already-consensus/already-run names. Tier EMERGING ($1-20B) vs SPECULATIVE_EARLY ($0.25-2B).")
+    print(">>> Write breakout_discover.json (schema in breakout_discover.py), then `python3 breakout_site.py`")
+    print(">>> + `python3 dashboard.py`, commit breakout_site/ + breakout_discover.json, and email the early picks.")
+    try:
+        import breakout_discover; breakout_discover.main()
+    except Exception as e:
+        print(f"[discover scoring skipped (no sweep data yet?): {e}]")
+    ping_healthcheck("discover")
+
+
 SPY_DAY_DROP = -0.025      # fast heads-up if SPY falls > 2.5% in a single day
 VIX_SPIKE = 30.0           # fast heads-up if VIX jumps above 30 (fear gauge)
 
@@ -166,4 +191,4 @@ def hourly():
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "weekly"
-    {"weekly": weekly, "hourly": hourly, "breakout": breakout}.get(mode, weekly)()
+    {"weekly": weekly, "hourly": hourly, "breakout": breakout, "discover": discover}.get(mode, weekly)()
