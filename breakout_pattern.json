@@ -1,0 +1,81 @@
+{
+ "_disclaimer": "SPECULATIVE learned signature, NOT a permutation-tested edge. Small N; news PIT to ~2022.",
+ "winners": [
+  "MU",
+  "INTC",
+  "DELL",
+  "NVDA",
+  "AVGO",
+  "SMCI",
+  "PLTR"
+ ],
+ "controls": [
+  "INTC_2021",
+  "T",
+  "VZ",
+  "PFE",
+  "KO",
+  "WMT",
+  "CVX",
+  "IBM"
+ ],
+ "signature": {
+  "base_pos": {
+   "available": true,
+   "winner_mean": 0.315,
+   "control_mean": 0.639,
+   "effect": -1.077,
+   "direction": "lower-in-winners"
+  },
+  "dd_from_high": {
+   "available": true,
+   "winner_mean": -0.428,
+   "control_mean": -0.149,
+   "effect": -1.25,
+   "direction": "lower-in-winners"
+  },
+  "ret_12m": {
+   "available": true,
+   "winner_mean": -0.07,
+   "control_mean": 0.017,
+   "effect": -0.25,
+   "direction": "lower-in-winners"
+  },
+  "vol_ann": {
+   "available": true,
+   "winner_mean": 0.497,
+   "control_mean": 0.266,
+   "effect": 1.594,
+   "direction": "higher-in-winners"
+  },
+  "news_neg": {
+   "available": true,
+   "winner_mean": 4.143,
+   "control_mean": 2.5,
+   "effect": 0.66,
+   "direction": "higher-in-winners"
+  },
+  "news_capitulation": {
+   "available": true,
+   "winner_mean": 3.143,
+   "control_mean": 1.5,
+   "effect": 0.892,
+   "direction": "higher-in-winners"
+  },
+  "analyst_split": {
+   "available": true,
+   "winner_mean": 4.286,
+   "control_mean": 3.875,
+   "effect": 0.219,
+   "direction": "higher-in-winners"
+  },
+  "cheap_mentions": {
+   "available": true,
+   "winner_mean": 1.0,
+   "control_mean": 1.375,
+   "effect": -0.45,
+   "direction": "lower-in-winners"
+  }
+ },
+ "hit_rate": 0.723
+}

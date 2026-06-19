@@ -102,6 +102,21 @@ def main():
     except Exception:
         pass
 
+    # --- Breakout Scout: a SLIM launcher to its standalone site (the full multi-page research lives there) ---
+    brk_summary = ""; brk_asof = ""
+    try:
+        src = "breakout_ideas.json" if os.path.exists("breakout_ideas.json") else (
+              "breakout_shortlist.json" if os.path.exists("breakout_shortlist.json") else None)
+        if src:
+            bj = json.load(open(src)); brk_asof = bj.get("_asof", "")
+            rows = bj.get("ideas", bj.get("candidates", []))
+            nconf = sum(1 for r in rows if r.get("verdict") == "CONFIRM")
+            conf = [r["ticker"] for r in rows if r.get("verdict") == "CONFIRM"][:4]
+            brk_summary = (f"{len(rows)} ideas" + (f" · {nconf} CONFIRM ({', '.join(conf)})" if nconf else "")
+                           + (f" · as of {brk_asof}" if brk_asof else ""))
+    except Exception:
+        pass
+
     cur = {}
     if os.path.exists("holdings.json"):
         try: cur = json.load(open("holdings.json")).get("positions",{})
@@ -213,6 +228,11 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 
 <div class=sec-h>Value Lab :: cheap + quality :: &le;$100/share :: SPECULATIVE ideas (not a backtested edge)</div>
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>ANALYSTS</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=5 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
+
+<div class=sec-h>Breakout Scout :: standalone research site :: SPECULATIVE :: <a class=refresh href="breakout_site/index.html">OPEN RESEARCH SITE &rarr;</a></div>
+<div class="glass act"><div class=acth>BLOW-UP FINGERPRINT RESEARCH</div>
+<div class=actb>{brk_summary or 'run breakout_scout.py + Stage B to populate'}. Full multi-page dossier — per-stock thesis, charts, analysts, news, and same-sector cohort comparison — lives in its own site &rarr; <a class=refresh href="breakout_site/index.html">breakout_site/</a></div></div>
+<div class=newsstamp>fingerprint learned from 7 labeled winners vs controls; ideas researched live via Bigdata.com. {('as of '+brk_asof) if brk_asof else ''} — conviction research, not a backtested edge.</div>
 <div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
 
 <div class=sec-h>EPS-Revision Lab :: forward experiment :: {eps_status}</div>
