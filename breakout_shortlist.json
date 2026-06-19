@@ -305,5 +305,558 @@
     "competitor_edge"
    ]
   }
- ]
+ ],
+ "cohorts": {
+  "tech": [
+   {
+    "ticker": "INTU",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 1.7,
+    "price": 267.0,
+    "base_pos%": 0.8,
+    "dd%": -65.0,
+    "ret_12m%": -63.1,
+    "vol_ann%": 65.5,
+    "fwd_PE": 9.8,
+    "margin%": 21.9,
+    "roe%": 22.5,
+    "analyst": "buy",
+    "n_analysts": 32,
+    "upside%": 82.8,
+    "thesis": "1% up its 2yr range; -65% off its high; analysts see +83%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "NOW",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 1.619,
+    "price": 95.04,
+    "base_pos%": 12.1,
+    "dd%": -56.7,
+    "ret_12m%": -49.6,
+    "vol_ann%": 77.2,
+    "fwd_PE": 18.9,
+    "margin%": 12.6,
+    "roe%": 16.1,
+    "analyst": "strong buy",
+    "n_analysts": 44,
+    "upside%": 49.4,
+    "thesis": "12% up its 2yr range; -57% off its high; analysts see +49%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "ADBE",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 1.246,
+    "price": 195.16,
+    "base_pos%": 0.9,
+    "dd%": -64.7,
+    "ret_12m%": -48.4,
+    "vol_ann%": 45.5,
+    "fwd_PE": 7.1,
+    "margin%": 28.7,
+    "roe%": 63.0,
+    "analyst": "hold",
+    "n_analysts": 32,
+    "upside%": 44.6,
+    "thesis": "1% up its 2yr range; -65% off its high; analysts see +45%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "CRM",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 1.138,
+    "price": 151.78,
+    "base_pos%": 0.0,
+    "dd%": -55.5,
+    "ret_12m%": -38.1,
+    "vol_ann%": 49.1,
+    "fwd_PE": 9.8,
+    "margin%": 18.7,
+    "roe%": 16.9,
+    "analyst": "buy",
+    "n_analysts": 52,
+    "upside%": 65.7,
+    "thesis": "0% up its 2yr range; -55% off its high; analysts see +66%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "ORCL",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 0.811,
+    "price": 184.29,
+    "base_pos%": 32.7,
+    "dd%": -42.2,
+    "ret_12m%": -9.9,
+    "vol_ann%": 66.3,
+    "fwd_PE": 16.9,
+    "margin%": 25.4,
+    "roe%": 53.4,
+    "analyst": "buy",
+    "n_analysts": 39,
+    "upside%": 37.1,
+    "thesis": "33% up its 2yr range; -42% off its high; analysts see +37%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "MSFT",
+    "sector": "tech",
+    "stage": "EARLY",
+    "resemblance": 0.181,
+    "price": 379.4,
+    "base_pos%": 22.8,
+    "dd%": -26.9,
+    "ret_12m%": -17.1,
+    "vol_ann%": 31.9,
+    "fwd_PE": 19.6,
+    "margin%": 39.3,
+    "roe%": 34.0,
+    "analyst": "strong buy",
+    "n_analysts": 55,
+    "upside%": 48.0,
+    "thesis": "23% up its 2yr range; -27% off its high; analysts see +48%",
+    "flags": [
+     "high share price (not 'cheap' by price)"
+    ],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "discretionary": [
+   {
+    "ticker": "NKE",
+    "sector": "discretionary",
+    "stage": "EARLY",
+    "resemblance": 0.839,
+    "price": 45.2,
+    "base_pos%": 6.9,
+    "dd%": -51.4,
+    "ret_12m%": -25.2,
+    "vol_ann%": 43.1,
+    "fwd_PE": 24.9,
+    "margin%": 4.8,
+    "roe%": 16.0,
+    "analyst": "buy",
+    "n_analysts": 33,
+    "upside%": 31.8,
+    "thesis": "7% up its 2yr range; -51% off its high; analysts see +32%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "LOW",
+    "sector": "discretionary",
+    "stage": "EARLY",
+    "resemblance": -0.024,
+    "price": 222.2,
+    "base_pos%": 21.5,
+    "dd%": -22.1,
+    "ret_12m%": 3.7,
+    "vol_ann%": 31.2,
+    "fwd_PE": 16.5,
+    "margin%": 7.5,
+    "roe%": null,
+    "analyst": "buy",
+    "n_analysts": 33,
+    "upside%": 18.7,
+    "thesis": "22% up its 2yr range; -22% off its high; analysts see +19%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "HD",
+    "sector": "discretionary",
+    "stage": "EARLY",
+    "resemblance": -0.077,
+    "price": 334.28,
+    "base_pos%": 29.6,
+    "dd%": -21.9,
+    "ret_12m%": -4.7,
+    "vol_ann%": 28.6,
+    "fwd_PE": 20.8,
+    "margin%": 8.4,
+    "roe%": 128.4,
+    "analyst": "buy",
+    "n_analysts": 33,
+    "upside%": 10.7,
+    "thesis": "30% up its 2yr range; -22% off its high",
+    "flags": [
+     "high share price (not 'cheap' by price)"
+    ],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "comm": [
+   {
+    "ticker": "CMCSA",
+    "sector": "comm",
+    "stage": "EARLY",
+    "resemblance": 0.681,
+    "price": 22.43,
+    "base_pos%": 2.0,
+    "dd%": -40.6,
+    "ret_12m%": -24.9,
+    "vol_ann%": 38.7,
+    "fwd_PE": 5.9,
+    "margin%": 15.0,
+    "roe%": 20.9,
+    "analyst": "hold",
+    "n_analysts": 21,
+    "upside%": 44.5,
+    "thesis": "2% up its 2yr range; -41% off its high; analysts see +44%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "NFLX",
+    "sector": "comm",
+    "stage": "EARLY",
+    "resemblance": 0.458,
+    "price": 77.38,
+    "base_pos%": 25.5,
+    "dd%": -41.2,
+    "ret_12m%": -35.8,
+    "vol_ann%": 32.2,
+    "fwd_PE": 20.1,
+    "margin%": 28.5,
+    "roe%": 48.5,
+    "analyst": "buy",
+    "n_analysts": 44,
+    "upside%": 47.5,
+    "thesis": "25% up its 2yr range; -41% off its high; analysts see +48%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "TMUS",
+    "sector": "comm",
+    "stage": "EARLY",
+    "resemblance": 0.234,
+    "price": 181.67,
+    "base_pos%": 16.4,
+    "dd%": -30.9,
+    "ret_12m%": -18.7,
+    "vol_ann%": 28.6,
+    "fwd_PE": 13.0,
+    "margin%": 11.6,
+    "roe%": 18.0,
+    "analyst": "buy",
+    "n_analysts": 26,
+    "upside%": 43.6,
+    "thesis": "16% up its 2yr range; -31% off its high; analysts see +44%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "staples": [
+   {
+    "ticker": "GIS",
+    "sector": "staples",
+    "stage": "EARLY",
+    "resemblance": 0.52,
+    "price": 33.42,
+    "base_pos%": 6.0,
+    "dd%": -50.2,
+    "ret_12m%": -32.1,
+    "vol_ann%": 22.1,
+    "fwd_PE": 10.6,
+    "margin%": 12.1,
+    "roe%": 23.6,
+    "analyst": "hold",
+    "n_analysts": 18,
+    "upside%": 10.7,
+    "thesis": "6% up its 2yr range; -50% off its high",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "KMB",
+    "sector": "staples",
+    "stage": "EARLY",
+    "resemblance": 0.026,
+    "price": 102.56,
+    "base_pos%": 26.3,
+    "dd%": -25.1,
+    "ret_12m%": -16.3,
+    "vol_ann%": 26.1,
+    "fwd_PE": 13.5,
+    "margin%": 12.8,
+    "roe%": 111.7,
+    "analyst": "hold",
+    "n_analysts": 15,
+    "upside%": 11.8,
+    "thesis": "26% up its 2yr range; -25% off its high",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "PG",
+    "sector": "staples",
+    "stage": "EARLY",
+    "resemblance": -0.454,
+    "price": 150.38,
+    "base_pos%": 43.9,
+    "dd%": -11.9,
+    "ret_12m%": -1.3,
+    "vol_ann%": 21.6,
+    "fwd_PE": 21.2,
+    "margin%": 19.2,
+    "roe%": 31.1,
+    "analyst": "buy",
+    "n_analysts": 23,
+    "upside%": 8.7,
+    "thesis": "44% up its 2yr range; near highs",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "health": [
+   {
+    "ticker": "ABT",
+    "sector": "health",
+    "stage": "EARLY",
+    "resemblance": 0.339,
+    "price": 88.41,
+    "base_pos%": 14.9,
+    "dd%": -33.7,
+    "ret_12m%": -31.0,
+    "vol_ann%": 27.0,
+    "fwd_PE": 14.6,
+    "margin%": 13.9,
+    "roe%": 12.3,
+    "analyst": "buy",
+    "n_analysts": 24,
+    "upside%": 31.8,
+    "thesis": "15% up its 2yr range; -34% off its high; analysts see +32%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "DHR",
+    "sector": "health",
+    "stage": "EARLY",
+    "resemblance": 0.215,
+    "price": 177.17,
+    "base_pos%": 16.8,
+    "dd%": -34.7,
+    "ret_12m%": -9.2,
+    "vol_ann%": 29.2,
+    "fwd_PE": 19.2,
+    "margin%": 14.9,
+    "roe%": 7.1,
+    "analyst": "strong buy",
+    "n_analysts": 23,
+    "upside%": 36.8,
+    "thesis": "17% up its 2yr range; -35% off its high; analysts see +37%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   },
+   {
+    "ticker": "TMO",
+    "sector": "health",
+    "stage": "EARLY",
+    "resemblance": -0.098,
+    "price": 464.61,
+    "base_pos%": 33.6,
+    "dd%": -25.9,
+    "ret_12m%": 17.1,
+    "vol_ann%": 35.8,
+    "fwd_PE": 17.1,
+    "margin%": 15.2,
+    "roe%": 13.5,
+    "analyst": "buy",
+    "n_analysts": 26,
+    "upside%": 29.0,
+    "thesis": "34% up its 2yr range; -26% off its high; analysts see +29%",
+    "flags": [
+     "high share price (not 'cheap' by price)"
+    ],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "financials": [
+   {
+    "ticker": "SPGI",
+    "sector": "financials",
+    "stage": "EARLY",
+    "resemblance": -0.02,
+    "price": 410.92,
+    "base_pos%": 26.0,
+    "dd%": -22.6,
+    "ret_12m%": -13.5,
+    "vol_ann%": 26.1,
+    "fwd_PE": 18.5,
+    "margin%": 30.4,
+    "roe%": 13.9,
+    "analyst": "strong buy",
+    "n_analysts": 21,
+    "upside%": 29.7,
+    "thesis": "26% up its 2yr range; -23% off its high; analysts see +30%",
+    "flags": [
+     "high share price (not 'cheap' by price)"
+    ],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "materials": [
+   {
+    "ticker": "SHW",
+    "sector": "materials",
+    "stage": "EARLY",
+    "resemblance": -0.097,
+    "price": 320.79,
+    "base_pos%": 31.4,
+    "dd%": -18.2,
+    "ret_12m%": -3.1,
+    "vol_ann%": 31.4,
+    "fwd_PE": 24.2,
+    "margin%": 10.9,
+    "roe%": 60.7,
+    "analyst": "buy",
+    "n_analysts": 20,
+    "upside%": 16.3,
+    "thesis": "31% up its 2yr range; -18% off its high; analysts see +16%",
+    "flags": [
+     "high share price (not 'cheap' by price)"
+    ],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ],
+  "reits": [
+   {
+    "ticker": "AMT",
+    "sector": "reits",
+    "stage": "EARLY",
+    "resemblance": -0.109,
+    "price": 176.05,
+    "base_pos%": 32.7,
+    "dd%": -18.5,
+    "ret_12m%": -10.9,
+    "vol_ann%": 27.9,
+    "fwd_PE": 25.5,
+    "margin%": 26.8,
+    "roe%": 30.0,
+    "analyst": "buy",
+    "n_analysts": 22,
+    "upside%": 22.8,
+    "thesis": "33% up its 2yr range; -19% off its high; analysts see +23%",
+    "flags": [],
+    "pending_live": [
+     "est_revision_up",
+     "earnings_surprise",
+     "news_capitulation_arc",
+     "competitor_edge"
+    ]
+   }
+  ]
+ }
 }

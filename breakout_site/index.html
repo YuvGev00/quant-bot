@@ -1,0 +1,98 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><title>Breakout Scout — research</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{--ink:#0e0f12;--ink2:#16181d;--card:#1a1d23;--line:#2c2f37;--gold:#c8a44d;--goldlt:#e8cf8a;
+ --teal:#5fb0a6;--green:#6fbf73;--red:#d86b6b;--amber:#d4a13a;--tx:#d8d4c8;--dim:#8a8678;--faint:#5d5a50}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ink);color:var(--tx);
+ font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13.5px;line-height:1.65;
+ background-image:radial-gradient(1100px 520px at 80% -8%,rgba(200,164,77,.07),transparent),
+   radial-gradient(800px 400px at 0% 0%,rgba(95,176,166,.05),transparent);
+ background-attachment:fixed}
+.wrap{max-width:920px;margin:0 auto;padding:46px 26px 100px}
+a{color:var(--gold);text-decoration:none} a:hover{color:var(--goldlt)}
+.serif{font-family:'Fraunces',Georgia,serif}
+.kicker{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1.mast{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:40px;line-height:1.02;color:#f3eee0;margin:8px 0 4px;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:12px;letter-spacing:.04em}
+.rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:22px 0 6px;opacity:.5}
+.disc{color:var(--amber);font-size:11px;border-left:2px solid var(--amber);padding:9px 14px;margin:18px 0;background:rgba(212,161,58,.06);line-height:1.6}
+.sec-h{font-family:'Fraunces',Georgia,serif;font-size:19px;color:var(--goldlt);margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);font-weight:600}
+.badge{display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid;border-radius:2px;padding:3px 9px;vertical-align:middle;font-weight:500}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+th{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);text-align:left;padding:9px 10px;border-bottom:1px solid var(--gold);font-weight:600}
+td{padding:9px 10px;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.mono{font-variant-numeric:tabular-nums}
+.spark .pline{filter:drop-shadow(0 0 3px currentColor)}
+.foot{color:var(--faint);font-size:10.5px;text-align:center;margin-top:48px;letter-spacing:.06em;line-height:1.8}
+/* index card grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px;margin-top:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px 18px 14px;transition:.18s;position:relative;overflow:hidden}
+.tile:hover{border-color:var(--gold);transform:translateY(-2px)}
+.tile .vrib{position:absolute;top:0;right:0;font-size:9px;letter-spacing:.12em;padding:3px 9px;border-bottom-left-radius:4px;color:#0e0f12;font-weight:600}
+.tile .tk{font-family:'Fraunces',Georgia,serif;font-size:30px;color:#f3eee0;font-weight:600;line-height:1}
+.tile .se{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.tile .up{color:var(--green);font-size:13px;margin-top:8px;font-weight:500}
+.tile .th{color:var(--dim);font-size:11px;margin-top:7px;line-height:1.5}
+/* stock page */
+.phead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.pname{font-family:'Fraunces',Georgia,serif;font-size:52px;color:#f3eee0;font-weight:600;line-height:.95}
+.pcompany{color:var(--dim);font-size:12px;letter-spacing:.05em;margin-top:4px}
+.ppx{text-align:right} .ppx .v{font-size:30px;color:#f3eee0;font-family:'Fraunces',serif} .ppx .u{color:var(--green);font-size:13px}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:14px}
+.chart .cl{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.chart .cs{font-size:10.5px;color:var(--faint);margin-top:5px}
+.score{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:4px}
+.sc{border:1px solid var(--line);border-radius:3px;padding:9px 11px;background:var(--card)}
+.sc .l{font-size:10px;color:var(--dim);letter-spacing:.05em} .sc .v{font-size:14px;font-weight:600;margin-top:2px}
+.sc.hit{border-color:rgba(111,191,115,.4)} .sc.hit .v{color:var(--green)}
+.sc.miss .v{color:var(--dim)} .sc.pend .v{color:var(--faint)}
+.prose{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px 20px;margin-top:6px;font-size:13px;line-height:1.78;color:#cfcabb}
+.prose b{color:var(--goldlt);font-weight:600}
+.risk{border-left:2px solid var(--red)} .risk b{color:var(--red)}
+.meta{display:flex;flex-wrap:wrap;gap:22px;margin:14px 0;font-size:12px} .meta b{color:var(--gold)}
+.newslist{list-style:none;padding:0} .newslist li{padding:9px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.55}
+.ndot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:9px;vertical-align:middle}
+.nsrc{color:var(--faint);font-size:10.5px}
+.pickrow td{background:linear-gradient(90deg,rgba(200,164,77,.14),transparent);font-weight:600}
+.pickrow .ctk{color:var(--goldlt)}
+.why{background:linear-gradient(100deg,rgba(200,164,77,.1),rgba(95,176,166,.05));border:1px solid var(--gold);border-radius:4px;padding:14px 18px;margin-top:10px;font-size:12.5px;line-height:1.7}
+.why b{color:var(--goldlt);font-family:'Fraunces',serif}
+.nav{font-size:11px;letter-spacing:.1em;margin-bottom:18px} .nav a{color:var(--dim)} .nav a:hover{color:var(--gold)}
+</style></head><body><div class=wrap>
+    <div class=kicker>Quant Bot · Equity Research</div>
+    <h1 class=mast>Breakout Scout</h1>
+    <div class=sub>High-potential beaten-down equities · generated 2026-06-19 · 5 ideas · Bigdata.com live tearsheets + news (Stage B)</div>
+    <div class=disc>SPECULATIVE discretionary research, NOT a backtested edge. Live snapshot, not point-in-time. Individual-stock survivorship applies.</div>
+    <div class=sec-h>What we learned from history</div><p class=sub>The screen is not hand-guessed. We rewound 7 known blow-ups (MU, INTC, DELL, NVDA, AVGO, SMCI, PLTR) to their pre-explosion bottoms and compared them — point-in-time — to a control group that did <i>not</i> run. These features discriminated the winners:</p><table><tr><th>feature</th><th>winners</th><th>controls</th><th>effect</th><th>reading</th></tr><tr><td class=ctk>vol_ann</td><td class=mono>0.497</td><td class=mono>0.266</td><td class=mono style='color:#c8a44d'>+1.59</td><td class=sub>higher in winners</td></tr><tr><td class=ctk>dd_from_high</td><td class=mono>-0.428</td><td class=mono>-0.149</td><td class=mono style='color:#c8a44d'>-1.25</td><td class=sub>lower in winners</td></tr><tr><td class=ctk>base_pos</td><td class=mono>0.315</td><td class=mono>0.639</td><td class=mono style='color:#c8a44d'>-1.08</td><td class=sub>lower in winners</td></tr><tr><td class=ctk>news_capitulation</td><td class=mono>3.143</td><td class=mono>1.5</td><td class=mono style='color:#c8a44d'>+0.89</td><td class=sub>higher in winners</td></tr><tr><td class=ctk>news_neg</td><td class=mono>4.143</td><td class=mono>2.5</td><td class=mono style='color:var(--dim)'>+0.66</td><td class=sub>higher in winners</td></tr><tr><td class=ctk>cheap_mentions</td><td class=mono>1.0</td><td class=mono>1.375</td><td class=mono style='color:var(--dim)'>-0.45</td><td class=sub>lower in winners</td></tr><tr><td class=ctk>ret_12m</td><td class=mono>-0.07</td><td class=mono>0.017</td><td class=mono style='color:var(--dim)'>-0.25</td><td class=sub>lower in winners</td></tr><tr><td class=ctk>analyst_split</td><td class=mono>4.286</td><td class=mono>3.875</td><td class=mono style='color:var(--dim)'>+0.22</td><td class=sub>higher in winners</td></tr></table><p class=sub style='margin-top:10px'>Winners-vs-controls separation: <b style='color:var(--goldlt)'>72%</b>. In plain words: <b style='color:var(--goldlt)'>deeply beaten, near multi-year lows, volatile/contested, and being trashed in the news — bought at peak pessimism.</b></p>
+    <div class=sec-h>Today's ideas · ranked confirm → caution → veto</div>
+    <div class=grid><a class=tile href="NOW.html">
+          <div class=vrib style="background:#6fbf73">CONFIRM</div>
+          <div class=tk>NOW</div>
+          <div class=se>Technology · EARLY</div>
+          <div class=up>▲ +58.1% upside</div>
+          <div class=th>ServiceNow is down ~55% from its high to $95 (near the bottom of its 52-week range) on a valuation reset and fear t…</div></a><a class=tile href="NKE.html">
+          <div class=vrib style="background:#6fbf73">CONFIRM</div>
+          <div class=tk>NKE</div>
+          <div class=se>Consumer Discretionary · EARLY</div>
+          <div class=up>▲ +37.2% upside</div>
+          <div class=th>Nike is down ~44% from its high to $45 near a multi-year low, but the setup is a self-inflicted, management-driven …</div></a><a class=tile href="INTU.html">
+          <div class=vrib style="background:#d4a13a">CAUTION</div>
+          <div class=tk>INTU</div>
+          <div class=se>Technology · EARLY</div>
+          <div class=up>▲ +69.6% upside</div>
+          <div class=th>Intuit fell ~67% from its 52-week high to near a multi-year low ($267 vs $813 high), yet it still beat Q3 FY26 EPS …</div></a><a class=tile href="ADBE.html">
+          <div class=vrib style="background:#d4a13a">CAUTION</div>
+          <div class=tk>ADBE</div>
+          <div class=se>Technology · EARLY</div>
+          <div class=up>▲ +33.1% upside</div>
+          <div class=th>Adobe is down ~50% from its high to $195 (just above its 52-week low) and trades at roughly 7-8x forward EPS - an e…</div></a><a class=tile href="CMCSA.html">
+          <div class=vrib style="background:#d86b6b">VETO</div>
+          <div class=tk>CMCSA</div>
+          <div class=se>Communications · EARLY</div>
+          <div class=up>▲ +40.3% upside</div>
+          <div class=th>Comcast sits at essentially a multi-year low ($22.43, 0.4% of its 52-week range) and screens optically cheap (~6x f…</div></a></div>
+    <div class=foot>Each card opens a full dossier — thesis, charts, analysts, news, and a same-sector<br>
+      cohort comparison answering “why this one, not its peers?” · conviction research, not a backtested edge</div>
+    </div></body></html>

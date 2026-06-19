@@ -128,21 +128,32 @@ def fingerprint(ticker, sig, brk_latest, accel_latest):
             "pending_live": ["est_revision_up", "earnings_surprise", "news_capitulation_arc", "competitor_edge"]}
 
 
-def stage_a_shortlist(top=12):
+def scan_all():
+    """Fingerprint the WHOLE stock universe once; return all candidates ranked by resemblance (desc)."""
     syms = list(STOCK_SECTOR)
     px, vol = panels(syms)
     brk = score_breakout(px, vol).iloc[-1]
     acc = score_accel(px).iloc[-1]
-    cands = []
-    for s in syms:
-        fp = fingerprint(s, SIG, brk.get(s), acc.get(s))
-        if fp: cands.append(fp)
-    # rank by resemblance to the learned winner fingerprint (desc); fall back to dd if no score
+    cands = [fp for s in syms if (fp := fingerprint(s, SIG, brk.get(s), acc.get(s)))]
     cands.sort(key=lambda c: (c["resemblance"] if c["resemblance"] is not None else -9), reverse=True)
-    ranked_syms = [c["ticker"] for c in cands]
-    keep = set(diversify(ranked_syms, top_n=top, max_per_sector=3))
-    short = [c for c in cands if c["ticker"] in keep][:top]
-    return short
+    return cands
+
+
+def sector_cohorts(cands=None):
+    """Group ALL beaten-down candidates by sector, ranked within sector — NO diversify cap.
+    This is the 'other stocks in the same situation' set each stock page compares against."""
+    if cands is None: cands = scan_all()
+    cohorts = {}
+    for c in cands:                       # cands already resemblance-sorted, so each sector list stays ranked
+        cohorts.setdefault(c["sector"], []).append(c)
+    return cohorts
+
+
+def stage_a_shortlist(top=12, cands=None):
+    """The diversified top-N picks that go to Stage-B research (<=3 per sector)."""
+    if cands is None: cands = scan_all()
+    keep = set(diversify([c["ticker"] for c in cands], top_n=top, max_per_sector=3))
+    return [c for c in cands if c["ticker"] in keep][:top]
 
 
 SIG, HIT = load_signature()
@@ -155,7 +166,9 @@ def main():
     if HIT is not None:
         print(f"Learned signature winners-vs-controls hit-rate: {HIT*100:.0f}% (from breakout_backtest.py)")
     print("=" * 78)
-    short = stage_a_shortlist()
+    cands = scan_all()                       # one scan -> both shortlist and cohorts
+    short = stage_a_shortlist(cands=cands)
+    cohorts = sector_cohorts(cands)
     if not short:
         print("\nNo candidates today (nothing matches the beaten-base or breakout setup)."); return
     asof = pd.Timestamp.now().strftime("%Y-%m-%d")
@@ -173,9 +186,10 @@ def main():
            "_disclaimer": "SPECULATIVE discretionary research, NOT a backtested edge (cf reversal p=0.000). "
                           "Stage-A scores are PROVISIONAL — news/earnings/estimate-trajectory factors are "
                           "filled live in Stage B. Individual-stock survivorship applies. Low price != cheap.",
-           "learned_hit_rate": HIT, "candidates": short}
+           "learned_hit_rate": HIT, "candidates": short, "cohorts": cohorts}
     json.dump(out, open(OUT, "w"), indent=1)
-    print(f"\nwrote {OUT} ({len(short)} candidates)")
+    ncoh = sum(len(v) for v in cohorts.values())
+    print(f"\nwrote {OUT} ({len(short)} picks + {ncoh} candidates across {len(cohorts)} sector cohorts)")
 
 
 if __name__ == "__main__":

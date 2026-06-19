@@ -105,12 +105,16 @@ def breakout():
     print(">>> earnings surprise, ROE/margin inflection, analyst ratings, competitors), (2) read live news")
     print(">>> (is the decline an OVERREACTION = CONFIRM, or STRUCTURAL/falling-knife = VETO?), (3) build a")
     print(">>> thesis + key risk + competitor comparison per name, (4) write breakout_ideas.json, (5) run")
-    print(">>> `python3 breakout_report.py`, (6) email the report. FALLBACK: if the Bigdata MCP is NOT")
-    print(">>> attached to this routine, use yfinance fundamentals + web search and LABEL it 'yfinance fallback'.")
+    print(">>> `python3 breakout_site.py` to build the breakout_site/ multi-page research site (index +")
+    print(">>> one full dossier page per stock, each w/ a same-sector cohort comparison), (6) email a")
+    print(">>> summary linking to breakout_site/index.html. FALLBACK: if the Bigdata MCP is NOT attached,")
+    print(">>> use yfinance fundamentals + web search and LABEL it 'yfinance fallback'.")
     try:
-        import dashboard; dashboard.main(); print("\n[dashboard.html regenerated — cloud agent: git add/commit/push it + breakout_ideas.json]")
+        import breakout_site; breakout_site.main()
+        import dashboard; dashboard.main()
+        print("\n[breakout_site/ + dashboard.html regenerated — cloud agent: git add/commit/push breakout_site/ breakout_ideas.json breakout_shortlist.json dashboard.html]")
     except Exception as e:
-        print(f"\n[dashboard regen skipped: {e}]")
+        print(f"\n[site/dashboard regen skipped: {e}]")
     ping_healthcheck("breakout")
 
 
