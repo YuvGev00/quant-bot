@@ -75,6 +75,11 @@ def weekly():
     print(">>> IBKR positions, (3) decide BUY/SELL/HOLD per pick + per holding (leverage<=20%,")
     print(">>> single<=35%, news-VETO drops a name, and DON'T churn if the tax-aware check says HOLD),")
     print(">>> (4) email the user the final order sheet.")
+    # regenerate the dashboard so it never goes stale (commit+push handled by the cloud agent)
+    try:
+        import dashboard; dashboard.main(); print("\n[dashboard.html regenerated — cloud agent should git add/commit/push it]")
+    except Exception as e:
+        print(f"\n[dashboard regen skipped: {e}]")
     ping_healthcheck("weekly")          # dead-man's-switch: success ping is the FINAL line
 
 

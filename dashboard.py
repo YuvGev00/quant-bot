@@ -41,6 +41,7 @@ def main():
     ok, dmsg = data_quality(px)
     spy = load_close("SPY"); ro, ret, rf, _ = walk_forward(spy, None)
     risk_off = bool(ro.iloc[-1] > 0.5); asof = ro.index[-1].date()
+    gen_time = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")   # when this dashboard was generated
     in_mkt = hysteresis((1-ro).shift(LAG).fillna(1.0),3,3)
     g = gate_returns(in_mkt, ret.loc[in_mkt.index], rf.loc[in_mkt.index])
     eq = (1+after_tax(g,0.25)).cumprod(); st = stats(after_tax(g,0.25)); sbh = stats(after_tax(ret.loc[g.index],0.25))
@@ -61,6 +62,26 @@ def main():
 
     msc = score_leader(px.ffill()).iloc[-1].dropna()
     mom_top = msc.sort_values(ascending=False).head(8)
+
+    # EPS-revision signal (forward experiment) — read the panel if it exists
+    eps_rows = ""; eps_snaps = 0; eps_status = "no data yet"
+    try:
+        from eps_revision import load_panel, revision_signal
+        ep = load_panel()
+        if not ep.empty:
+            eps_snaps = ep["date"].nunique()
+            sig = revision_signal()
+            if not sig.empty:
+                top = sig.head(4); bot = sig.tail(3)
+                for _, r in pd.concat([top, bot]).drop_duplicates("ticker").iterrows():
+                    col = "var(--gr)" if r["revision%"] > 0 else ("var(--mg)" if r["revision%"] < 0 else "var(--dim)")
+                    eps_rows += (f'<tr><td class=tk>{r["ticker"]}</td>'
+                                 f'<td class=neg style="color:{col}">{r["revision%"]:+.1f}%</td>'
+                                 f'<td class=sec>{int(r["n_analysts"])} analysts</td></tr>')
+                eps_status = f"{eps_snaps} weekly snapshots — {'LIVE signal' if eps_snaps>=2 else 'collecting'}"
+            else:
+                eps_status = f"{eps_snaps} snapshot(s) — need 2+ for a revision"
+    except Exception: pass
 
     # value-agent ideas (cheap+quality), if the agent wrote a snapshot; else compute a light version
     val_rows = ""
@@ -169,7 +190,7 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 .warn{{padding:14px 18px;margin-top:16px;border-color:var(--am);color:var(--am)}}
 .ft{{margin-top:42px;border-top:1px solid var(--ln);padding-top:16px;color:var(--dim);font-size:10px;letter-spacing:1px;line-height:1.8;text-align:center}}
 </style></head><body>
-<div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>{asof} :: AFTER IL-TAX :: {len(syms)} ASSETS SCANNED</div></div>
+<div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>GENERATED {gen_time} :: DATA {asof} :: {len(syms)} ASSETS</div></div>
 
 {'<div class="glass warn">/!\\ '+html.escape(dmsg)+' — DECISIONS SUPPRESSED</div>' if not ok else ''}
 
@@ -193,6 +214,10 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 <div class=sec-h>Value Lab :: cheap + quality :: &le;$100/share :: SPECULATIVE ideas (not a backtested edge)</div>
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>ANALYSTS</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=5 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
 <div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
+
+<div class=sec-h>EPS-Revision Lab :: forward experiment :: {eps_status}</div>
+<div class="glass tbl"><table><tr><th>ASSET</th><th>EPS REVISION</th><th>COVERAGE</th></tr>{eps_rows or '<tr><td colspan=3 class=sec>collecting weekly snapshots — needs 2+ to show revisions (the cloud agent grows this)</td></tr>'}</table></div>
+<div class=note>Rising forward EPS estimates (analysts upgrading) tend to predict outperformance. UNVALIDATED forward test — needs ~12 weekly snapshots before permutation-testing. Green=upgrade, magenta=downgrade.</div>
 
 <div class=sec-h>Momentum Radar :: unverified :: informational</div>
 <div class="glass tbl"><table><tr><th>#</th><th>ASSET</th><th>SECTOR</th><th>STRENGTH</th></tr>{mom_rows}</table></div>
