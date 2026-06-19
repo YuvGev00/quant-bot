@@ -102,6 +102,28 @@ def main():
     except Exception:
         pass
 
+    # --- Breakout Scout: read Stage-B enriched ideas (or Stage-A shortlist) snapshot ---
+    brk_rows = ""; brk_asof = ""
+    try:
+        src = "breakout_ideas.json" if os.path.exists("breakout_ideas.json") else (
+              "breakout_shortlist.json" if os.path.exists("breakout_shortlist.json") else None)
+        if src:
+            bj = json.load(open(src)); brk_asof = bj.get("_asof", "")
+            rows = bj.get("ideas", bj.get("candidates", []))[:8]
+            for r in rows:
+                v = r.get("verdict", r.get("stage", ""))
+                vcl = ("v-good" if v == "CONFIRM" else "v-bad" if v == "VETO"
+                       else "v-caution" if v == "CAUTION" else "v-mid")
+                up = r.get("upside_pct", r.get("upside%"))
+                ups = f'+{up}%' if up else "—"
+                th = (r.get("thesis", "") or "")[:46]
+                brk_rows += (f'<tr><td class=tk>{r["ticker"]}</td>'
+                             f'<td><span class="vd {vcl}">{v}</span></td>'
+                             f'<td class=neg style="color:var(--gr)">{ups}</td>'
+                             f'<td class=sec>{th}</td></tr>')
+    except Exception:
+        pass
+
     cur = {}
     if os.path.exists("holdings.json"):
         try: cur = json.load(open("holdings.json")).get("positions",{})
@@ -213,6 +235,10 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 
 <div class=sec-h>Value Lab :: cheap + quality :: &le;$100/share :: SPECULATIVE ideas (not a backtested edge)</div>
 <div class="glass tbl"><table><tr><th>ASSET</th><th>SECTOR</th><th>SCORE</th><th>ANALYSTS</th><th>THESIS</th></tr>{val_rows or '<tr><td colspan=5 class=sec>run value_agent.py to populate</td></tr>'}</table></div>
+
+<div class=sec-h>Breakout Scout :: blow-up fingerprint (learned from history) :: SPECULATIVE :: <a class=refresh href="breakout_report.html">FULL REPORT &rarr;</a></div>
+<div class="glass tbl"><table><tr><th>ASSET</th><th>VERDICT</th><th>UPSIDE</th><th>THESIS</th></tr>{brk_rows or '<tr><td colspan=4 class=sec>run breakout_scout.py + Stage B to populate</td></tr>'}</table></div>
+<div class=newsstamp>fingerprint learned from 7 labeled winners vs controls; ideas researched live via Bigdata.com. {('as of '+brk_asof) if brk_asof else ''} — conviction research, not a backtested edge.</div>
 <div class=note>Cheap stocks that are also profitable/growing (not value traps). Each is a STARTING thesis to investigate — discretionary research, do your own diligence.</div>
 
 <div class=sec-h>EPS-Revision Lab :: forward experiment :: {eps_status}</div>

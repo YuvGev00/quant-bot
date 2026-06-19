@@ -1,0 +1,17 @@
+{
+  "MU":        {"neg_headlines": 7, "capitulation": 5, "analyst_split": 4, "cheap_mentions": 1},
+  "INTC":      {"neg_headlines": 7, "capitulation": 5, "analyst_split": 6, "cheap_mentions": 1},
+  "DELL":      {"neg_headlines": 2, "capitulation": 1, "analyst_split": 2, "cheap_mentions": 0},
+  "NVDA":      {"neg_headlines": 8, "capitulation": 5, "analyst_split": 6, "cheap_mentions": 1},
+  "AVGO":      {"neg_headlines": 2, "capitulation": 3, "analyst_split": 6, "cheap_mentions": 3},
+  "SMCI":      {"neg_headlines": 1, "capitulation": 2, "analyst_split": 5, "cheap_mentions": 1},
+  "PLTR":      {"neg_headlines": 2, "capitulation": 1, "analyst_split": 1, "cheap_mentions": 0},
+  "INTC_2021": {"neg_headlines": 3, "capitulation": 1, "analyst_split": 8, "cheap_mentions": 2},
+  "T":         {"neg_headlines": 1, "capitulation": 1, "analyst_split": 4, "cheap_mentions": 2},
+  "VZ":        {"neg_headlines": 7, "capitulation": 5, "analyst_split": 5, "cheap_mentions": 2},
+  "PFE":       {"neg_headlines": 1, "capitulation": 0, "analyst_split": 3, "cheap_mentions": 2},
+  "KO":        {"neg_headlines": 1, "capitulation": 0, "analyst_split": 2, "cheap_mentions": 1},
+  "WMT":       {"neg_headlines": 3, "capitulation": 3, "analyst_split": 2, "cheap_mentions": 0},
+  "CVX":       {"neg_headlines": 2, "capitulation": 1, "analyst_split": 3, "cheap_mentions": 1},
+  "IBM":       {"neg_headlines": 2, "capitulation": 1, "analyst_split": 4, "cheap_mentions": 1}
+}

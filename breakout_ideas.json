@@ -1,0 +1,147 @@
+{
+  "_asof": "2026-06-19",
+  "_source": "Bigdata.com live tearsheets + news (Stage B)",
+  "_disclaimer": "SPECULATIVE discretionary research, NOT a backtested edge. Live snapshot, not point-in-time. Individual-stock survivorship applies.",
+  "ideas": [
+    {
+      "ticker": "INTU",
+      "stage": "EARLY",
+      "verdict": "CAUTION",
+      "price": 267.0,
+      "target_consensus": 452.94,
+      "upside_pct": 69.6,
+      "ratings": {"strong_buy": 0, "buy": 33, "hold": 8, "sell": 4, "consensus": "Buy"},
+      "eps_trend": [3.54, 4.08, 4.85, 14.33, 4.18, 4.75, 5.53, 15.67],
+      "eps_rising": true,
+      "earnings_surprise_pct": 1.83,
+      "roe_pct": 14.85,
+      "margin_pct": 14.2,
+      "base_pos_pct": 1.4,
+      "dd_from_high_pct": -67.2,
+      "thesis": "Intuit fell ~67% from its 52-week high to near a multi-year low ($267 vs $813 high), yet it still beat Q3 FY26 EPS ($12.80 vs $12.57, +1.8%), carries 33 buys vs 4 sells, a $452.94 consensus target (~70% implied upside), 14.9% ROE and rising forward EPS. The bull case is a classic overshoot in a high-quality compounder (QuickBooks ecosystem + Credit Karma) trading at a depressed ~13x forward EPS. The crucial caveat: the sell-off is NOT pure sentiment - the May earnings call confirmed the TurboTax DIY/Consumer business is losing share at the low end with the DIY tax segment estimated declining ~14-15%, and management was directly pressed on GenAI changing the competitive landscape. That is a partial structural threat, not a clean overreaction.",
+      "key_risk": "The Consumer/TurboTax decline is at least partly secular: free GenAI tax/accounting agents could permanently compress the DIY funnel (a 2M-unit drop in free filers was flagged), and consensus targets may lag if estimates are cut further. This is a value-with-a-falling-knife setup, not a clean V-bottom.",
+      "news": [
+        {"headline": "Intuit Q3 2026 Earnings Call - analysts press on TurboTax share loss at low end and GenAI competitive threat ('2023/2024 deja vu')", "source": "Quartr Transcripts", "date": "2026-05-20", "tone": "negative"},
+        {"headline": "Intuit Conference (Jun 2026) - DIY tax business modeled to decline ~14-15%; questions on stabilizing churn", "source": "Quartr Transcripts", "date": "2026-06-09", "tone": "negative"},
+        {"headline": "10-Q strategic risk disclosure flags competitors deploying AI that 'may reduce customer demand'", "source": "Edgar SEC Filings", "date": "2026-05-20", "tone": "neutral"}
+      ],
+      "competitors": [
+        {"ticker": "CRM", "name": "Salesforce, Inc.", "fwd_pe": 11.6, "rev_growth_pct": 9.0, "margin_pct": 22.7, "note": "Larger software peer also crushed (~42% YTD); shares same AI-disruption-of-incumbent-SaaS narrative; not a direct product rival but a valuation read"},
+        {"ticker": "ADBE", "name": "Adobe Inc.", "fwd_pe": 7.6, "rev_growth_pct": 11.0, "margin_pct": 25.0, "note": "Another premium software franchise re-rated to single-digit P/E on identical GenAI-incumbent fears - shows INTU's de-rating is sector-wide, not idiosyncratic"}
+      ],
+      "competitor_edge": "mixed"
+    },
+    {
+      "ticker": "NOW",
+      "stage": "EARLY",
+      "verdict": "CONFIRM",
+      "price": 95.04,
+      "target_consensus": 150.26,
+      "upside_pct": 58.1,
+      "ratings": {"strong_buy": 0, "buy": 58, "hold": 10, "sell": 1, "consensus": "Buy"},
+      "eps_trend": [0.86, 1.10, 1.21, 1.19, 1.13, 1.32, 1.41, 1.46],
+      "eps_rising": true,
+      "earnings_surprise_pct": 0.0,
+      "roe_pct": 16.0,
+      "margin_pct": 28.6,
+      "base_pos_pct": 10.6,
+      "dd_from_high_pct": -55.1,
+      "thesis": "ServiceNow is down ~55% from its high to $95 (near the bottom of its 52-week range) on a valuation reset and fear that AI labs will commoditize enterprise software - yet the underlying business is the strongest in this basket: 58 buys vs 1 sell, $150.26 consensus (~58% implied upside), ~28% operating margin, ~16% ROE, and forward EPS rising steadily through 2029. The bull case is that the decline is a multiple de-rating of an entrenched, mission-critical platform rather than a fundamentals break: an independent analyst (Jun 2026) explicitly named ServiceNow a 'winner' that is 'impossible to replace' and an AI tailwind, while the company is shipping Now Assist AI across all SKUs with simplified pricing. The drawdown looks more like sentiment/froth-unwind than justified structural decay.",
+      "key_risk": "The Q1 in-line print (EPS $0.97 vs $0.97, 0% surprise) and the post-print 12% drop show the market wants AI-driven organic acceleration NOW - if Now Assist ARR stays small versus the AI labs' net-new ARR, the 'classic stack gets negotiated down to fund AI' dynamic could cap growth and the de-rating could persist longer.",
+      "news": [
+        {"headline": "Analyst names ServiceNow a clear AI winner: 'impossible to replace', growth can accelerate via upsell + AI", "source": "Quartr Transcripts (Conference Jun 3, 2026)", "date": "2026-06-03", "tone": "positive"},
+        {"headline": "Q1 2026 call: stock down 12% after-hours on lack of organic AI acceleration vs AI labs adding $5B net-new ARR/qtr", "source": "Quartr Transcripts", "date": "2026-04-22", "tone": "negative"},
+        {"headline": "DEF 14A notes NOW fell 12-16% YTD in 2025 on a sub-consensus subscription forecast and premium-multiple 'risk-off'", "source": "Edgar SEC Filings", "date": "2026-04-06", "tone": "negative"}
+      ],
+      "competitors": [
+        {"ticker": "CRM", "name": "Salesforce, Inc.", "fwd_pe": 11.6, "rev_growth_pct": 9.0, "margin_pct": 22.7, "note": "Direct enterprise-app rival, cheaper P/E but slower growth and weaker margin; also down ~42% YTD - shared narrative"},
+        {"ticker": "WDAY", "name": "Workday, Inc.", "fwd_pe": 11.2, "rev_growth_pct": 12.0, "margin_pct": 24.0, "note": "HCM/financials peer down ~46% YTD; comparable growth but NOW has higher margin and stronger competitive moat ('one data model')"}
+      ],
+      "competitor_edge": "candidate has edge"
+    },
+    {
+      "ticker": "ADBE",
+      "stage": "EARLY",
+      "verdict": "CAUTION",
+      "price": 195.16,
+      "target_consensus": 259.76,
+      "upside_pct": 33.1,
+      "ratings": {"strong_buy": 0, "buy": 30, "hold": 29, "sell": 4, "consensus": "Buy"},
+      "eps_trend": [6.05, 6.27, 6.74, 6.77, 6.86, 7.06, 7.62, 7.70],
+      "eps_rising": true,
+      "earnings_surprise_pct": 2.41,
+      "roe_pct": 14.9,
+      "margin_pct": 25.0,
+      "base_pos_pct": 2.5,
+      "dd_from_high_pct": -50.3,
+      "thesis": "Adobe is down ~50% from its high to $195 (just above its 52-week low) and trades at roughly 7-8x forward EPS - an extraordinarily compressed multiple for a franchise still beating estimates (Q2 FY26 EPS $5.96 vs $5.82, +2.4%; revenue beat 2.5%), growing ~11%, with ~25% margins and rising forward EPS. The bull case is a deep-value, heavy-FCF moat (Creative Cloud + Acrobat + Experience Cloud) that could spring-load on any sentiment turn. But this is genuinely mixed: the latest leg down was self-inflicted/structural-leaning - Adobe deliberately cut its FY26 organic ARR outlook by ~$500M and dropped its organic ARR growth target, deferring Creative Cloud price increases to chase freemium AI users (organic ARR growth now ~8%), and lost BOTH its CEO (transition announced) and CFO (Dan Durn to Marvell). Multiple firms downgraded post-earnings (Evercore to In Line PT $225; Stifel; Jefferies/Boursorama Hold PT $230).",
+      "key_risk": "AI monetization is unanswered and the leadership vacuum (new CEO + interim CFO) means sentiment may not turn until both seats are filled, per Evercore. The freemium pivot is a real revenue-growth haircut, not just optics - if generative-AI rivals (OpenAI, Google, Canva, Midjourney) keep pressuring the funnel, the 'value trap' case is live.",
+      "news": [
+        {"headline": "Evercore ISI downgrades Adobe to In Line, PT cut to $225 from $325, after ~$500M FY26 ARR reset; sees no sentiment turn until new CEO/CFO in place", "source": "The Fly", "date": "2026-06-12", "tone": "negative"},
+        {"headline": "Adobe's strong quarter overshadowed by CFO Dan Durn exit (to Marvell) and growth uncertainty", "source": "MT Newswires (RBC)", "date": "2026-06-12", "tone": "negative"},
+        {"headline": "Adobe poised to outperform peers on AI growth and Cloud synergies (RBC), hosting fireside on GenAI monetization", "source": "MT Newswires", "date": "2026-06-17", "tone": "positive"}
+      ],
+      "competitors": [
+        {"ticker": "CRM", "name": "Salesforce, Inc.", "fwd_pe": 11.6, "rev_growth_pct": 9.0, "margin_pct": 22.7, "note": "Adjacent enterprise-software peer; trades higher P/E than ADBE despite slower growth - ADBE optically cheaper but carries the freemium/ARR-reset overhang"},
+        {"ticker": "NOW", "name": "ServiceNow, Inc.", "fwd_pe": 22.0, "rev_growth_pct": 19.0, "margin_pct": 28.6, "note": "Higher-growth, higher-margin SaaS peer commands ~3x ADBE's multiple - the market is paying for growth durability ADBE just walked back"}
+      ],
+      "competitor_edge": "mixed"
+    },
+    {
+      "ticker": "NKE",
+      "stage": "EARLY",
+      "verdict": "CONFIRM",
+      "price": 45.2,
+      "target_consensus": 62.0,
+      "upside_pct": 37.2,
+      "ratings": {"strong_buy": 1, "buy": 36, "hold": 29, "sell": 5, "consensus": "Buy"},
+      "eps_trend": [0.45, 0.59, 0.47, 0.26, 0.65, 0.785, 0.695, 0.48],
+      "eps_rising": true,
+      "earnings_surprise_pct": 20.36,
+      "roe_pct": 3.7,
+      "margin_pct": 11.0,
+      "base_pos_pct": 9.9,
+      "dd_from_high_pct": -43.6,
+      "thesis": "Nike is down ~44% from its high to $45 near a multi-year low, but the setup is a self-inflicted, management-driven turnaround rather than a secular collapse - and the most recent print is the strongest positive surprise in the basket (Q3 FY26 EPS $0.35 vs $0.29 estimated, +20.4%). CEO Elliott Hill is executing a deliberate reset: pulling back classic-franchise supply, repositioning Nike Digital as full-price, liquidating inventory via markdowns (the cause of the margin trough), and reinvesting in wholesale and demand creation. North America has made the most progress; gross margin already troughed (Q1 FY26 down 320bps to 42.2% on clearance + tariffs) and forward EPS shows a clear FY27 recovery shape. With 37 buys vs 5 sells, a $62 consensus (~37% upside) and the strongest brand in apparel, this looks like a recovery off a managed trough, not a broken business.",
+      "key_risk": "The turnaround is back-half-weighted and geographically uneven: Greater China (declining store traffic, heavy promotion, channel inventory) and Converse remain drags expected to persist into FY27, and trough ROE (~3.7%) plus tariff cost pressure mean a slower-than-hoped margin recovery would re-rate the stock down. It is a multi-quarter execution bet on Hill's reset taking hold.",
+      "news": [
+        {"headline": "Nike Q3 FY26: EPS $0.35 vs $0.29 est (+20% surprise); revenue beat; CFO says shifts position portfolio 'for a full recovery'", "source": "Quartr Reports", "date": "2026-03-31", "tone": "positive"},
+        {"headline": "10-Q: turnaround actions to complete by end-2026; North America furthest along, Greater China + Converse drag into FY27", "source": "Edgar SEC Filings", "date": "2026-04-01", "tone": "neutral"},
+        {"headline": "Q1 FY26: gross margin -320bps to 42.2% on wholesale/factory markdowns, tariffs and channel mix (inventory liquidation underway)", "source": "Edgar SEC Filings", "date": "2025-10-01", "tone": "negative"}
+      ],
+      "competitors": [
+        {"ticker": "DECK", "name": "Deckers Outdoor Corporation", "fwd_pe": 25.0, "rev_growth_pct": 12.0, "margin_pct": 25.0, "note": "Hoka/UGG owner is the share-taker eating into Nike's running franchise - DECK is UP ~7% over 1Y and trades mid-range (pos 63%), the opposite tape of NKE; rival has momentum"},
+        {"ticker": "LULU", "name": "Lululemon Athletica Inc.", "fwd_pe": 13.0, "rev_growth_pct": 7.0, "margin_pct": 22.0, "note": "Also crushed (~51% off high, near 52wk low) - shows the beaten-down apparel trade is broad; LULU growth has slowed, so NKE's brand scale + turnaround optionality stands out"}
+      ],
+      "competitor_edge": "mixed"
+    },
+    {
+      "ticker": "CMCSA",
+      "stage": "EARLY",
+      "verdict": "VETO",
+      "price": 22.43,
+      "target_consensus": 31.48,
+      "upside_pct": 40.3,
+      "ratings": {"strong_buy": 0, "buy": 34, "hold": 25, "sell": 1, "consensus": "Buy"},
+      "eps_trend": [0.97, 1.04, 0.73, 0.81, 1.04, 1.10, 0.83, 1.01],
+      "eps_rising": false,
+      "earnings_surprise_pct": 8.97,
+      "roe_pct": 10.0,
+      "margin_pct": 24.6,
+      "base_pos_pct": 0.4,
+      "dd_from_high_pct": -34.7,
+      "thesis": "Comcast sits at essentially a multi-year low ($22.43, 0.4% of its 52-week range) and screens optically cheap (~6x forward EPS, 40% implied upside to a $31.48 consensus, beat Q1 by 9%). But this is the clearest falling-knife in the basket and the decline is justified/structural, not an overreaction: the core broadband business is in secular decline (181k subs lost in Q4 - a steeper drop YoY; full-year 2026 loss guided ~590k), ARPU is now FALLING (-3.1%), and the company is buying retention with free-wireless-line giveaways and a 5-year price guarantee that further pressures ARPU and EBITDA (Connectivity EBITDA -4% YoY). New existential threats are emerging (Rosenblatt cut to $24 citing Starlink/SpaceX broadband competition; fixed-wireless from T-Mobile). Forward EPS is essentially flat-to-down, not rising. A shareholder at the June AGM called it a company that 'requires repositioning' - the $30B NBCU networks now valued ~$5B post-Versant spinoff, and Comcast lost both the Warner Bros and the bid contests.",
+      "key_risk": "If broadband losses do not stabilize and Starlink/fixed-wireless accelerate, the cheap multiple is a value trap and 'cheap gets cheaper'; the 4.5%+ dividend is the main support, but a low-growth cable utility in secular share loss does not fit a pre-explosion breakout fingerprint. This is a yield/defensive name, not a turnaround spring.",
+      "news": [
+        {"headline": "Comcast broadband losses deepen as competition intensifies; 181k subs lost in Q4, ARPU only +1%, Connectivity EBITDA -4%", "source": "Benzinga", "date": "2026-01-30", "tone": "negative"},
+        {"headline": "Comcast PT lowered to $24 at Rosenblatt; new investor concern is Starlink broadband competition ahead of SpaceX IPO", "source": "The Fly", "date": "2026-06-05", "tone": "negative"},
+        {"headline": "AGM: shareholder calls Comcast a company needing 'repositioning'; $30B NBCU cable nets (Versant) now ~$5B, lost WBD bid", "source": "Quartr Transcripts", "date": "2026-06-10", "tone": "negative"}
+      ],
+      "competitors": [
+        {"ticker": "CHTR", "name": "Charter Communications, Inc.", "fwd_pe": 2.7, "rev_growth_pct": 0.0, "margin_pct": 39.0, "note": "Fellow cable operator in worse shape - down ~67% over 1Y, at its 52wk low, net-debt/EBITDA ~18-22x; confirms cable is a structurally declining sector, not a single-name dip"},
+        {"ticker": "TMUS", "name": "T-Mobile US, Inc.", "fwd_pe": 17.0, "rev_growth_pct": 6.0, "margin_pct": 32.0, "note": "The share-taker: T-Mobile's 5G fixed-wireless is a primary cause of Comcast's broadband losses; growing, profitable, far shallower drawdown - the rival eating Comcast's lunch"}
+      ],
+      "competitor_edge": "rival eating share"
+    }
+  ]
+}

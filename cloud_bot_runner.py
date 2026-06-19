@@ -83,6 +83,37 @@ def weekly():
     ping_healthcheck("weekly")          # dead-man's-switch: success ping is the FINAL line
 
 
+def breakout():
+    """Breakout Scout weekly: Stage-A screen with the LEARNED blow-up fingerprint, then hand the
+    shortlist to the cloud Claude agent for the Stage-B live research (Bigdata tearsheets + news)."""
+    print("=== BREAKOUT SCOUT (weekly) ===")
+    print("SPECULATIVE discretionary research — NOT a backtested edge (cf reversal p=0.000).")
+    try:
+        import breakout_scout
+        short = breakout_scout.stage_a_shortlist()
+    except Exception as e:
+        print(f">>> Stage-A failed ({e}); skipping."); ping_healthcheck("breakout", fail=True); return
+    if not short:
+        print("No beaten-base / breakout candidates this week."); ping_healthcheck("breakout"); return
+    print(f"\nSTAGE-A SHORTLIST ({len(short)} names, ranked by resemblance to the learned winner fingerprint):")
+    for i, c in enumerate(short, 1):
+        print(f"  {i:2d}. {c['ticker']:6s} {c['stage']:9s} resem {c.get('resemblance')}  "
+              f"base {c['base_pos%']}%  dd {c['dd%']}%  {c['analyst']}  — {c['thesis']}")
+    names = ",".join(c["ticker"] for c in short)
+    print(f"\nNEWS_TO_READ: {names}")
+    print("\n>>> Cloud agent Stage B: for each name (1) pull Bigdata.com tearsheet (forward-EPS trend,")
+    print(">>> earnings surprise, ROE/margin inflection, analyst ratings, competitors), (2) read live news")
+    print(">>> (is the decline an OVERREACTION = CONFIRM, or STRUCTURAL/falling-knife = VETO?), (3) build a")
+    print(">>> thesis + key risk + competitor comparison per name, (4) write breakout_ideas.json, (5) run")
+    print(">>> `python3 breakout_report.py`, (6) email the report. FALLBACK: if the Bigdata MCP is NOT")
+    print(">>> attached to this routine, use yfinance fundamentals + web search and LABEL it 'yfinance fallback'.")
+    try:
+        import dashboard; dashboard.main(); print("\n[dashboard.html regenerated — cloud agent: git add/commit/push it + breakout_ideas.json]")
+    except Exception as e:
+        print(f"\n[dashboard regen skipped: {e}]")
+    ping_healthcheck("breakout")
+
+
 SPY_DAY_DROP = -0.025      # fast heads-up if SPY falls > 2.5% in a single day
 VIX_SPIKE = 30.0           # fast heads-up if VIX jumps above 30 (fear gauge)
 
@@ -131,4 +162,4 @@ def hourly():
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "weekly"
-    (weekly if mode == "weekly" else hourly)()
+    {"weekly": weekly, "hourly": hourly, "breakout": breakout}.get(mode, weekly)()
