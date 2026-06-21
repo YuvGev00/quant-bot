@@ -135,6 +135,7 @@ def main():
     else:
         act='<div class=act><div class=acth>◢ SEE WEEKLY UPLINK</div><div class=actb>Positions on file — manage per emailed sheet.</div></div>'
     port=f"100% CASH" if flat else " · ".join(f"{k} {v*100:.0f}%" for k,v in cur.items())
+    warn_block = '<div class="glass warn">/!\\ ' + html.escape(dmsg) + ' — DECISIONS SUPPRESSED</div>' if not ok else ''
 
     doc=f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><title>QUANTBOT :: {regime_txt}</title>
@@ -192,7 +193,7 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 </style></head><body>
 <div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>GENERATED {gen_time} :: DATA {asof} :: {len(syms)} ASSETS</div></div>
 
-{'<div class="glass warn">/!\\ '+html.escape(dmsg)+' — DECISIONS SUPPRESSED</div>' if not ok else ''}
+{warn_block}
 
 <div class="glass reg {rc}"><div class=ring></div>
   <div class=rl>MARKET REGIME</div>
