@@ -1,0 +1,181 @@
+{
+  "_asof": "2026-06-21",
+  "_source": "Bigdata.com live discovery sweep (small/mid-cap, pre-hype)",
+  "_disclaimer": "SPECULATIVE forward conviction-research over a live-discovered small/mid-cap universe. NOT a backtested edge; small-caps carry liquidity, fraud and total-loss risk. Research leads, you decide. Manual trades only.",
+  "discoveries": [
+    {
+      "ticker": "CRMD",
+      "name": "CorMedix Inc.",
+      "tier": "SPECULATIVE_EARLY",
+      "early_fit": "STRONG",
+      "market_cap_b": 0.68,
+      "price": 8.67,
+      "base_pos_pct": 22,
+      "n_analysts": 8,
+      "coverage": "Moderate",
+      "ratings": {"buy": 8, "hold": 0, "sell": 0},
+      "valuation": "fwd EV/EBITDA ~7.6x (TTM, just turned profitable); price target $14 (~+61%)",
+      "cheap": true,
+      "rev_growth_pct": null,
+      "eps_rising": true,
+      "earnings_surprise_pct": 22.9,
+      "margin_pct": null,
+      "thesis": "Single-product biopharma at the moment its product catches fire: DefenCath (catheter-related bloodstream-infection prevention) is in early commercial ramp and Q1'26 revenue blew past consensus by ~21% ($127M vs $105M est) while the company flipped to GAAP profit. The stock is down ~47% over the past year, so the fundamental inflection is happening BEFORE the price — the classic cheap-and-quietly-improving setup, with all 8 covering analysts on Buy and a $14 target.",
+      "key_risk": "Essentially a one-product story; any reimbursement, competitive, manufacturing or label setback for DefenCath hits the whole thesis. Revenue can be lumpy quarter to quarter.",
+      "early_signals": [
+        "Q1'26 revenue +21% vs estimate, EPS beat +23%",
+        "Crossed from losses into GAAP profitability",
+        "Stock -47% over 1y while fundamentals inflect (price lagging the turn)",
+        "8/8 analysts Buy, consensus target ~+61%"
+      ],
+      "news": [
+        {"headline": "As US profit margins near record highs, these small-cap stocks lead on profitability (CorMedix among A+ profitability names)", "source": "MSN / Seeking Alpha", "date": "2026-06-18", "tone": "positive"}
+      ]
+    },
+    {
+      "ticker": "PWFL",
+      "name": "PowerFleet, Inc.",
+      "tier": "SPECULATIVE_EARLY",
+      "early_fit": "STRONG",
+      "market_cap_b": 0.53,
+      "price": 3.98,
+      "base_pos_pct": 39,
+      "n_analysts": 5,
+      "coverage": "Low",
+      "ratings": {"buy": 5, "hold": 0, "sell": 0},
+      "valuation": "EV/S ~5.9x, EV/EBITDA ~19x; loss narrowing to profit by FY27; target $7 (~+76%)",
+      "cheap": false,
+      "rev_growth_pct": 11,
+      "eps_rising": true,
+      "earnings_surprise_pct": 1.3,
+      "margin_pct": null,
+      "thesis": "Wireless-IoT/telematics roll-up (PowerFleet + Pointer + MiX) whose mix is shifting to high-margin recurring software — service revenue is now ~81% of the total and grew 14% YoY with the Q4 exit-rate accelerating. The stock is still down on the year and GAAP-lossmaking on acquisition intangibles, but estimates show it crossing into profit through FY27. A beaten-down, under-covered (5 analysts) consolidator that should re-rate as the recurring base compounds; all 5 analysts Buy with a $7 target.",
+      "key_risk": "Still GAAP-unprofitable with heavy intangibles and integration risk from the MiX/Pointer mergers; micro-cap liquidity and a stretched EV/sales if the profit cross-over slips.",
+      "early_signals": [
+        "Service (recurring) revenue 81% of mix, +14% YoY",
+        "Q4 total revenue +11% YoY, growth accelerating into the exit rate",
+        "Signed multi-year deals with two of the world's largest brands",
+        "5/5 analysts Buy, target ~+76%"
+      ],
+      "news": [
+        {"headline": "PowerFleet Q4 2025 earnings call: service revenue now 81% of mix, growth accelerating into FY27", "source": "Benzinga (full transcript)", "date": "2026-06-15", "tone": "positive"}
+      ]
+    },
+    {
+      "ticker": "IDT",
+      "name": "IDT Corporation",
+      "tier": "EMERGING",
+      "early_fit": "MODERATE",
+      "market_cap_b": 1.38,
+      "price": 55.42,
+      "base_pos_pct": 38,
+      "n_analysts": 2,
+      "coverage": "Low",
+      "ratings": {"buy": 1, "hold": 1, "sell": 0},
+      "valuation": "fwd P/E ~14x; net cash $246M and no debt; legacy telecom masks the growth segments",
+      "cheap": true,
+      "rev_growth_pct": null,
+      "eps_rising": true,
+      "earnings_surprise_pct": 5.6,
+      "margin_pct": null,
+      "thesis": "A genuinely under-followed (just 2 analysts) telecom/fintech where a melting legacy long-distance business hides three high-margin compounders — NRS point-of-sale, BOSS Money fintech and net2phone UCaaS — that are growing fast. Q3'26 beat on both lines, EBITDA and operating cash flow hit records, and the balance sheet is fortress-like ($246M cash, no debt). At ~14x forward earnings with the growth segments approaching the size of the shrinking core, it's a cheap sum-of-the-parts that the market hasn't repriced.",
+      "key_risk": "Legacy Traditional Communications revenue is in structural decline; if it rolls over faster than the growth segments scale, consolidated numbers stall. Family-controlled, very thinly covered.",
+      "early_signals": [
+        "Only 2 analysts cover it — true under-the-radar",
+        "Record adjusted EBITDA and operating cash flow on the trailing year",
+        "Q3'26 EPS +5.6% vs estimate, revenue beat ~+2.5%",
+        "$246M cash / zero debt vs $1.4B market cap"
+      ],
+      "news": [
+        {"headline": "IDT investor conference: $1.2B-cap with strong balance sheet and increasing profitability; high-margin segments growing rapidly", "source": "Quartr (conference transcript)", "date": "2026-03-18", "tone": "positive"}
+      ]
+    },
+    {
+      "ticker": "COLL",
+      "name": "Collegium Pharmaceutical, Inc.",
+      "tier": "EMERGING",
+      "early_fit": "MODERATE",
+      "market_cap_b": 1.09,
+      "price": 33.54,
+      "base_pos_pct": 20,
+      "n_analysts": 12,
+      "coverage": "Moderate",
+      "ratings": {"buy": 8, "hold": 3, "sell": 1},
+      "valuation": "fwd P/E ~4-5x; EV/EBITDA ~17x TTM and falling; ~45% EBITDA margins; target $58 (~+73%)",
+      "cheap": true,
+      "rev_growth_pct": null,
+      "eps_rising": true,
+      "earnings_surprise_pct": 15.8,
+      "margin_pct": 45,
+      "thesis": "Deeply de-rated specialty-pharma cash machine: Q1'26 EPS beat by ~16% and revenue by ~5%, EBITDA margins sit near 45%, and forward EPS estimates imply a single-digit P/E. The stock trades near 52-week lows (~20% of its range) despite rising estimates and aggressive buybacks — a cheap, cash-generative name where sentiment is washed out and the consensus target sits ~70% higher.",
+      "key_risk": "Opioid-franchise (Xtampza/Nucynta) headline and legal/ESG overhang plus a levered balance sheet from acquisitions; pipeline/diversification must deliver before the core matures.",
+      "early_signals": [
+        "Q1'26 EPS beat +16%, revenue beat +5%, estimates rising",
+        "Forward P/E in the mid-single digits with ~45% EBITDA margins",
+        "Trades near 52-week lows while fundamentals improve",
+        "Strong free-cash-flow yield funding buybacks"
+      ],
+      "news": [
+        {"headline": "Small-cap stocks with A+ profitability grade — Collegium Pharmaceutical named among them", "source": "MSN / Seeking Alpha", "date": "2026-06-18", "tone": "positive"}
+      ]
+    },
+    {
+      "ticker": "ELMD",
+      "name": "Electromed, Inc.",
+      "tier": "SPECULATIVE_EARLY",
+      "early_fit": "MODERATE",
+      "market_cap_b": 0.32,
+      "price": 38.68,
+      "base_pos_pct": 94,
+      "n_analysts": 5,
+      "coverage": "Low",
+      "ratings": {"buy": 5, "hold": 0, "sell": 0},
+      "valuation": "P/E ~30x but debt-free with net cash; consistent double-digit beats",
+      "cheap": false,
+      "rev_growth_pct": null,
+      "eps_rising": true,
+      "earnings_surprise_pct": 34.6,
+      "margin_pct": 16,
+      "thesis": "A tiny, debt-free niche medical-device compounder (SmartVest airway-clearance therapy) that quietly crushes estimates quarter after quarter — Q3'26 EPS beat by ~35% on a ~5.5% revenue beat — yet only 5 analysts follow it. Net-cash balance sheet, expanding margins and a direct-to-patient model in a sticky reimbursed market; the kind of under-owned profitable micro-cap that compounds long before it shows up on screens.",
+      "key_risk": "Trades near 52-week highs after an ~82% run, so entry timing matters; concentrated single-product, reimbursement-dependent micro-cap with thin liquidity.",
+      "early_signals": [
+        "Q3'26 EPS beat +35%, revenue beat +5.5%",
+        "Debt-free, net-cash balance sheet; consistently profitable",
+        "Only 5 analysts — under-covered compounder",
+        "All 5 analysts Buy"
+      ],
+      "news": [
+        {"headline": "Electromed investor conference: 'pretty unique for a small-cap company to be so profitable'", "source": "Quartr (conference transcript)", "date": "2026-03-23", "tone": "positive"}
+      ]
+    },
+    {
+      "ticker": "GHM",
+      "name": "Graham Corporation",
+      "tier": "EMERGING",
+      "early_fit": "WEAK",
+      "market_cap_b": 1.29,
+      "price": 110.73,
+      "base_pos_pct": 89,
+      "n_analysts": 5,
+      "coverage": "Low",
+      "ratings": {"buy": 2, "hold": 3, "sell": 0},
+      "valuation": "fwd P/E ~60-65x — full/expensive; backlog $533M, book-to-bill ~1.3x",
+      "cheap": false,
+      "rev_growth_pct": 11.9,
+      "eps_rising": true,
+      "earnings_surprise_pct": 10.0,
+      "margin_pct": null,
+      "thesis": "Defense/space turbomachinery supplier (Navy propulsion, cryogenics, space) with a record $533M backlog compounding ~20% a year and ~85% tied to defense — exceptional multi-year revenue visibility, and Q4 beat on both lines. The least 'early' name here: it has already run ~128% in a year and trades at a rich ~60x forward P/E near 52-week highs, so it's included for the genuine backlog/earnings-ramp story rather than valuation.",
+      "key_risk": "Valuation is full and the stock is extended near highs; margins are still thin, so any execution slip on the backlog ramp could de-rate it sharply. Watch for a pullback rather than chasing.",
+      "early_signals": [
+        "Record $533M backlog growing ~20% CAGR, book-to-bill ~1.3x",
+        "85% of backlog is defense (multi-year visibility into FY28)",
+        "Q4 EPS beat +10%, revenue beat +12%",
+        "Forward EPS ramping FY26 -> FY28"
+      ],
+      "news": [
+        {"headline": "Graham Corporation 2026 Investor Day: $533M backlog, ~20% CAGR, book-to-bill 1.3x, 85% defense", "source": "Quartr (investor day transcript)", "date": "2026-06-18", "tone": "positive"}
+      ]
+    }
+  ]
+}
