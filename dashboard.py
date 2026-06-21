@@ -102,6 +102,38 @@ def main():
     except Exception:
         pass
 
+    # Breakout Scout — slim launcher (full multi-page research site lives in breakout_site/)
+    bo_launch = ""
+    if os.path.exists("breakout_ideas.json"):
+        try:
+            bo = json.load(open("breakout_ideas.json"))
+            bideas = bo.get("ideas", [])
+            vrank = {"CONFIRM": 0, "CAUTION": 1, "VETO": 2}
+            bvc = {"CONFIRM": "var(--gr)", "CAUTION": "var(--am)", "VETO": "var(--mg)"}
+            bordered = sorted(bideas, key=lambda i: vrank.get(i.get("verdict"), 9))
+            lead = next((i for i in bordered if i.get("verdict") == "CONFIRM"), bordered[0] if bordered else None)
+            nC = sum(1 for i in bideas if i.get("verdict") == "CONFIRM")
+            nW = sum(1 for i in bideas if i.get("verdict") == "CAUTION")
+            nV = sum(1 for i in bideas if i.get("verdict") == "VETO")
+            chips = "".join(
+                f'<a class="bo-chip" href="breakout_site/{i["ticker"]}.html" '
+                f'style="border-color:{bvc.get(i.get("verdict"),"var(--dim)")};color:{bvc.get(i.get("verdict"),"var(--dim)")}">'
+                f'{i["ticker"]} {i.get("upside_pct",0):+.0f}%</a>' for i in bordered)
+            leadtxt = (f'<b style="color:var(--gr)">{lead["ticker"]}</b> — {html.escape(lead.get("thesis","")[:150])}…'
+                       if lead else "run breakout_agent.py")
+            bo_launch = (
+                f'<div class=sec-h>Breakout Scout :: beaten-down blow-up candidates :: SPECULATIVE (not a backtested edge)'
+                f'<a class=refresh href="breakout_site/index.html">⤢ OPEN RESEARCH SITE</a></div>'
+                f'<div class="glass" style="padding:18px 22px">'
+                f'<div style="font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:10px">'
+                f'{nC} CONFIRM · {nW} CAUTION · {nV} VETO · as of {html.escape(bo.get("_asof",""))}</div>'
+                f'<div style="font-size:13px;line-height:1.6;margin-bottom:12px">{leadtxt}</div>'
+                f'<div style="display:flex;gap:8px;flex-wrap:wrap">{chips}</div>'
+                f'<div class=note style="margin-top:12px">Full dossiers (charts, fingerprint scorecard, analyst panel, news, '
+                f'same-sector cohort) in <b>breakout_site/index.html</b>. Conviction research → leads, not signals.</div></div>')
+        except Exception:
+            pass
+
     cur = {}
     if os.path.exists("holdings.json"):
         try: cur = json.load(open("holdings.json")).get("positions",{})
@@ -189,6 +221,8 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 .spark .pline{{stroke-dasharray:1000;animation:flow 20s linear infinite;filter:drop-shadow(0 0 6px var(--cy))}}
 .note{{color:var(--dim);font-size:11px;margin-top:9px;letter-spacing:.3px;line-height:1.6}}
 .warn{{padding:14px 18px;margin-top:16px;border-color:var(--am);color:var(--am)}}
+.bo-chip{{font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 11px;border-radius:16px;border:1px solid;text-decoration:none;transition:.2s}}
+.bo-chip:hover{{background:rgba(255,255,255,.06);box-shadow:0 0 12px -3px currentColor}}
 .ft{{margin-top:42px;border-top:1px solid var(--ln);padding-top:16px;color:var(--dim);font-size:10px;letter-spacing:1px;line-height:1.8;text-align:center}}
 </style></head><body>
 <div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>GENERATED {gen_time} :: DATA {asof} :: {len(syms)} ASSETS</div></div>
@@ -205,6 +239,8 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 
 <div class=sec-h>Directive</div>
 <div class="glass">{act}</div>
+
+{bo_launch}
 
 <div class=sec-h>Reversal Array :: validated edge :: diversified &le;{MAX_PER_SECTOR}/sector
   <a class=refresh href="https://claude.ai/code/routines" target=_blank title="Trigger the cloud agent to web-read fresh news (local can't browse)">⟳ REFRESH NEWS</a></div>

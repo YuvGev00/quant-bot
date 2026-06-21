@@ -1,0 +1,19 @@
+{
+  "_name": "blow-up fingerprint v1",
+  "_what": "A transparent, hand-specified fingerprint of the classic beaten-down-then-explodes setup (the MU-2016 / INTC / DELL-before-the-run pattern): a quality name that fell hard, stopped falling, coiled on dried-up volume after a capitulation washout, and is starting to turn. Price/volume only (Stage A). Stage B adds the fundamental floor (analyst upside, rising EPS, profitability) that separates a real turnaround from a value trap.",
+  "_honesty": "This is NOT a backtested edge and NOT a fitted ML model. It is a heuristic scorecard whose feature ranges were chosen to echo a handful of historical blow-up setups. Treat the score as a way to RANK beaten-down names for human research, not as a signal to trade.",
+  "_calibrated_against": ["MU 2016 bottom", "INTC deep-value base", "DELL pre-run consolidation", "AMD 2015-16", "NVDA late-2018 washout"],
+  "features": {
+    "dd_from_high":     {"win": 252, "ideal_lo": -0.65, "ideal_hi": -0.25, "peak": -0.45, "weight": 0.27, "desc": "drawdown from the trailing 1y high — beaten down but not annihilated (sweet spot ~-45%)"},
+    "base_position":    {"win": 252, "ideal_max": 0.35, "weight": 0.17, "desc": "position within the 52w range (0=low,1=high); low = sitting near the base"},
+    "downtrend_stall":  {"short": 21, "long": 126, "weight": 0.17, "desc": "the freefall has stalled — 1m return no longer worse than the average daily drift of the 6m slide"},
+    "vol_compression":  {"win": 21, "ref": 252, "weight": 0.14, "desc": "21d realized vol below its 1y median — the coil / volatility contraction before a move"},
+    "capitulation_vol": {"win": 63, "ref": 252, "min_spike": 1.6, "weight": 0.13, "desc": "a recent heavy-volume washout (max 5d-avg volume / 1y avg) — seller exhaustion"},
+    "early_turn":       {"short": 10, "med": 42, "weight": 0.12, "desc": "the kick — short-term momentum turning up relative to the trailing trend"}
+  },
+  "thresholds": {
+    "min_history_days": 300,
+    "candidate_min_dd": -0.18,
+    "candidate_max_dd": -0.80
+  }
+}

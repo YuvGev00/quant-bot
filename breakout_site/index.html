@@ -1,0 +1,78 @@
+<!doctype html><html lang=en><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>BREAKOUT SCOUT :: weekly board</title><style>
+:root{--bg:#04070f;--gl:rgba(12,22,40,.55);--ln:rgba(0,229,255,.18);--cy:#00e5ff;--mg:#ff2d92;--gr:#1dffb0;--am:#ffcf3a;--tx:#bfe9ff;--dim:#5a7390}
+*{box-sizing:border-box;margin:0}
+a{color:var(--cy);text-decoration:none}
+body{background:var(--bg);color:var(--tx);font:13.5px/1.6 'SF Mono',ui-monospace,Menlo,monospace;max-width:920px;margin:0 auto;padding:28px 20px 90px;
+background-image:linear-gradient(rgba(0,229,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.045) 1px,transparent 1px),radial-gradient(1000px 500px at 50% -10%,rgba(0,229,255,.1),transparent),radial-gradient(800px 400px at 100% 8%,rgba(255,45,146,.07),transparent);background-size:42px 42px,42px 42px,100% 100%,100% 100%}
+.hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ln);padding-bottom:14px;flex-wrap:wrap;gap:8px}
+.lg{font-size:17px;letter-spacing:5px;font-weight:700;color:#fff;text-shadow:0 0 14px var(--cy)}.lg span{color:var(--cy)}
+.as{font-size:10px;letter-spacing:2px;color:var(--dim)}
+.glass{background:var(--gl);border:1px solid var(--ln);border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 0 34px -14px var(--cy),inset 0 1px 0 rgba(255,255,255,.05)}
+.disc{padding:13px 18px;margin:16px 0;border-color:var(--am);color:var(--am);font-size:11px;letter-spacing:.4px}
+.sec-h{font-size:10px;letter-spacing:4px;color:var(--cy);text-transform:uppercase;margin:30px 0 12px;display:flex;align-items:center;gap:10px;text-shadow:0 0 8px var(--cy)}
+.sec-h::before{content:"//"}.sec-h::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--ln),transparent)}
+.vd{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 11px;border-radius:20px;border:1px solid;white-space:nowrap}
+table{width:100%;border-collapse:collapse}
+th{font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;text-align:left;padding:9px 11px;border-bottom:1px solid var(--ln);font-weight:500}
+td{padding:10px 11px;border-bottom:1px solid rgba(0,229,255,.06);font-size:13px;vertical-align:middle}
+tr:last-child td{border:none}
+td.tk{font-weight:700;color:#fff;letter-spacing:1px}td.tk a{color:#fff}
+td.sec{color:var(--dim);font-size:11px;font-style:italic}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.pos{color:var(--gr)}.neg{color:var(--mg)}
+.row-link td{cursor:pointer}.row-link:hover td{background:linear-gradient(90deg,rgba(0,229,255,.10),transparent)}
+.star td{background:linear-gradient(90deg,rgba(29,255,176,.12),transparent)}
+.note{color:var(--dim);font-size:11px;margin-top:9px;letter-spacing:.3px;line-height:1.6}
+.ft{margin-top:46px;border-top:1px solid var(--ln);padding-top:16px;color:var(--dim);font-size:10px;letter-spacing:1px;line-height:1.9;text-align:center}
+/* dossier */
+.crumb{font-size:10px;letter-spacing:2px;color:var(--dim);margin-bottom:18px}
+.tophdr{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-top:6px}
+.tname{font-size:30px;font-weight:700;color:#fff;letter-spacing:2px;text-shadow:0 0 16px var(--cy)}
+.tsub{color:var(--dim);font-size:12px;letter-spacing:1px;margin-top:2px}
+.tprice{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--cy);text-shadow:0 0 14px var(--cy);text-align:right}
+.chartwrap{padding:16px 18px 10px;margin-top:16px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.kpi{padding:14px 12px;text-align:center}
+.kpi .l{font-size:8.5px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase}
+.kpi .v{font-size:21px;font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+.panel{padding:16px 18px}
+.panel h3{font-size:10px;letter-spacing:3px;color:var(--cy);text-transform:uppercase;margin-bottom:12px;text-shadow:0 0 8px var(--cy)}
+.scrow{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:11.5px}
+.scrow .lab{width:148px;color:var(--dim)}
+.bar{flex:1;height:8px;border-radius:5px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--mg),var(--cy));box-shadow:0 0 12px -2px var(--cy)}
+.scrow .pct{width:34px;text-align:right;color:var(--tx);font-variant-numeric:tabular-nums}
+.fp-score{font-size:13px;color:var(--dim);margin-top:6px}.fp-score b{color:var(--gr);font-size:18px}
+.thesis{font-size:13.5px;line-height:1.7;color:var(--tx)}
+.risk{font-size:13px;line-height:1.7;color:var(--am)}
+.ratings{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 2px}
+.pill{font-size:10px;padding:3px 9px;border-radius:14px;border:1px solid var(--ln);color:var(--dim)}
+.pill b{color:var(--tx)}
+.news-it{padding:10px 0;border-bottom:1px solid rgba(0,229,255,.06)}.news-it:last-child{border:none}
+.news-h{font-size:12.5px;color:var(--tx);line-height:1.5}
+.news-m{font-size:10px;color:var(--dim);letter-spacing:.5px;margin-top:3px}
+.tone-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.epsbar{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:6px}
+.epsbar .b{flex:1;background:linear-gradient(180deg,var(--cy),rgba(0,229,255,.15));border-radius:3px 3px 0 0;position:relative;min-height:4px}
+.epsbar .b span{position:absolute;top:-15px;left:0;right:0;text-align:center;font-size:9px;color:var(--dim)}
+</style></head><body>
+<div class=hd><div class=lg>BREAKOUT<span>::</span>SCOUT</div>
+  <div class=as>WEEKLY · 2026-06-21 · 25 BEATEN-DOWN CANDIDATES · 6 RESEARCHED</div></div>
+<div class="glass disc">⚠ SPECULATIVE conviction research, NOT a backtested edge (cf the reversal edge p=0.000).
+Research leads, not signals. Live snapshot, not point-in-time. Individual-stock survivorship applies. Manual trades only.</div>
+<div class=sec-h>Lead idea</div>
+<div class="glass panel" style="border-color:var(--gr);box-shadow:0 0 34px -10px var(--gr)"><h3 style="color:var(--gr)">◢ Top conviction — NFLX</h3><div class=thesis>Down ~41% from its high and sitting at the bottom 5% of its 52w range, yet the business is re-accelerating, not breaking: Q1 revenue +16% to $12.25B, net income up to $5.28B, EPS $1.23 vs $0.76 expected (a +61% blowout), operating margin 32%. The de-rate came from a &#x27;priced-for-perfection&#x27; multiple plus soft near-term guidance and Reed Hastings stepping down as chair — sentiment, not fundamentals. Analysts stay Buy (64) with ~+45% to target, ROE ~17% and rising forward EPS. Classic overcorrection in the only scaled, profitable global streamer.</div><div class=note style="margin-top:10px"><a href="NFLX.html">open full NFLX dossier &rarr;</a> · verdict CONFIRM · upside +44%</div></div>
+<div class=sec-h>The board · CONFIRM &rarr; CAUTION &rarr; VETO</div>
+<div class="glass" style="padding:4px 6px"><table>
+<tr><th>TICK</th><th>SECTOR</th><th>VERDICT</th><th class=num>PRICE</th><th class=num>DD%</th><th class=num>UPSIDE</th><th>THESIS</th></tr>
+<tr class=row-link onclick="location.href='NFLX.html'"><td class=tk><a href="NFLX.html">NFLX</a></td><td class=sec>comm</td><td><span class="vd" style="color:var(--gr);border-color:var(--gr)">CONFIRM</span></td><td class=num>$77.38</td><td class="num neg">-41%</td><td class=num style="color:var(--gr)">+44%</td><td class=sec style="font-style:normal;color:var(--tx)">Down ~41% from its high and sitting at the bottom 5% of its 52w range, yet the business is re-accelerating, not breaki…</td></tr><tr class=row-link onclick="location.href='ABT.html'"><td class=tk><a href="ABT.html">ABT</a></td><td class=sec>health</td><td><span class="vd" style="color:var(--gr);border-color:var(--gr)">CONFIRM</span></td><td class=num>$88.38</td><td class="num neg">-33%</td><td class=num style="color:var(--gr)">+44%</td><td class=sec style="font-style:normal;color:var(--tx)">A Dividend-King medtech down ~33% and basing — but the chart has stopped falling (1M roughly flat, turning up) and the…</td></tr><tr class=row-link onclick="location.href='CRM.html'"><td class=tk><a href="CRM.html">CRM</a></td><td class=sec>tech</td><td><span class="vd" style="color:var(--gr);border-color:var(--gr)">CONFIRM</span></td><td class=num>$151.78</td><td class="num neg">-40%</td><td class=num style="color:var(--gr)">+75%</td><td class=sec style="font-style:normal;color:var(--tx)">The largest dislocation in the shortlist: down ~58% from peak / ~40% YTD to a fresh 52w low, even though fiscal-Q1 res…</td></tr><tr class=row-link onclick="location.href='NKE.html'"><td class=tk><a href="NKE.html">NKE</a></td><td class=sec>discretionary</td><td><span class="vd" style="color:var(--gr);border-color:var(--gr)">CONFIRM</span></td><td class=num>$45.04</td><td class="num neg">-42%</td><td class=num style="color:var(--gr)">+35%</td><td class=sec style="font-style:normal;color:var(--tx)">A genuine early-stage turnaround: down ~44% from its high to a level it last saw a decade ago, with the first hard evi…</td></tr><tr class=row-link onclick="location.href='ADBE.html'"><td class=tk><a href="ADBE.html">ADBE</a></td><td class=sec>tech</td><td><span class="vd" style="color:var(--am);border-color:var(--am)">CAUTION</span></td><td class=num>$195.16</td><td class="num neg">-48%</td><td class=num style="color:var(--gr)">+33%</td><td class=sec style="font-style:normal;color:var(--tx)">The most beaten-down name (~-49% from high, bottom 2% of range) and statistically the highest-quality (ROE ~32%, net m…</td></tr><tr class=row-link onclick="location.href='GIS.html'"><td class=tk><a href="GIS.html">GIS</a></td><td class=sec>staples</td><td><span class="vd" style="color:var(--mg);border-color:var(--mg)">VETO</span></td><td class=num>$33.42</td><td class="num neg">-32%</td><td class=num style="color:var(--gr)">+12%</td><td class=sec style="font-style:normal;color:var(--tx)">Screened in as beaten-down (~-32% from high) and cheap (~10x forward, ~7% dividend), but the decline is fundamentally …</td></tr></table></div>
+<div class=note>Each row links to a full dossier: price chart, blow-up fingerprint scorecard, thesis &amp; key risk,
+live analyst panel, dated news, a competitor check, and the ★ same-sector beaten-down cohort answering "why this one, not its peers."
+Stage-A screen vs fingerprint <b>blow-up fingerprint v1</b>; Stage-B research via Bigdata.com.</div>
+<div class=ft>BREAKOUT SCOUT · generated 2026-06-21 07:21 · NEVER AUTO-EXECUTES · MANUAL FILL ONLY<br>
+VERDICT = HUMAN CONVICTION CALL, NOT A SIGNAL · A VETO IS A VALUABLE OUTPUT · BACKTEST &ne; PROMISE</div>
+</body></html>

@@ -1,0 +1,186 @@
+{
+ "_asof": "2026-06-21",
+ "_source": "Bigdata.com live tearsheets + news (Stage B)",
+ "_disclaimer": "SPECULATIVE discretionary research, NOT a backtested edge. Live snapshot, not point-in-time. Individual-stock survivorship applies. Verdicts are conviction calls for human research, not signals. Manual trades only.",
+ "ideas": [
+  {
+   "ticker": "NFLX",
+   "sector": "comm",
+   "stage": "CONFIRMED",
+   "verdict": "CONFIRM",
+   "price": 77.38,
+   "target_consensus": 111.83,
+   "upside_pct": 44.5,
+   "ratings": {"strong_buy": 0, "buy": 64, "hold": 28, "sell": 7, "consensus": "Buy"},
+   "eps_trend": [0.79, 0.84, 0.73, 0.95],
+   "eps_rising": true,
+   "earnings_surprise_pct": 61.2,
+   "roe_pct": 17.0,
+   "margin_pct": 28.0,
+   "base_pos_pct": 5.0,
+   "dd_from_high_pct": -41.2,
+   "thesis": "Down ~41% from its high and sitting at the bottom 5% of its 52w range, yet the business is re-accelerating, not breaking: Q1 revenue +16% to $12.25B, net income up to $5.28B, EPS $1.23 vs $0.76 expected (a +61% blowout), operating margin 32%. The de-rate came from a 'priced-for-perfection' multiple plus soft near-term guidance and Reed Hastings stepping down as chair — sentiment, not fundamentals. Analysts stay Buy (64) with ~+45% to target, ROE ~17% and rising forward EPS. Classic overcorrection in the only scaled, profitable global streamer.",
+   "key_risk": "Still the most expensive name in the cohort (EV/sales >30x) — if subscriber/ARPU growth matures or the recent M&A interest (lost Roku bid to Fox, Lionsgate chatter) turns into a value-destroying acquisition, the premium compresses further.",
+   "news": [
+    {"headline": "Netflix quarterly sales beat hopes but soft outlook sends shares lower (net income $5.28B, EPS $1.23 vs $0.76 est)", "source": "Alliance News", "date": "2026-04-16", "tone": "neutral"},
+    {"headline": "Omdia: Netflix to Reach 400 Million Subscribers by 2031, Maintaining Global Streaming Lead Despite Industry Consolidation", "source": "Benzinga", "date": "2026-06-11", "tone": "positive"},
+    {"headline": "Netflix Flexes 'M&A Muscle' As Bidding Contests Spook Wall Street (lost Roku to Fox)", "source": "Benzinga", "date": "2026-06-16", "tone": "negative"}
+   ],
+   "competitors": [
+    {"ticker": "DIS", "name": "Walt Disney", "fwd_pe": 18, "rev_growth_pct": 3, "margin_pct": 9, "note": "streaming only recently profitable; dragged by linear TV decline"},
+    {"ticker": "WBD", "name": "Warner Bros. Discovery", "fwd_pe": 0, "rev_growth_pct": -3, "margin_pct": 2, "note": "high debt, shrinking; splitting the company to survive"},
+    {"ticker": "SPOT", "name": "Spotify", "fwd_pe": 50, "rev_growth_pct": 15, "margin_pct": 5, "note": "growing but thin margins; different (audio) niche"}
+   ],
+   "competitor_edge": "NFLX is the only streamer combining scale (~300M+ subs), ~28% net margin and real free cash flow; rivals are either burning cash, shrinking linear, or sub-scale — so a streaming-sector recovery accrues to NFLX first."
+  },
+  {
+   "ticker": "ABT",
+   "sector": "health",
+   "stage": "CONFIRMED",
+   "verdict": "CONFIRM",
+   "price": 88.38,
+   "target_consensus": 127.46,
+   "upside_pct": 44.2,
+   "ratings": {"strong_buy": 0, "buy": 31, "hold": 10, "sell": 0, "consensus": "Buy"},
+   "eps_trend": [1.28, 1.42, 1.62, 1.28],
+   "eps_rising": true,
+   "earnings_surprise_pct": 0.9,
+   "roe_pct": 14.0,
+   "margin_pct": 18.0,
+   "base_pos_pct": 15.0,
+   "dd_from_high_pct": -33.0,
+   "thesis": "A Dividend-King medtech down ~33% and basing — but the chart has stopped falling (1M roughly flat, turning up) and the business is intact: four diversified segments (devices, diagnostics, nutrition, pharma), FreeStyle Libre CGM running ~$2B/quarter with 7M+ users into a structurally growing diabetes market, plus MitraClip/TriClip structural-heart growth. Analysts are unanimously constructive (31 Buy, 0 Sell) with ~+44% to target — and even the LOW target ($92) sits above today's price. Q1 was a small beat; forward EPS steps up. This looks like a sector-rotation de-rate of a quality compounder, not a broken thesis.",
+   "key_risk": "Growth is steady-not-explosive; DexCom competes hard in CGM and ongoing NEC infant-formula litigation is a tail risk. The 'blow-up' here is a re-rating, not a moonshot.",
+   "news": [
+    {"headline": "Should You Buy Abbott Labs Stock Hand Over Fist Before July 16? (Libre ~$2B/qtr, $9.57B FCF in 2025, 50+ yr dividend grower)", "source": "Nasdaq", "date": "2026-06-20", "tone": "positive"},
+    {"headline": "Abbott diversification cushions single-product risk across devices, diagnostics, nutrition and pharma", "source": "The Globe And Mail", "date": "2026-06-20", "tone": "positive"}
+   ],
+   "competitors": [
+    {"ticker": "MDT", "name": "Medtronic", "fwd_pe": 15, "rev_growth_pct": 4, "margin_pct": 15, "note": "larger device peer, slower grower, less diversified into diagnostics/nutrition"},
+    {"ticker": "DXCM", "name": "DexCom", "fwd_pe": 45, "rev_growth_pct": 15, "margin_pct": 13, "note": "pure-play CGM rival to Libre; faster growth but far pricier and single-product"},
+    {"ticker": "SYK", "name": "Stryker", "fwd_pe": 25, "rev_growth_pct": 10, "margin_pct": 13, "note": "premium ortho/device grower; quality but no diagnostics/nutrition ballast"}
+   ],
+   "competitor_edge": "ABT offers MDT-like stability with faster, more diversified growth (Libre + structural heart) at a cheaper multiple than DXCM/SYK — the lowest-risk way to own the diabetes-tech and structural-heart themes."
+  },
+  {
+   "ticker": "CRM",
+   "sector": "tech",
+   "stage": "EARLY",
+   "verdict": "CONFIRM",
+   "price": 151.78,
+   "target_consensus": 265.75,
+   "upside_pct": 75.1,
+   "ratings": {"strong_buy": 2, "buy": 73, "hold": 20, "sell": 2, "consensus": "Buy"},
+   "eps_trend": [3.28, 3.36, 3.64, 3.68],
+   "eps_rising": true,
+   "earnings_surprise_pct": 24.0,
+   "roe_pct": 10.0,
+   "margin_pct": 22.0,
+   "base_pos_pct": 0.0,
+   "dd_from_high_pct": -40.4,
+   "thesis": "The largest dislocation in the shortlist: down ~58% from peak / ~40% YTD to a fresh 52w low, even though fiscal-Q1 results set records — AI/Data ARR ~$3.4B (+200% y/y), Agentforce alone past $1.2B ARR, seat counts still growing, and a ~+24% EPS beat. Consensus is Buy (73) with ~+75% to target and forward EPS rising; FCF is strong and the buyback generous. The market is pricing CRM as an AI loser; the data says it is monetizing agents. At a high-single/low-double-digit forward P/E this is the cheapest scaled SaaS leader.",
+   "key_risk": "It is still a falling knife (-8.6% in the last 5 days, no confirmed base yet) and the bear case is structural: if agentic AI compresses seat-based SaaS faster than CRM can convert it to usage revenue, the de-rate is justified. Bernstein already rates it Underperform ($173). Size accordingly; wait for a base.",
+   "news": [
+    {"headline": "Salesforce Stock's Sell-Off Keeps Getting Worse. Is It Finally Time to Buy? (AI ARR tripled, fresh 52w low, business setting records)", "source": "Nasdaq", "date": "2026-06-17", "tone": "neutral"},
+    {"headline": "Salesforce to Buy AI Agent Platform Fin for $3.6 Billion (Agentforce $1.2B ARR, tripled y/y)", "source": "MT Newswires", "date": "2026-06-15", "tone": "positive"},
+    {"headline": "Salesforce upgraded to Buy from Neutral at Monness Crespi — valuation 'compelling' after 58% drop from peak", "source": "The Fly", "date": "2026-06-18", "tone": "positive"}
+   ],
+   "competitors": [
+    {"ticker": "MSFT", "name": "Microsoft (Dynamics/Copilot)", "fwd_pe": 30, "rev_growth_pct": 14, "margin_pct": 36, "note": "the key AI competitor; far richer multiple and higher margin"},
+    {"ticker": "NOW", "name": "ServiceNow", "fwd_pe": 50, "rev_growth_pct": 20, "margin_pct": 14, "note": "faster grower but priced for perfection — opposite of CRM's setup"},
+    {"ticker": "ORCL", "name": "Oracle", "fwd_pe": 22, "rev_growth_pct": 10, "margin_pct": 30, "note": "cloud/apps peer; cheaper than NOW, more expensive than CRM"}
+   ],
+   "competitor_edge": "Among large-cap enterprise SaaS, CRM trades at the steepest discount to its own growth and FCF while posting the fastest AI-ARR ramp (Agentforce) — if agentic AI proves additive rather than cannibalistic, CRM has the most multiple to recover."
+  },
+  {
+   "ticker": "NKE",
+   "sector": "discretionary",
+   "stage": "EARLY",
+   "verdict": "CONFIRM",
+   "price": 45.04,
+   "target_consensus": 61.09,
+   "upside_pct": 35.2,
+   "ratings": {"strong_buy": 1, "buy": 36, "hold": 29, "sell": 5, "consensus": "Buy"},
+   "eps_trend": [0.45, 0.59, 0.47, 0.26],
+   "eps_rising": true,
+   "earnings_surprise_pct": 20.4,
+   "roe_pct": 4.0,
+   "margin_pct": 5.0,
+   "base_pos_pct": 10.0,
+   "dd_from_high_pct": -41.6,
+   "thesis": "A genuine early-stage turnaround: down ~44% from its high to a level it last saw a decade ago, with the first hard evidence the CEO-Hill 'Win Now' plan is working — North America revenue +3% with wholesale +11%, and February sell-through grew across every channel for the first time in two years. Q3 EPS beat by ~20%, analysts hold a Buy (36) with ~+35% upside, and forward EPS is set to trough then recover. This is the MU/Dell-style 'left-for-dead leader regaining shelf space' pattern.",
+   "key_risk": "The recovery is early and unproven: ROE has collapsed to ~4% and gross margin is being squeezed by U.S. tariffs, Greater China revenue is guided down ~20%, and RBC just cut Nike to Sector Perform ($50), pushing the payoff to 2027. June 30 earnings are a binary catalyst (~10% implied move).",
+   "news": [
+    {"headline": "Headed Into Earnings, Nike Stock Trades Lower Than a Decade Ago — But Is the Turnaround Finally Working? (NA sell-through grew across all channels in Feb)", "source": "Nasdaq", "date": "2026-06-19", "tone": "neutral"},
+    {"headline": "Nike Turnaround Could Take Longer Despite New Growth Drivers — RBC cuts to Sector Perform, target to $50", "source": "MT Newswires", "date": "2026-06-10", "tone": "negative"},
+    {"headline": "Moderately bullish options activity in Nike with shares up 2.75% ahead of June 30 earnings", "source": "The Fly", "date": "2026-06-18", "tone": "positive"}
+   ],
+   "competitors": [
+    {"ticker": "DECK", "name": "Deckers (Hoka)", "fwd_pe": 20, "rev_growth_pct": 15, "margin_pct": 18, "note": "share-taker with higher margin and growth — part of why NKE de-rated"},
+    {"ticker": "ONON", "name": "On Holding", "fwd_pe": 45, "rev_growth_pct": 30, "margin_pct": 9, "note": "fast premium challenger; richly valued"},
+    {"ticker": "ADDYY", "name": "adidas", "fwd_pe": 25, "rev_growth_pct": 10, "margin_pct": 6, "note": "already further along its own recovery; trades at a premium to NKE"}
+   ],
+   "competitor_edge": "NKE is the scale leader (brand, supply chain, sports marketing) trading at the cheapest multiple in the group while challengers (DECK, ONON) command premium valuations — the asymmetry is mean-reversion if Hill restores demand, but the challengers' share gains are the live risk."
+  },
+  {
+   "ticker": "ADBE",
+   "sector": "tech",
+   "stage": "EARLY",
+   "verdict": "CAUTION",
+   "price": 195.16,
+   "target_consensus": 259.76,
+   "upside_pct": 33.1,
+   "ratings": {"strong_buy": 0, "buy": 30, "hold": 29, "sell": 4, "consensus": "Buy"},
+   "eps_trend": [6.05, 6.27, 6.74, 6.77],
+   "eps_rising": true,
+   "earnings_surprise_pct": 2.4,
+   "roe_pct": 32.0,
+   "margin_pct": 37.0,
+   "base_pos_pct": 2.0,
+   "dd_from_high_pct": -48.4,
+   "thesis": "The most beaten-down name (~-49% from high, bottom 2% of range) and statistically the highest-quality (ROE ~32%, net margin ~37%, strong FCF, rising EPS). Q2 beat on +13% revenue with 150M+ new Acrobat/Express users and AI-first ARR (Firefly/Express) tripling past $500M. On the numbers alone it screams value.",
+   "key_risk": "The decline is at least partly justified, which is why this is CAUTION not CONFIRM: (1) a real structural question — generative AI (Canva, OpenAI/Midjourney image gen) threatens the Creative Cloud moat; (2) management just chose to deliberately slow near-term revenue by ~$500M via a freemium pivot, and the stock fell ~25% on 'blowout' results; (3) a leadership vacuum — both the CEO and the CFO are departing within months; (4) analysts are split (29 Hold, 4 Sell) and Evercore just moved to In Line. Needs the freemium bet and AI monetization to prove out before conviction.",
+   "news": [
+    {"headline": "Adobe's Stock Fell After Reporting Blowout Results. Blame Friction. (+13% revenue, but deliberate $500M near-term revenue slowdown; stock -25%)", "source": "Forbes.com", "date": "2026-06-16", "tone": "neutral"},
+    {"headline": "Adobe raises full-year sales guidance but CFO departure rocks shares (CFO Dan Durn leaving months after CEO signaled exit)", "source": "Alliance News", "date": "2026-06-11", "tone": "negative"},
+    {"headline": "Adobe Poised to Outperform Peers on AI Growth, Cloud Synergies — RBC, target $285", "source": "MT Newswires", "date": "2026-06-17", "tone": "positive"}
+   ],
+   "competitors": [
+    {"ticker": "INTU", "name": "Intuit", "fwd_pe": 30, "rev_growth_pct": 12, "margin_pct": 22, "note": "another AI-exposed software compounder, but no comparable disruption overhang"},
+    {"ticker": "MSFT", "name": "Microsoft (Designer/Copilot)", "fwd_pe": 30, "rev_growth_pct": 14, "margin_pct": 36, "note": "bundles AI creative tools that pressure Adobe's consumer funnel"},
+    {"ticker": "CRM", "name": "Salesforce", "fwd_pe": 12, "rev_growth_pct": 9, "margin_pct": 22, "note": "fellow de-rated SaaS leader — but CRM's AI story is additive, Adobe's is defensive"}
+   ],
+   "competitor_edge": "ADBE is the cheapest (~13x forward EPS) and highest-margin of the software cohort, but the discount exists because it faces the most acute AI-disruption question — so the 'edge' is conditional on Adobe out-innovating free AI tools, which is not yet proven."
+  },
+  {
+   "ticker": "GIS",
+   "sector": "staples",
+   "stage": "EARLY",
+   "verdict": "VETO",
+   "price": 33.42,
+   "target_consensus": 37.30,
+   "upside_pct": 11.6,
+   "ratings": {"strong_buy": 0, "buy": 8, "hold": 20, "sell": 6, "consensus": "Hold"},
+   "eps_trend": [0.79, 1.02, 0.65, 0.65],
+   "eps_rising": false,
+   "earnings_surprise_pct": -12.1,
+   "roe_pct": 13.0,
+   "margin_pct": 12.0,
+   "base_pos_pct": 12.0,
+   "dd_from_high_pct": -32.5,
+   "thesis": "Screened in as beaten-down (~-32% from high) and cheap (~10x forward, ~7% dividend), but the decline is fundamentally justified — this is a value trap, not a coiled spring. VETO.",
+   "key_risk": "Structural, not cyclical: Q3 EPS MISSED by ~12% and revenue fell ~8% with net earnings down ~52%; North America retail volumes are worsening (~-4%), 8 of 10 top brands are in volume decline, the Blue Buffalo pet business needs a reset, and Jefferies sees 'no visible near-term catalysts' for the FY27 inflection. Earnings have fallen below the dividend, putting the ~7% payout under review. Consensus is only Hold with ~+12% upside, forward EPS is flat-to-down, and the secular pressure on center-store packaged food (private label, GLP-1 demand) is real. No blow-up catalyst — the cheapness is the market correctly pricing a slow decliner.",
+   "news": [
+    {"headline": "General Mills faces mounting headwinds as volume declines and profit pressures weigh on recovery (NAR volumes -4%, 8 of 10 brands declining, no near-term catalysts)", "source": "Yahoo! Finance", "date": "2026-06-11", "tone": "negative"},
+    {"headline": "General Mills Volume Strains And Pet Reset Put Dividend Under Review (earnings fell below dividend payments)", "source": "Yahoo! Finance", "date": "2026-06-15", "tone": "negative"},
+    {"headline": "General Mills and Campbell's Both Pay ~7% Dividends — Which Is Safer? (revenue -8%, net earnings -52%, EPS below the dividend)", "source": "Nasdaq", "date": "2026-06-10", "tone": "negative"}
+   ],
+   "competitors": [
+    {"ticker": "KHC", "name": "Kraft Heinz", "fwd_pe": 11, "rev_growth_pct": -2, "margin_pct": 18, "note": "same secular volume decline; cheap for the same bad reasons"},
+    {"ticker": "CAG", "name": "Conagra", "fwd_pe": 10, "rev_growth_pct": -1, "margin_pct": 9, "note": "another low-growth packaged-food name under volume pressure"},
+    {"ticker": "K", "name": "Kellanova", "fwd_pe": 18, "rev_growth_pct": 2, "margin_pct": 11, "note": "snacking tilt gives slightly better growth than GIS"}
+   ],
+   "competitor_edge": "None worth owning for a blow-up — the entire center-store packaged-food cohort is under the same secular volume pressure, and GIS is not differentiated enough (worsening volumes, dividend at risk) to be the one that re-rates. The honest call is to pass on the whole group."
+  }
+ ]
+}

@@ -129,6 +129,14 @@ def hourly():
     ping_healthcheck("hourly")          # dead-man's-switch: pings even on a quiet run = "alive & healthy"
 
 
+def breakout():
+    """Stage-A breakout scout: rank beaten-down names vs the blow-up fingerprint, write the
+    shortlist + sector cohorts. Stage B (live Bigdata.com research) is done by the cloud agent."""
+    from breakout_agent import main as breakout_main
+    breakout_main()
+    ping_healthcheck("breakout")
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "weekly"
-    (weekly if mode == "weekly" else hourly)()
+    {"weekly": weekly, "hourly": hourly, "breakout": breakout}.get(mode, weekly)()
