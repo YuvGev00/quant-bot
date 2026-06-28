@@ -1,0 +1,186 @@
+{
+  "_asof": "2026-06-28",
+  "_source": "Bigdata.com live tearsheets + news (Stage B)",
+  "_disclaimer": "SPECULATIVE discretionary research, NOT a backtested edge. Live snapshot, not point-in-time. Individual-stock survivorship applies. Prices/targets/ratings/estimates are live Bigdata.com tearsheet data (quotes as of 2026-06-26 close); drawdown & base-position are from the live 52-week range. ROE figures marked ~ are approximate where a point-in-time ratio was unavailable. Research leads, not signals — manual trades only.",
+  "ideas": [
+    {
+      "ticker": "CRM",
+      "sector": "tech",
+      "stage": "CONFIRMED",
+      "verdict": "CONFIRM",
+      "price": 158.37,
+      "target_consensus": 265.75,
+      "upside_pct": 67.8,
+      "ratings": {"strong_buy": 2, "buy": 73, "hold": 20, "sell": 2, "consensus": "Buy"},
+      "eps_trend": [3.28, 3.36, 3.64, 3.68, 3.76],
+      "eps_rising": true,
+      "earnings_surprise_pct": 24.0,
+      "roe_pct": 16.0,
+      "margin_pct": 25.2,
+      "base_pos_pct": 9.2,
+      "dd_from_high_pct": -42.8,
+      "thesis": "Salesforce sits at a 3-year low (-43% off its high) yet just printed a Q1 FY27 beat: net income +37% YoY, revenue +13% to $11.13B, cRPO +14%, and $6.6B free cash flow. The entire 42% de-rate is sentiment — an 'AI will cannibalize SaaS seats' fear ('SaaSpocalypse') — not a fundamentals breakdown, leaving the stock at ~12x forward EPS with 75 of 97 analysts at Buy/Strong-Buy and +68% to consensus. If Agentforce/AI monetization (deals up ~60%) outruns the seat erosion it is feared to cause, this is the cleanest beaten-down compounder in the cohort.",
+      "key_risk": "The AI-cannibalization fear is structural, not imaginary — agentic AI could compress the per-seat subscription model faster than Agentforce monetizes, and the $3.6B Fin acquisition hints growth may have to be bought rather than earned.",
+      "news": [
+        {"headline": "Salesforce Stock Is at a 3-Year Low. Should Investors Consider Buying? (rev & EPS topped estimates, $6.6B FCF)", "source": "Nasdaq", "date": "2026-06-25", "tone": "positive"},
+        {"headline": "Salesforce CEO Brushes Off 'SaaSpocalypse' As CRM Slides Despite 60% Surge In Premium AI Deals", "source": "Benzinga", "date": "2026-05-28", "tone": "neutral"},
+        {"headline": "Salesforce Likely to Meet Muted Quarterly Views Amid 'Tenuous' SaaS Backdrop; risk/reward 'leans favorably'", "source": "MT Newswires / Deutsche Bank", "date": "2026-05-19", "tone": "neutral"}
+      ],
+      "competitors": [
+        {"ticker": "NOW", "name": "ServiceNow", "fwd_pe": 22.5, "rev_growth_pct": 20.0, "margin_pct": 20.0, "note": "Faster grower but ~2x CRM's multiple; both sold off on the same AI-SaaS fear."},
+        {"ticker": "ADBE", "name": "Adobe", "fwd_pe": 8.2, "rev_growth_pct": 11.0, "margin_pct": 36.7, "note": "Cheaper and higher-margin, but slower-growing and more directly AI-exposed."},
+        {"ticker": "MSFT", "name": "Microsoft (Dynamics)", "fwd_pe": 30.0, "rev_growth_pct": 14.0, "margin_pct": 36.0, "note": "Approx; the deep-pocketed competitive threat, but priced for perfection vs CRM."}
+      ],
+      "competitor_edge": "Cheapest large-cap SaaS on growth-adjusted terms (~12x fwd EPS for a 13% grower with +14% cRPO and $6.6B FCF), with the widest analyst conviction and upside of the software trio — you are paying a value multiple for a still-compounding franchise."
+    },
+    {
+      "ticker": "NOW",
+      "sector": "tech",
+      "stage": "CONFIRMED",
+      "verdict": "CONFIRM",
+      "price": 98.34,
+      "target_consensus": 150.26,
+      "upside_pct": 52.8,
+      "ratings": {"strong_buy": 0, "buy": 58, "hold": 10, "sell": 1, "consensus": "Buy"},
+      "eps_trend": [0.86, 1.10, 1.21, 1.19, 1.32],
+      "eps_rising": true,
+      "earnings_surprise_pct": 0.0,
+      "roe_pct": 16.0,
+      "margin_pct": 20.0,
+      "base_pos_pct": 13.1,
+      "dd_from_high_pct": -53.5,
+      "thesis": "ServiceNow is the most beaten-down name in the cohort (-53% off its high, -52% over 1Y) despite being, fundamentally, the highest-quality: a durable ~20% revenue grower at ~35% FCF margins, 97% renewal rate, used by 85% of the Fortune 500. The April 12% post-earnings drop was, per Canaccord, a 'punitive reaction to a quarter that seemed fine' (a one-off Middle-East on-prem deal slip), and the rest is premium-multiple compression from higher bond yields. Nvidia's Jensen Huang publicly calls NOW the 'enterprise operating system for AI', so the agentic-AI wave that scares investors about SaaS is arguably a tailwind here.",
+      "key_risk": "It still carries the richest multiple in the group (~22x forward EPS), so even with the de-rate it has the furthest to fall if enterprise IT budgets tighten or the in-line (non-beat) earnings cadence persists.",
+      "news": [
+        {"headline": "ServiceNow: An Excellent Business Trading at a Discount (Nvidia's Huang calls it the 'enterprise OS for AI'; 97% renewal)", "source": "Nasdaq", "date": "2026-06-25", "tone": "positive"},
+        {"headline": "Canaccord cuts ServiceNow target but calls shares 'ridiculously cheap'; 'durable 20% growth at 35% FCF margins'", "source": "The Fly", "date": "2026-04-23", "tone": "positive"},
+        {"headline": "ServiceNow Shares Sliding as market turns risk-off; premium software multiples hit by higher yields", "source": "Benzinga", "date": "2026-06-09", "tone": "negative"}
+      ],
+      "competitors": [
+        {"ticker": "CRM", "name": "Salesforce", "fwd_pe": 12.0, "rev_growth_pct": 13.0, "margin_pct": 25.2, "note": "Cheaper and bigger FCF, but growing slower than NOW's ~20%."},
+        {"ticker": "WDAY", "name": "Workday", "fwd_pe": 22.0, "rev_growth_pct": 15.0, "margin_pct": 20.0, "note": "Approx; similar multiple, lower growth and weaker moat than NOW."},
+        {"ticker": "ADBE", "name": "Adobe", "fwd_pe": 8.2, "rev_growth_pct": 11.0, "margin_pct": 36.7, "note": "Much cheaper, but a maturing franchise vs NOW's 20% top-line."}
+      ],
+      "competitor_edge": "Best-in-class growth quality of the cohort — ~20% organic growth, 97% renewals, 85% F500 penetration and an explicit Nvidia endorsement — now available 53% below its high; the multiple is still premium but the business quality is the most defensible."
+    },
+    {
+      "ticker": "NFLX",
+      "sector": "comm",
+      "stage": "CONFIRMED",
+      "verdict": "CONFIRM",
+      "price": 73.81,
+      "target_consensus": 111.83,
+      "upside_pct": 51.5,
+      "ratings": {"strong_buy": 0, "buy": 64, "hold": 28, "sell": 7, "consensus": "Buy"},
+      "eps_trend": [0.79, 0.84, 0.73, 0.95, 0.97],
+      "eps_rising": true,
+      "earnings_surprise_pct": 61.2,
+      "roe_pct": 17.0,
+      "margin_pct": 27.0,
+      "base_pos_pct": 4.7,
+      "dd_from_high_pct": -45.0,
+      "thesis": "Netflix is at a 20-month low (-45% off its high) even though its last print was a 61% EPS beat — Q1 revenue +16% to $12.25B, operating margin 32.3%, net income $5.28B — the sharpest 'market is wrong' disconnect in the cohort. The sell-off is about narrative, not numbers: a soft Q2 guide, co-founder Reed Hastings stepping back, and an out-of-character M&A pivot (a lost $22B Roku bid, interest in Warner Bros. Discovery/Lionsgate) that has investors fearing the best growth is behind it. The only consistently profitable scaled streamer, trading at ~22x forward EPS with +51% to consensus.",
+      "key_risk": "The deceleration is real, not just sentiment — M Science flags the weakest net-adds quarter since 2022 with US churn rising, and a sudden appetite for expensive acquisitions can signal that organic growth is maturing.",
+      "news": [
+        {"headline": "Netflix quarterly sales beat but soft outlook + Reed Hastings to step down send shares lower (EPS $1.23 vs $0.76; op margin 32.3%)", "source": "Alliance News", "date": "2026-04-16", "tone": "neutral"},
+        {"headline": "Netflix Stock Sinks To 52-Week Low on M&A anxiety after losing $22B Roku bid to Fox", "source": "Benzinga", "date": "2026-06-22", "tone": "negative"},
+        {"headline": "Netflix slips as Meta expands Instagram for TV; M Science warns weakest net adds since 2022, churn picking up", "source": "The Fly", "date": "2026-06-22", "tone": "negative"}
+      ],
+      "competitors": [
+        {"ticker": "DIS", "name": "Disney (streaming)", "fwd_pe": 18.0, "rev_growth_pct": 4.0, "margin_pct": 10.0, "note": "Approx; streaming only recently profitable, far lower margins than NFLX."},
+        {"ticker": "WBD", "name": "Warner Bros. Discovery", "fwd_pe": 0.0, "rev_growth_pct": -2.0, "margin_pct": -5.0, "note": "Approx; a debt-laden turnaround / takeover target, not a profitable peer."},
+        {"ticker": "SPOT", "name": "Spotify", "fwd_pe": 45.0, "rev_growth_pct": 15.0, "margin_pct": 10.0, "note": "Approx; faster top-line but a fraction of Netflix's margin profile."}
+      ],
+      "competitor_edge": "The only scaled streamer that is durably and highly profitable — 32% operating margins and 16% growth while rivals lose money or carry debt — yet it is priced like a no-growth media name after a 61% earnings beat."
+    },
+    {
+      "ticker": "ADBE",
+      "sector": "tech",
+      "stage": "CONFIRMED",
+      "verdict": "CONFIRM",
+      "price": 202.73,
+      "target_consensus": 259.76,
+      "upside_pct": 28.1,
+      "ratings": {"strong_buy": 0, "buy": 30, "hold": 29, "sell": 4, "consensus": "Buy"},
+      "eps_trend": [6.05, 6.27, 6.74, 6.77, 6.86],
+      "eps_rising": true,
+      "earnings_surprise_pct": 2.4,
+      "roe_pct": 14.9,
+      "margin_pct": 36.7,
+      "base_pos_pct": 6.2,
+      "dd_from_high_pct": -48.4,
+      "thesis": "Adobe is the deepest-value name on the screen: -48% off its high and trading at roughly 8x forward EPS — a value multiple — for a franchise still growing revenue ~11% (Q2 +11% to $6.62B) at a 37% net margin and ~15% ROE. The de-rate is a single clean bet: that generative AI (Midjourney, Sora-style tools) structurally erodes Creative Cloud. Management is responding by leaning in — pausing Creative Cloud price hikes to build a freemium AI funnel and launching Firefly Foundry (custom enterprise AI models) — which depresses near-term ARR but is the right defense if it works.",
+      "key_risk": "The disruption thesis is the most existential in the cohort — genAI substitutes directly for Adobe's core product, and pausing price increases to chase free users is a tacit admission that pricing power is under pressure, which could cap the +28% upside that is already the lowest in the group.",
+      "news": [
+        {"headline": "Adobe Pauses Price Hikes For 'Short-Term' AI Push - But At What Cost To ARR Growth? (-5% overnight; Q2 rev +11%)", "source": "Benzinga", "date": "2026-06-12", "tone": "negative"},
+        {"headline": "Adobe Introduces Firefly Foundry to Support Custom AI Models for Enterprise Brand Consistency", "source": "Benzinga / GlobeNewswire", "date": "2026-06-25", "tone": "positive"}
+      ],
+      "competitors": [
+        {"ticker": "CRM", "name": "Salesforce", "fwd_pe": 12.0, "rev_growth_pct": 13.0, "margin_pct": 25.2, "note": "Faster grower; both de-rated on AI fear, ADBE the higher-margin and cheaper."},
+        {"ticker": "NOW", "name": "ServiceNow", "fwd_pe": 22.5, "rev_growth_pct": 20.0, "margin_pct": 20.0, "note": "Nearly 3x Adobe's multiple for a less profitable model."},
+        {"ticker": "FIGMA", "name": "Figma / Canva (private)", "fwd_pe": 0.0, "rev_growth_pct": 30.0, "margin_pct": 0.0, "note": "Approx; the design-tool insurgents pressuring Adobe's core, not public comps."}
+      ],
+      "competitor_edge": "Cheapest of the entire screen (~8x forward EPS) with the highest margins (37%) and strong FCF — if the market is even partly wrong about AI substitution, the re-rating from a value multiple back toward a normal software multiple is large."
+    },
+    {
+      "ticker": "NKE",
+      "sector": "discretionary",
+      "stage": "EARLY",
+      "verdict": "CAUTION",
+      "price": 40.75,
+      "target_consensus": 55.93,
+      "upside_pct": 37.3,
+      "ratings": {"strong_buy": 1, "buy": 34, "hold": 31, "sell": 5, "consensus": "Buy"},
+      "eps_trend": [0.45, 0.59, 0.46, 0.25, 0.66],
+      "eps_rising": false,
+      "earnings_surprise_pct": 20.4,
+      "roe_pct": 15.0,
+      "margin_pct": 5.8,
+      "base_pos_pct": 1.9,
+      "dd_from_high_pct": -49.2,
+      "thesis": "Nike is the textbook beaten-down turnaround — sitting essentially ON its 52-week low (1.9% off the bottom, -49% off its high) under returning CEO Elliott Hill, who is cleaning up the botched DTC pivot, resetting China, and rebuilding wholesale. It beat a low Q3 bar (+20% EPS surprise) and BofA expects gross-margin expansion to begin in Q2 FY27 as tariffs subside. But this is a CAUTION, not a CONFIRM: net margins have collapsed to ~6% (from a historical ~11%), forward EPS is choppy and below prior-year, and management itself admits 'the turnaround is taking longer than expected.'",
+      "key_risk": "The recovery is unproven and the clock is real — China is modeled down ~20% in Q4, On and Hoka keep taking share, and analysts have pushed the demand inflection out to 2027, so the rock-bottom base could persist (or deepen) before margins actually turn.",
+      "news": [
+        {"headline": "Nike CEO Elliott Hill Admits Turnaround Is Taking Longer Than Expected: 'We Still Have Work To Do'", "source": "Benzinga", "date": "2026-06-22", "tone": "negative"},
+        {"headline": "Nike price target lowered to $55 from $75 at BTIG (Buy kept); Q4 Greater China modeled ~-20%", "source": "The Fly", "date": "2026-06-25", "tone": "neutral"},
+        {"headline": "Why This Analyst Thinks Nike Guidance Matters More Than Earnings; gross-margin expansion seen starting Q2 FY27", "source": "Benzinga / BofA", "date": "2026-06-24", "tone": "neutral"}
+      ],
+      "competitors": [
+        {"ticker": "ONON", "name": "On Holding", "fwd_pe": 40.0, "rev_growth_pct": 30.0, "margin_pct": 10.0, "note": "Approx; taking share from Nike with ~30% growth — the share-loss problem in one line."},
+        {"ticker": "DECK", "name": "Deckers (HOKA)", "fwd_pe": 20.0, "rev_growth_pct": 15.0, "margin_pct": 18.0, "note": "Approx; HOKA eroding Nike's running franchise at much higher margins."},
+        {"ticker": "ADDYY", "name": "Adidas", "fwd_pe": 25.0, "rev_growth_pct": 10.0, "margin_pct": 8.0, "note": "Approx; further along its own recovery, regaining shelf Nike vacated."}
+      ],
+      "competitor_edge": "Honestly, none right now — Nike's edge is latent (scale, brand, distribution) and currently being eroded by On and Hoka; the bet is on a margin/brand-heat recovery that has not yet shown up in the numbers, which is exactly why this is a watch, not a buy."
+    },
+    {
+      "ticker": "T",
+      "sector": "comm",
+      "stage": "EARLY",
+      "verdict": "VETO",
+      "price": 22.72,
+      "target_consensus": 29.35,
+      "upside_pct": 29.2,
+      "ratings": {"strong_buy": 1, "buy": 25, "hold": 31, "sell": 5, "consensus": "Hold"},
+      "eps_trend": [0.59, 0.61, 0.55, 0.61, 0.65],
+      "eps_rising": false,
+      "earnings_surprise_pct": 3.3,
+      "roe_pct": 12.0,
+      "margin_pct": 13.0,
+      "base_pos_pct": 9.4,
+      "dd_from_high_pct": -23.7,
+      "thesis": "AT&T is a fine, stable income stock — fiber to 37M locations (40M by year-end, 60M by 2030), $45B of dividends + buybacks planned for 2026-28, a maintained $1.11 dividend, and reaffirmed guidance — but it does not fit the blow-up mandate, so the honest call is VETO. It is the LEAST beaten-down name the screen flagged (only -24% off its high vs -43% to -53% for the cohort), its forward EPS is flat at ~$2.30 with legacy revenue still declining 20%+, and it is the only name in the cohort that analysts rate a consensus HOLD (more holds than buys).",
+      "key_risk": "Structurally it cannot deliver an asymmetric move — beta 0.395 makes it a bond-proxy, so the fingerprint flagged it on an ordinary low-vol pullback rather than a coiled turnaround; rising rates, not company decline, are the main swing factor.",
+      "news": [
+        {"headline": "AT&T Rides Fiber Boom While Legacy Business Fades (Legacy revenue guided -20%+ in 2026; fiber to 40M by year-end)", "source": "Benzinga", "date": "2026-04-22", "tone": "neutral"},
+        {"headline": "AT&T reiterates 2026 and multi-year guidance; $45B+ shareholder returns 2026-28, deleveraging toward 2.5x", "source": "Benzinga", "date": "2026-05-18", "tone": "positive"},
+        {"headline": "AT&T Expands Fiber Push With $19 Billion Statewide Infrastructure Plan In California", "source": "Benzinga", "date": "2026-05-21", "tone": "positive"}
+      ],
+      "competitors": [
+        {"ticker": "VZ", "name": "Verizon", "fwd_pe": 9.0, "rev_growth_pct": 2.0, "margin_pct": 13.0, "note": "Approx; near-identical low-growth income profile, higher yield."},
+        {"ticker": "TMUS", "name": "T-Mobile", "fwd_pe": 17.0, "rev_growth_pct": 5.0, "margin_pct": 14.0, "note": "Approx; the actual telecom growth leader — where the asymmetric upside in the sector sits, not T."},
+        {"ticker": "CMCSA", "name": "Comcast", "fwd_pe": 8.0, "rev_growth_pct": 1.0, "margin_pct": 13.0, "note": "Approx; same cheap-but-stalling broadband/telecom bucket."}
+      ],
+      "competitor_edge": "None relevant to this mandate — within telecom T is cheap and well-run, but it is a low-beta income/deleveraging story; the 'blow-up' potential the screen hunts for simply isn't in a 0.4-beta bond proxy, so it is excluded rather than recommended."
+    }
+  ]
+}

@@ -102,6 +102,34 @@ def main():
     except Exception:
         pass
 
+    # Breakout Scout launcher — slim card linking to the standalone multi-page research site
+    bk_block = ""
+    if os.path.exists("breakout_ideas.json"):
+        try:
+            bk = json.load(open("breakout_ideas.json"))
+            ideas = bk.get("ideas", [])
+            order = {"CONFIRM":0,"CAUTION":1,"VETO":2}
+            ideas = sorted(ideas, key=lambda x:(order.get(x.get("verdict"),9), -x.get("upside_pct",0)))
+            asof = bk.get("_asof","")
+            nconf = sum(1 for i in ideas if i.get("verdict")=="CONFIRM")
+            chips = ""
+            for i in ideas:
+                vc = {"CONFIRM":"v-confirm","CAUTION":"v-caution","VETO":"v-veto"}.get(i.get("verdict"),"v-unread")
+                chips += (f'<a class="bkchip {vc}" href="breakout_site/{i["ticker"]}.html" target=_blank>'
+                          f'{i["ticker"]} <span>{i.get("upside_pct",0):+.0f}%</span></a>')
+            lead = next((i for i in ideas if i.get("verdict")=="CONFIRM"), None)
+            leadtxt = (f'Lead: <b>{lead["ticker"]}</b> — {html.escape(lead.get("thesis","")[:130])}…'
+                       if lead else "No CONFIRM this cycle.")
+            bk_block = (
+                '<div class=sec-h>Breakout Scout :: weekly high-potential ideas :: SPECULATIVE (not a backtested edge)'
+                '<a class=refresh href="breakout_site/index.html" target=_blank title="Open the full multi-page research site">◢ OPEN SITE</a></div>'
+                f'<div class="glass" style="padding:16px 20px"><div style="font-size:11px;color:var(--dim);letter-spacing:.5px">'
+                f'{nconf} CONFIRM · {len(ideas)} researched · as of {asof} · beaten-down names with blow-up potential, '
+                f'each researched live on Bigdata.com</div>'
+                f'<div class=bkchips>{chips}</div>'
+                f'<div class=note style="margin-top:10px">{leadtxt}</div></div>')
+        except Exception: pass
+
     cur = {}
     if os.path.exists("holdings.json"):
         try: cur = json.load(open("holdings.json")).get("positions",{})
@@ -189,6 +217,13 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 .spark .pline{{stroke-dasharray:1000;animation:flow 20s linear infinite;filter:drop-shadow(0 0 6px var(--cy))}}
 .note{{color:var(--dim);font-size:11px;margin-top:9px;letter-spacing:.3px;line-height:1.6}}
 .warn{{padding:14px 18px;margin-top:16px;border-color:var(--am);color:var(--am)}}
+.bkchips{{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}}
+.bkchip{{font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;text-decoration:none;padding:6px 12px;border-radius:20px;border:1px solid var(--ln);background:rgba(0,0,0,.2);transition:.15s}}
+.bkchip span{{font-size:11px;font-weight:500;color:var(--dim);margin-left:4px}}
+.bkchip:hover{{transform:translateY(-1px)}}
+.bkchip.v-confirm{{border-color:var(--gr);box-shadow:0 0 12px -4px var(--gr)}} .bkchip.v-confirm span{{color:var(--gr)}}
+.bkchip.v-caution{{border-color:var(--am)}} .bkchip.v-caution span{{color:var(--am)}}
+.bkchip.v-veto{{border-color:var(--mg)}} .bkchip.v-veto span{{color:var(--mg)}}
 .ft{{margin-top:42px;border-top:1px solid var(--ln);padding-top:16px;color:var(--dim);font-size:10px;letter-spacing:1px;line-height:1.8;text-align:center}}
 </style></head><body>
 <div class=hd><div class=lg>QUANT<span>::</span>BOT</div><div class=as>GENERATED {gen_time} :: DATA {asof} :: {len(syms)} ASSETS</div></div>
@@ -205,6 +240,8 @@ td.neg{{color:var(--mg);text-align:right;font-variant-numeric:tabular-nums}} td.
 
 <div class=sec-h>Directive</div>
 <div class="glass">{act}</div>
+
+{bk_block}
 
 <div class=sec-h>Reversal Array :: validated edge :: diversified &le;{MAX_PER_SECTOR}/sector
   <a class=refresh href="https://claude.ai/code/routines" target=_blank title="Trigger the cloud agent to web-read fresh news (local can't browse)">⟳ REFRESH NEWS</a></div>
