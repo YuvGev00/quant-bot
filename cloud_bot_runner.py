@@ -129,6 +129,47 @@ def hourly():
     ping_healthcheck("hourly")          # dead-man's-switch: pings even on a quiet run = "alive & healthy"
 
 
+DISCOVER_SWEEPS = [
+    "under-the-radar small-cap and mid-cap US stocks with low analyst coverage that are cheaply valued but showing improving revenue growth and rising earnings estimates",
+    "small-cap US companies with growing contract backlogs or accelerating revenue that Wall Street has not yet noticed, trading cheaply",
+    "recently IPO'd US companies that have based out after the post-IPO decline and are starting to show improving fundamentals and early institutional interest",
+    "overlooked mid-cap stocks with insider buying and rising earnings estimates trading below fair value",
+]
+
+
+def discover():
+    """Print the EARLY-DISCOVERY brief + the exact Bigdata sweep queries.
+
+    The deterministic core here is just the playbook; the live discovery sweep,
+    tearsheet scoring, breakout_discover.json, site build and email are done by
+    the cloud agent (it has the Bigdata.com + Gmail MCP tools)."""
+    print("=== WEEKLY EARLY-DISCOVERY SCOUT ===")
+    print("GOAL: discover pre-hype, under-the-radar small & mid-cap US stocks that are")
+    print("      CHEAP and QUIETLY IMPROVING, caught EARLY (the MU-early-2025 / NVDA-2023 /")
+    print("      PLTR-at-$6 moment) — NOT after they ran. Speculative, NOT a backtested edge.\n")
+    print("ANTI-HYPE GUARD: drop mega-caps, ETFs/funds, non-US names, and anything already")
+    print("      up >150% over the trailing year (already ran = NOT early). Drop names whose")
+    print("      'improving' story is not actually in the numbers.\n")
+    print("BIGDATA SWEEP QUERIES (run each as a SEPARATE smart-mode search, max_chunks ~25):")
+    for i, q in enumerate(DISCOVER_SWEEPS, 1):
+        print(f"  ({chr(96+i)}) {q}")
+    print("\nTHEN per extracted ticker: find_securities -> rp_entity_id, then")
+    print("      bigdata_company_tearsheet (company_overview/analyst_estimates/analyst_ratings/")
+    print("      key_metrics/latest_earnings). Score TIER (EMERGING vs SPECULATIVE_EARLY) +")
+    print("      EARLY_FIT (STRONG/MODERATE/WEAK). Write breakout_discover.json, build")
+    print("      breakout_site.py + dashboard.py, commit/push, and email the ranked report.")
+    try:
+        import breakout_discover as _bd
+        doc = _bd.load()
+        n = len(doc.get("discoveries", []))
+        if n:
+            print(f"\n[last run: {doc.get('_asof')} — {n} discoveries on file]")
+            for d in _bd.ranked(doc):
+                print(f"  {d['early_fit']:8s} {d['tier']:17s} {d['ticker']:6s} {d['name']}")
+    except Exception as e:
+        print(f"\n[no prior discovery file: {e}]")
+
+
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "weekly"
-    (weekly if mode == "weekly" else hourly)()
+    {"weekly": weekly, "hourly": hourly, "discover": discover}.get(mode, weekly)()
